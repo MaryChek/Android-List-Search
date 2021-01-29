@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">My Application 2</string>
+    <string name="Enter_text">Enter text</string>
+    <string name="toast_string">You clicked on </string>
+    <string-array name="cities">
+        <item>Anapa</item>
+        <item>Bryansk</item>
+        <item>Volgograd</item>
+        <item>Gelendzhik</item>
+        <item>Grozny</item>
+        <item>Dubna</item>
+        <item>Yekaterinburg</item>
+        <item>Kazan</item>
+        <item>Krasnoyarsk</item>
+        <item>Kaluga</item>
+        <item>Lipetsk</item>
+        <item>Lyubertsy</item>
+        <item>Moscow</item>
+        <item>Murmansk</item>
+        <item>Nizhny Novgorod</item>
+        <item>Novosibirsk</item>
+        <item>Omsk</item>
+        <item>Oryol</item>
+        <item>Perm</item>
+        <item>Rostov-on-Don</item>
+        <item>Ryazan</item>
+        <item>Saint Petersburg</item>
+        <item>Sochi</item>
+        <item>Stavropol</item>
+        <item>Tver</item>
+        <item>Tula</item>
+        <item>Khabarovsk</item>
+        <item>Cheboksary</item>
+        <item>Yakutsk</item>
+        <item>Yaroslavl</item>
+    </string-array>
+</resources>

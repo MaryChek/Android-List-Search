@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My Application 2</string>
+    <string name="Enter_text">Введите название</string>
+    <string name="toast_string">Вы нажали на </string>
+    <string-array name="cities">
+        <item>Анапа</item>
+        <item>Брянск</item>
+        <item>Волгоград</item>
+        <item>Геленджик</item>
+        <item>Грозный</item>
+        <item>Дубна</item>
+        <item>Екатеринбург</item>
+        <item>Казань</item>
+        <item>Красноярск</item>
+        <item>Калуга</item>
+        <item>Липецк</item>
+        <item>Люберцы</item>
+        <item>Москва</item>
+        <item>Мурманск</item>
+        <item>Нижний Новгород</item>
+        <item>Новосибирск</item>
+        <item>Омск</item>
+        <item>Орёл</item>
+        <item>Пермь</item>
+        <item>Ростов-на-Дону</item>
+        <item>Рязань</item>
+        <item>Санкт-Петербург</item>
+        <item>Сочи</item>
+        <item>Ставрополь</item>
+        <item>Тверь</item>
+        <item>Тула</item>
+        <item>Хабаровск</item>
+        <item>Чебоксары</item>
+        <item>Якутск</item>
+        <item>Ярославль</item>
+    </string-array>
+</resources>
