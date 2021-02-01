@@ -1,14 +1,13 @@
-package com.example.android_list_search.Adapter
+package com.example.android_list_search.аdapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.android_list_search.Adapter.ViewHolder.CitiesViewHolder
+import com.example.android_list_search.аdapter.viewholder.CitiesViewHolder
 import com.example.android_list_search.R
-import kotlin.collections.ArrayList
 
 class CitiesAdapter (
-    private var citiesList: ArrayList<String>,
+    private var citiesList: List<String>,
     private val clicked: (String) -> Unit) :
     RecyclerView.Adapter<CitiesViewHolder>() {
 
@@ -19,7 +18,7 @@ class CitiesAdapter (
         viewType: Int
     ): CitiesViewHolder =
         LayoutInflater.from(parent.context).inflate(
-            R.layout.recyclerview_item,
+            R.layout.list_item_city,
                 parent,
                 false).run{
             CitiesViewHolder(this, clicked)
@@ -28,10 +27,10 @@ class CitiesAdapter (
     override fun onBindViewHolder(
         holder: CitiesViewHolder,
         position: Int) {
-        holder.tvCities.text =  citiesList[position]
+        holder.tvCities.text = citiesList[position]
     }
 
-    fun updateCitiesList(filterCitiesList: ArrayList<String>) {
+    fun updateCitiesList(filterCitiesList: List<String>) {
         this.citiesList = filterCitiesList
         notifyDataSetChanged()
     }
