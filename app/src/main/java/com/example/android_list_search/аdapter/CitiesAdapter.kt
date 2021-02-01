@@ -8,8 +8,8 @@ import com.example.android_list_search.R
 
 class CitiesAdapter (
     private var citiesList: List<String>,
-    private val clicked: (String) -> Unit) :
-    RecyclerView.Adapter<CitiesViewHolder>() {
+    private val clicked: (String) -> Unit
+) : RecyclerView.Adapter<CitiesViewHolder>() {
 
     override fun getItemCount(): Int = citiesList.size
 
@@ -31,7 +31,7 @@ class CitiesAdapter (
     }
 
     fun updateCitiesList(filterCitiesList: List<String>) {
-        this.citiesList = filterCitiesList
+        citiesList = filterCitiesList
         notifyDataSetChanged()
     }
 

@@ -55,7 +55,8 @@ class MainActivity : AppCompatActivity() {
             })
     }
 
-    private fun getCitiesList(): List<String> = resources.getStringArray(R.array.cities).toList()
+    private fun getCitiesList(): List<String> =
+        resources.getStringArray(R.array.cities).toList()
 
     private fun onCityClick(string: String) {
         Toast.makeText(
