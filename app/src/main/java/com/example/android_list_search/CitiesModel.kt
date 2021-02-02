@@ -11,5 +11,4 @@ class CitiesModel(private val listCities: List<String>) {
                 it.contains(searchString, true)
             }
     }
-
 }

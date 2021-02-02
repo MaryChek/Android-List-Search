@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
     private fun initListener() {
         svCity.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
-
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     return false
                 }
@@ -56,12 +55,10 @@ class MainActivity : AppCompatActivity() {
     private fun getCitiesList(): List<String> =
         resources.getStringArray(R.array.cities).toList()
 
-    private fun onCityClick(string: String) {
-        Toast.makeText(
-            this,
-            resources.getString(R.string.toast_string) + " " + string,
-            Toast.LENGTH_SHORT
-        ).show()
+    private fun onCityClick(nameCity: String) {
+        val res = resources
+        val toastText = res.getString(R.string.toast_string, nameCity)
+        Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show()
     }
 }
 

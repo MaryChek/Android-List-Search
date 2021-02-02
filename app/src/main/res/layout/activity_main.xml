@@ -31,6 +31,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/svCity"
         tools:listitem="@layout/list_item_city" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
