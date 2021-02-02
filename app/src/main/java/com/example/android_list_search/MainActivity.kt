@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initList(citiesList: List<String>) {
         rvCities?.layoutManager = LinearLayoutManager(this)
-        adapter = CitiesAdapter(citiesList, this::onCityClick)
+        adapter = CitiesAdapter(citiesList, this::clicked)
         rvCities?.adapter = adapter
     }
 
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
     private fun getCitiesList(): List<String> =
         resources.getStringArray(R.array.cities).toList()
 
-    private fun onCityClick(nameCity: String) {
+    private fun clicked(nameCity: String) {
         val toastText = resources.getString(R.string.toast_string, nameCity)
         Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show()
     }
