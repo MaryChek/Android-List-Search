@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android_list_search.аdapter.viewholder.CitiesViewHolder
 import com.example.android_list_search.R
 
-class CitiesAdapter(private var citiesList: List<String>, private val clicked: (String) -> Unit) :
-    RecyclerView.Adapter<CitiesViewHolder>() {
+class CitiesAdapter(
+    private var citiesList: List<String>,
+    private val cityClickListener: (String) -> Unit
+) : RecyclerView.Adapter<CitiesViewHolder>() {
 
     override fun getItemCount(): Int = citiesList.size
 
@@ -15,7 +17,7 @@ class CitiesAdapter(private var citiesList: List<String>, private val clicked: (
         LayoutInflater.from(parent.context).inflate(
             R.layout.list_item_city, parent, false
         ).run {
-            CitiesViewHolder(this, clicked)
+            CitiesViewHolder(this, cityClickListener)
         }
 
     override fun onBindViewHolder(holder: CitiesViewHolder, position: Int) {

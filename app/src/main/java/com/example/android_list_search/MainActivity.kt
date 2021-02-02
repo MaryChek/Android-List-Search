@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android_list_search.аdapter.CitiesAdapter
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.list_item_city.*
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,12 +27,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun bindView() {
-        rvCities = findViewById(R.id.recyclerView)
+        rvCities = findViewById(R.id.rvCities)
     }
 
     private fun initList(citiesList: List<String>) {
         rvCities?.layoutManager = LinearLayoutManager(this)
-        adapter = CitiesAdapter(citiesList, this::clicked)
+        adapter = CitiesAdapter(citiesList, this::onCityClicked)
         rvCities?.adapter = adapter
     }
 
@@ -56,8 +54,8 @@ class MainActivity : AppCompatActivity() {
     private fun getCitiesList(): List<String> =
         resources.getStringArray(R.array.cities).toList()
 
-    private fun clicked(nameCity: String) {
-        val toastText = resources.getString(R.string.toast_string, nameCity)
+    private fun onCityClicked(nameCity: String) {
+        val toastText = resources.getString(R.string.message_selected_city, nameCity)
         Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show()
     }
 }
