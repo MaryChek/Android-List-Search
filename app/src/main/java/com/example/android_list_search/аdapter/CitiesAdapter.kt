@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android_list_search.аdapter.viewholder.CitiesViewHolder
 import com.example.android_list_search.R
 
-class CitiesAdapter (
+class CitiesAdapter(
     private var citiesList: List<String>,
     private val clicked: (String) -> Unit
 ) : RecyclerView.Adapter<CitiesViewHolder>() {
@@ -19,14 +19,16 @@ class CitiesAdapter (
     ): CitiesViewHolder =
         LayoutInflater.from(parent.context).inflate(
             R.layout.list_item_city,
-                parent,
-                false).run{
+            parent,
+            false
+        ).run {
             CitiesViewHolder(this, clicked)
         }
 
     override fun onBindViewHolder(
         holder: CitiesViewHolder,
-        position: Int) {
+        position: Int
+    ) {
         holder.tvCities.text = citiesList[position]
     }
 

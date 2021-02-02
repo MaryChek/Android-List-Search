@@ -13,43 +13,41 @@ class MainActivity : AppCompatActivity() {
 
     private var rvCities: RecyclerView? = null
     private var adapter: CitiesAdapter? = null
+    lateinit var model: CitiesModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         bindView()
-
         val citiesList = getCitiesList()
 
+        model = CitiesModel(citiesList)
         initList(citiesList)
-
-        val citiesModel = CitiesModel(citiesList)
-
-        initListener(citiesModel)
+        initListener()
     }
 
     private fun bindView() {
         rvCities = findViewById(R.id.recyclerView)
-        rvCities?.layoutManager = LinearLayoutManager(this)
     }
 
     private fun initList(citiesList: List<String>) {
+        rvCities?.layoutManager = LinearLayoutManager(this)
         adapter = CitiesAdapter(citiesList, this::onCityClick)
         rvCities?.adapter = adapter
     }
 
-
-    private fun initListener(citiesModel: CitiesModel) {
-        searchView2.setOnQueryTextListener(
-            object: SearchView.OnQueryTextListener{
+    private fun initListener() {
+        svCity.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
 
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     return false
                 }
 
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    adapter?.updateCitiesList(citiesModel.filter(newText))
+                override fun onQueryTextChange(enteredText: String?): Boolean {
+                    val filteredText = model.filter(enteredText)
+                    adapter?.updateCitiesList(filteredText)
                     return false
                 }
             })
@@ -62,7 +60,8 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(
             this,
             resources.getString(R.string.toast_string) + " " + string,
-            Toast.LENGTH_SHORT).show()
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }
 

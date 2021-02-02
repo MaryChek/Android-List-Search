@@ -8,7 +8,7 @@
     tools:layout_editor_absoluteY="81dp">
 
     <SearchView
-        android:id="@+id/searchView2"
+        android:id="@+id/svCity"
         android:layout_width="393dp"
         android:layout_height="65dp"
         android:iconifiedByDefault="false"
@@ -29,7 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView2"
+        app:layout_constraintTop_toBottomOf="@+id/svCity"
         tools:listitem="@layout/list_item_city" />
 
 
