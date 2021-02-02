@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application 2</string>
+    <string name="app_name">Cities of Russia</string>
     <string name="Enter_text">City name</string>
     <string name="toast_string">You clicked on %1$s</string>
     <string-array name="cities">

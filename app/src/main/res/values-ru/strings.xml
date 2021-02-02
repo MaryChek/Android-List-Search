@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">My Application 2</string>
+    <string name="app_name">Города России</string>
     <string name="Enter_text">Название города</string>
     <string name="toast_string">Вы нажали на %1$s</string>
     <string-array name="cities">

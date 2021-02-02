@@ -56,8 +56,7 @@ class MainActivity : AppCompatActivity() {
         resources.getStringArray(R.array.cities).toList()
 
     private fun onCityClick(nameCity: String) {
-        val res = resources
-        val toastText = res.getString(R.string.toast_string, nameCity)
+        val toastText = resources.getString(R.string.toast_string, nameCity)
         Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show()
     }
 }
