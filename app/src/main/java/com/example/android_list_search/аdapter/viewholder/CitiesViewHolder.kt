@@ -9,10 +9,13 @@ class CitiesViewHolder(view: View, citiesClickListener: (String) -> Unit) :
     RecyclerView.ViewHolder(view) {
     val tvCities: TextView = view.findViewById(R.id.tvCities)
 
+    var item: String? = null
+
+
     init {
         tvCities.setOnClickListener {
-            tvCities.text?.run {
-                citiesClickListener(this.toString())
+            item?.let { city ->
+                citiesClickListener(city)
             }
         }
     }

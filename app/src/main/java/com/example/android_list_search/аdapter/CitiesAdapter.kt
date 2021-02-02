@@ -19,12 +19,17 @@ class CitiesAdapter(private var citiesList: List<String>, private val clicked: (
         }
 
     override fun onBindViewHolder(holder: CitiesViewHolder, position: Int) {
-        holder.tvCities.text = citiesList[position]
+        val item: String = citiesList[position]
+        bindViewHolder(holder, item)
+    }
+
+    private fun bindViewHolder(holder: CitiesViewHolder, item: String) {
+        holder.tvCities.text = item
+        holder.item = item
     }
 
     fun updateCitiesList(filterCitiesList: List<String>) {
         citiesList = filterCitiesList
         notifyDataSetChanged()
     }
-
 }
