@@ -11,7 +11,8 @@ class CitiesAdapter(
     private val cityClickListener: (String) -> Unit
 ) : RecyclerView.Adapter<CitiesViewHolder>() {
 
-    override fun getItemCount(): Int = citiesList.size
+    override fun getItemCount(): Int =
+        citiesList.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CitiesViewHolder =
         LayoutInflater.from(parent.context).inflate(
@@ -30,7 +31,7 @@ class CitiesAdapter(
         holder.item = item
     }
 
-    fun updateCitiesList(filterCitiesList: List<String>) {
+    fun updateList(filterCitiesList: List<String>) {
         citiesList = filterCitiesList
         notifyDataSetChanged()
     }

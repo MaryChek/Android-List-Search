@@ -4,11 +4,12 @@ class CitiesModel(private val listCities: List<String>) {
 
     fun filter(enteredText: String?): List<String> {
         val searchString = enteredText ?: ""
-        return if (searchString.isBlank())
+        return if (searchString.isBlank()) {
             listCities
-        else
+        } else {
             listCities.filter {
                 it.contains(searchString, true)
             }
+        }
     }
 }
