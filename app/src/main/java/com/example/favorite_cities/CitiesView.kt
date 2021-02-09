@@ -1,4 +1,4 @@
-package com.example.android_list_search
+package com.example.favorite_cities
 
 import android.view.View
 
@@ -10,4 +10,12 @@ interface CitiesView {
     fun showSlid(view: View)
 
     fun hideSlid(view: View)
+
+    fun initList(citiesList: List<String>)
+
+    fun initListener()
+
+    fun itemDecorate()
+
+    fun onCityClicked(nameCity: String)
 }

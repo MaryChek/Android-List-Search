@@ -1,11 +1,11 @@
-package com.example.android_list_search.presenter
+package com.example.favorite_cities.presenter
 
-import com.example.android_list_search.CitiesModel
-import com.example.android_list_search.R
-import com.example.android_list_search.fragments.DialogFragmentAddRemoveOnFavorite
-import com.example.android_list_search.fragments.FragmentGeneral
+import com.example.favorite_cities.CitiesModel
+import com.example.favorite_cities.R
+import com.example.favorite_cities.fragments.DialogFragmentAddRemoveOnFavorite
+import com.example.favorite_cities.fragments.FragmentGeneral
 import kotlinx.android.synthetic.main.fragment_fragment_general.*
-import com.example.android_list_search.CitiesView
+import com.example.favorite_cities.CitiesView
 
 class PresenterGeneral(private var presenterCommon: PresenterCommon) : PresenterMain {
     private lateinit var view: FragmentGeneral
@@ -35,7 +35,7 @@ class PresenterGeneral(private var presenterCommon: PresenterCommon) : Presenter
         view.updateCitiesList(filteredList)
     }
 
-    fun onCityClicked(nameCity: String) {
+    override fun onCityClicked(nameCity: String) {
         val dialog = DialogFragmentAddRemoveOnFavorite(this, nameCity)
         val manager = view.activity!!.supportFragmentManager
         dialog.show(manager, "myDialog")
@@ -47,7 +47,7 @@ class PresenterGeneral(private var presenterCommon: PresenterCommon) : Presenter
     override fun getResourceString(id: Int, vararg formatArgs: Any?): String =
         view.resources.getString(id, *formatArgs)
 
-    private fun createCitiesModel(citiesList: List<String>) {
+    override fun createCitiesModel(citiesList: List<String>) {
         model = CitiesModel(citiesList)
     }
 

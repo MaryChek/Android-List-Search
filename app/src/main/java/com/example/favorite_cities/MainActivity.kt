@@ -1,8 +1,8 @@
-package com.example.android_list_search
+package com.example.favorite_cities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.android_list_search.fragments.CollectionFragment
+import com.example.favorite_cities.fragments.CollectionFragment
 
 class MainActivity : AppCompatActivity() {
     private val frManager = supportFragmentManager

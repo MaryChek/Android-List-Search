@@ -1,13 +1,13 @@
-package com.example.android_list_search.fragments
+package com.example.favorite_cities.fragments
 
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.example.android_list_search.R
-import com.example.android_list_search.presenter.PresenterGeneral
-import com.example.android_list_search.presenter.PresenterMain
+import com.example.favorite_cities.R
+import com.example.favorite_cities.presenter.PresenterGeneral
+import com.example.favorite_cities.presenter.PresenterMain
 
 class DialogFragmentAddRemoveOnFavorite(
     private val presenter: PresenterMain,

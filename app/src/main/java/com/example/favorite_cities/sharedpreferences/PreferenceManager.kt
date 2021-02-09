@@ -1,4 +1,4 @@
-package com.example.android_list_search.sharedpreferences
+package com.example.favorite_cities.sharedpreferences
 
 import android.content.Context
 import android.content.SharedPreferences

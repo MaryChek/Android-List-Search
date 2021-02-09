@@ -1,4 +1,4 @@
-package com.example.android_list_search
+package com.example.favorite_cities
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -1,4 +1,4 @@
-package com.example.android_list_search
+package com.example.favorite_cities
 
 class CitiesModel(private var listCities: List<String>) {
 

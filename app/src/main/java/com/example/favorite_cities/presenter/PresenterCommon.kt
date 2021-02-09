@@ -1,4 +1,4 @@
-package com.example.android_list_search.presenter
+package com.example.favorite_cities.presenter
 
 class PresenterCommon {
     private lateinit var presenterFavorite: PresenterFavorite

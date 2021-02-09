@@ -1,10 +1,10 @@
-package com.example.android_list_search.аdapter
+package com.example.favorite_cities.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.android_list_search.аdapter.viewholder.CitiesViewHolder
-import com.example.android_list_search.R
+import com.example.favorite_cities.adapter.viewholder.CitiesViewHolder
+import com.example.favorite_cities.R
 
 class CitiesAdapter(
     private var citiesList: List<String>,

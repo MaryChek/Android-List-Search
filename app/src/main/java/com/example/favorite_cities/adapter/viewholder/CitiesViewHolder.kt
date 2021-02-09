@@ -1,9 +1,9 @@
-package com.example.android_list_search.аdapter.viewholder
+package com.example.favorite_cities.adapter.viewholder
 
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.android_list_search.R
+import com.example.favorite_cities.R
 
 class CitiesViewHolder(
     view: View, cityClickListener: (String) -> Unit

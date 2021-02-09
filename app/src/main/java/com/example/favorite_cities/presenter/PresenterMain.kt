@@ -1,6 +1,6 @@
-package com.example.android_list_search.presenter
+package com.example.favorite_cities.presenter
 
-import com.example.android_list_search.CitiesView
+import com.example.favorite_cities.CitiesView
 
 interface PresenterMain {
     fun attachView(activity: CitiesView)
@@ -16,4 +16,8 @@ interface PresenterMain {
     fun addCityToFavorite(nameCity: String)
 
     fun removeCityFromFavorite(nameCity: String)
+
+    fun createCitiesModel(citiesList: List<String>)
+
+    fun onCityClicked(nameCity: String)
 }
