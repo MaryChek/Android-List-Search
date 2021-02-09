@@ -1,11 +1,13 @@
 package com.example.android_list_search
 
+import android.view.View
+
 interface CitiesView {
     fun showCitiesList(citiesList: List<String>)
 
-    fun updateCitiesList(filteredList: List<String>)
+    fun updateCitiesList(modifiedList: List<String>)
 
-    fun showSlidedNothingFound()
+    fun showSlid(view: View)
 
-    fun hideSlidedNothingFound()
+    fun hideSlid(view: View)
 }

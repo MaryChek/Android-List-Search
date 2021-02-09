@@ -37,4 +37,14 @@
     <string name="hint_search_cities">Название города</string>
     <string name="message_selected_city">Вы нажали на %1$s</string>
     <string name="nothing_found">Ничего не найдено</string>
+    <string name="name_fragment_general">Основное</string>
+    <string name="name_fragment_favorite">Избранное</string>
+    <string name="no_favorite_cities">Нет избранных городов</string>
+    <string name="message_unelected_city">Хотите добавить этот город в избранное?</string>
+    <string name="message_favorite_city">Хотите убрать этот город из избранного?</string>
+    <string name="text_button_add">Добавить</string>
+    <string name="text_button_remove">Удалить</string>
+    <string name="button_cancel">Отмена</string>
+    <string name="message_after_adding">Город %1$s добавлен в избранное</string>
+    <string name="message_after_removal">Город %1$s удален из избранного</string>
 </resources>
