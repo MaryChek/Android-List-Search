@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.favorite_cities.fragments.CollectionFragment
 
 class MainActivity : AppCompatActivity() {
-    private val frManager = supportFragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -14,6 +13,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createFragmentGeneral() {
+        val frManager = supportFragmentManager
         val transaction = frManager.beginTransaction()
         val collectionFragment = CollectionFragment()
         transaction.replace(R.id.frPlace, collectionFragment)

@@ -1,16 +1,18 @@
-package com.example.favorite_cities.fragments
+package com.example.favorite_cities.adapter
 
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import com.example.favorite_cities.CitiesModel
 import com.example.favorite_cities.R
-import com.example.favorite_cities.presenter.PresenterCommon
+import com.example.favorite_cities.fragments.FavoritesFragment
+import com.example.favorite_cities.fragments.GeneralFragment
 
-class CollectionAdapter(
+class CollectionFragmentAdapter(
     fragmentManager: FragmentManager,
     private val view: View,
-    private val presenterCommon: PresenterCommon
+    private val model: CitiesModel
 ) : FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getCount(): Int =
@@ -18,8 +20,8 @@ class CollectionAdapter(
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> FragmentGeneral(presenterCommon)
-            else -> FragmentFavorites(presenterCommon)
+            0 -> GeneralFragment(model)
+            else -> FavoritesFragment(model)
         }
     }
 
