@@ -1,6 +1,6 @@
-package com.example.favorite_cities
+package com.example.favorite_cities.model
 
-import com.example.favorite_cities.sharedpreferences.PreferenceManager
+import com.example.favorite_cities.model.sharedpreferences.PreferenceManager
 
 class CitiesModel(
     private var generalCities: List<String>,
@@ -17,10 +17,6 @@ class CitiesModel(
         generalFilteredList = generalCities
         favoriteFilteredList = favoriteCities
     }
-
-//    fun initGeneralList(list: List<String>) {
-//        generalCities = list
-//    }
 
     fun getFavoriteCities(): List<String> =
         favoriteCities

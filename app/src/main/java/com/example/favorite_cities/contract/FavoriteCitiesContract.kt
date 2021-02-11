@@ -12,6 +12,7 @@ interface FavoriteCitiesContract {
     }
 
     interface Presenter : BaseContract.Presenter<View> {
+
         fun onFragmentVisible()
 
         fun removeCity(nameCity: String)

@@ -1,5 +1,7 @@
 package com.example.favorite_cities
 
+import com.example.favorite_cities.R
+
 class ResourceManager {
     fun string(nameResourcesString: String): Int? =
         when (nameResourcesString) {

@@ -1,16 +1,22 @@
 package com.example.favorite_cities
 
 import android.app.Application
-import android.content.Context
-import com.example.favorite_cities.sharedpreferences.PreferenceManager
+import com.example.favorite_cities.model.CitiesModel
+import com.example.favorite_cities.model.sharedpreferences.PreferenceManager
 
 class App : Application() {
+    private lateinit var app: Application
     lateinit var model: CitiesModel
         private set
 
     override fun onCreate() {
         super.onCreate()
-        val list = this.resources.getStringArray(R.array.cities).toList()
-        model = CitiesModel(list, PreferenceManager(this))
+        app = this
+//        val list = this.resources.getStringArray(R.array.cities).toList()
+//        model = CitiesModel(list, PreferenceManager(this))
+    }
+
+    fun setListToModel(list: List<String>) {
+        model = CitiesModel(list, PreferenceManager(app))
     }
 }

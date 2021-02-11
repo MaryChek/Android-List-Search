@@ -5,6 +5,8 @@ import com.example.favorite_cities.DialogCreator
 interface BaseContract {
     interface View {
 
+        fun init()
+
         fun showCitiesList(citiesList: List<String>)
 
         fun updateCitiesList(modifiedList: List<String>)

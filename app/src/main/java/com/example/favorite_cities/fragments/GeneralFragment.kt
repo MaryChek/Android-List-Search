@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.favorite_cities.*
 import com.example.favorite_cities.adapter.CitiesAdapter
 import com.example.favorite_cities.contract.GeneralCitiesContract
+import com.example.favorite_cities.model.Model
 import com.example.favorite_cities.presenter.GeneralPresenter
 import kotlinx.android.synthetic.main.fragment_fragment_general.*
 
@@ -25,6 +26,15 @@ class GeneralFragment : Fragment(), GeneralCitiesContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
+    }
+
+    override fun init() {
+        val activity = requireActivity() as MainActivity
+        val app = activity.applicationContext as App
+        val model = app.model
+        presenter = GeneralPresenter(model)
+//        val model = Model.model
+//        presenter = GeneralPresenter(model)
     }
 
     override fun onCreateView(
@@ -108,14 +118,5 @@ class GeneralFragment : Fragment(), GeneralCitiesContract.View {
 
     override fun getResourceId(nameString: String): Int? {
         return manager.string(nameString)
-    }
-
-    private fun init() {
-//        val activity = requireActivity() as MainActivity
-//        val app = activity.applicationContext as App
-//        val model = app.model
-//        presenter = GeneralPresenter(model)
-        val model = Model.model
-        presenter = GeneralPresenter(model)
     }
 }

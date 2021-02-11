@@ -12,6 +12,8 @@ import com.example.favorite_cities.*
 import com.example.favorite_cities.presenter.FavoritePresenter
 import com.example.favorite_cities.adapter.CitiesAdapter
 import com.example.favorite_cities.contract.FavoriteCitiesContract
+import com.example.favorite_cities.model.Model
+import com.example.favorite_cities.presenter.GeneralPresenter
 import kotlinx.android.synthetic.main.fragment_fragment_favorites.*
 
 class FavoritesFragment : Fragment(), FavoriteCitiesContract.View {
@@ -24,6 +26,15 @@ class FavoritesFragment : Fragment(), FavoriteCitiesContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
+    }
+
+    override fun init() {
+        val activity = requireActivity() as MainActivity
+        val app = activity.applicationContext as App
+        val model = app.model
+        presenter = FavoritePresenter(model)
+//        val model = Model.model
+//        presenter = FavoritePresenter(model)
     }
 
     override fun onCreateView(
@@ -41,7 +52,6 @@ class FavoritesFragment : Fragment(), FavoriteCitiesContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         presenter.onAttachView(this)
         presenter.onViewCreated()
     }
@@ -128,14 +138,5 @@ class FavoritesFragment : Fragment(), FavoriteCitiesContract.View {
 
     override fun getEnteredText(): String =
         svCity.query.toString()
-
-    private fun init() {
-//        val activity = requireActivity() as MainActivity
-//        val app = activity.applicationContext as App
-//        val model = app.model
-//        presenter = FavoritePresenter(model)
-        val model = Model.model
-        presenter = FavoritePresenter(model)
-    }
 }
 

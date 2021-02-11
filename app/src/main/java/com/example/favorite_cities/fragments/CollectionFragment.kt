@@ -6,10 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import com.example.favorite_cities.CitiesModel
 import com.example.favorite_cities.R
 import com.example.favorite_cities.adapter.CollectionFragmentAdapter
-import com.example.favorite_cities.sharedpreferences.PreferenceManager
 import com.google.android.material.tabs.TabLayout
 
 class CollectionFragment : Fragment() {
