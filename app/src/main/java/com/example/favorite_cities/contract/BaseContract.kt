@@ -20,6 +20,8 @@ interface BaseContract {
         fun getResourceString(id: Int, vararg formatArgs: Any?): String
 
         fun showDialogFragment(dialogCreator: DialogCreator)
+
+        fun getResourceId(nameString: String): Int?
     }
 
     interface Presenter<V : View> {

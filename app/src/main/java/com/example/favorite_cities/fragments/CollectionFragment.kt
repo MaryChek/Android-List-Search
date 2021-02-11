@@ -13,6 +13,7 @@ import com.example.favorite_cities.sharedpreferences.PreferenceManager
 import com.google.android.material.tabs.TabLayout
 
 class CollectionFragment : Fragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -22,9 +23,8 @@ class CollectionFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val model = CitiesModel(getCitiesList(view), PreferenceManager(activity))
 
-        val collectionAdapter = CollectionFragmentAdapter(childFragmentManager, view, model)
+        val collectionAdapter = CollectionFragmentAdapter(childFragmentManager, view)
 
         val pager: ViewPager = view.findViewById(R.id.pager)
         pager.adapter = collectionAdapter
@@ -33,7 +33,4 @@ class CollectionFragment : Fragment() {
         val tabLayout: TabLayout = view.findViewById(R.id.tabLayout)
         tabLayout.setupWithViewPager(pager)
     }
-
-    private fun getCitiesList(view: View): List<String> =
-        view.resources.getStringArray(R.array.cities).toList()
 }

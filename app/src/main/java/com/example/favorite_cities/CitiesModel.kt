@@ -7,7 +7,7 @@ class CitiesModel(
     private var preferenceManager: PreferenceManager
 ) {
 
-    private var favoriteCities = preferenceManager.getList()
+    private var favoriteCities = preferenceManager.getList(generalCities)
     private var generalFilteredList: List<String>
     private var favoriteFilteredList: List<String>
 
@@ -17,6 +17,10 @@ class CitiesModel(
         generalFilteredList = generalCities
         favoriteFilteredList = favoriteCities
     }
+
+//    fun initGeneralList(list: List<String>) {
+//        generalCities = list
+//    }
 
     fun getFavoriteCities(): List<String> =
         favoriteCities
@@ -45,14 +49,14 @@ class CitiesModel(
 
         favoriteFilteredList = filter(currentlyEnteredTextInFavorites, favoriteCities)
 
-        preferenceManager.setList(favoriteCities)
+        preferenceManager.setList(favoriteCities, generalCities)
     }
 
     fun removeFavoriteCity(nameCity: String) {
         favoriteCities = favoriteCities.minus(nameCity)
         favoriteFilteredList = favoriteFilteredList.minus(nameCity)
 
-        preferenceManager.setList(favoriteCities)
+        preferenceManager.setList(favoriteCities, generalCities)
     }
 
     fun findInFavorites(nameCity: String): Boolean =

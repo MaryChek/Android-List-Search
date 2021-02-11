@@ -11,15 +11,23 @@ class PreferenceManager(context: Context?) {
         preferences = context?.getSharedPreferences("SharedPreference", Context.MODE_PRIVATE)
     }
 
-    fun setList(list: List<String>) {
-        val hashSet = list.toHashSet()
+    fun setList(list: List<String>, generalList: List<String>) {
+        val hashSet = HashSet<String>()
+        list.forEach {
+            hashSet.add(generalList.indexOf(it).toString())
+        }
         val editor = preferences?.edit()
         editor?.putStringSet("CitiesFavorite", hashSet)
         editor?.apply()
     }
 
-    fun getList(): List<String> {
+    fun getList(generalList: List<String>): List<String> {
         val hashSet = preferences?.getStringSet("CitiesFavorite", null)
-        return hashSet?.toList() ?: listOf()
+        var list = listOf<String>()
+            hashSet?.forEach {
+                val index = it.toInt()
+                list = list.plus(generalList[index])
+            }
+        return list
     }
 }

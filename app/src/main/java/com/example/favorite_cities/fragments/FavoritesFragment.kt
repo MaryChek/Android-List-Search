@@ -1,6 +1,5 @@
 package com.example.favorite_cities.fragments
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,19 +8,23 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.example.favorite_cities.CitiesModel
-import com.example.favorite_cities.DialogCreator
-import com.example.favorite_cities.R
+import com.example.favorite_cities.*
 import com.example.favorite_cities.presenter.FavoritePresenter
 import com.example.favorite_cities.adapter.CitiesAdapter
 import com.example.favorite_cities.contract.FavoriteCitiesContract
 import kotlinx.android.synthetic.main.fragment_fragment_favorites.*
 
-class FavoritesFragment(model: CitiesModel) : Fragment(), FavoriteCitiesContract.View {
+class FavoritesFragment : Fragment(), FavoriteCitiesContract.View {
     private var adapter: CitiesAdapter? = null
-    private val presenter: FavoritePresenter = FavoritePresenter(model)
+    private lateinit var presenter: FavoritePresenter
     private lateinit var rvFavoriteCities: RecyclerView
     private lateinit var svCity: SearchView
+    private var manager = ResourceManager()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        init()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,7 +34,6 @@ class FavoritesFragment(model: CitiesModel) : Fragment(), FavoriteCitiesContract
         val rootView = inflater.inflate(
             R.layout.fragment_fragment_favorites, container, false
         )
-
         rvFavoriteCities = rootView.findViewById(R.id.rvFavoriteCities)
         svCity = rootView.findViewById(R.id.svCity)
         return rootView
@@ -39,6 +41,8 @@ class FavoritesFragment(model: CitiesModel) : Fragment(), FavoriteCitiesContract
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        presenter.onAttachView(this)
         presenter.onViewCreated()
     }
 
@@ -47,12 +51,6 @@ class FavoritesFragment(model: CitiesModel) : Fragment(), FavoriteCitiesContract
         if (menuVisible)
             presenter.onFragmentVisible()
     }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        presenter.onAttachView(this)
-    }
-
 
     override fun onDestroy() {
         super.onDestroy()
@@ -124,7 +122,20 @@ class FavoritesFragment(model: CitiesModel) : Fragment(), FavoriteCitiesContract
     override fun getResourceString(id: Int, vararg formatArgs: Any?): String =
         resources.getString(id, *formatArgs)
 
+    override fun getResourceId(nameString: String): Int? {
+        return manager.string(nameString)
+    }
+
     override fun getEnteredText(): String =
         svCity.query.toString()
+
+    private fun init() {
+//        val activity = requireActivity() as MainActivity
+//        val app = activity.applicationContext as App
+//        val model = app.model
+//        presenter = FavoritePresenter(model)
+        val model = Model.model
+        presenter = FavoritePresenter(model)
+    }
 }
 

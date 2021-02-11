@@ -3,7 +3,6 @@ package com.example.favorite_cities.presenter
 import com.example.favorite_cities.contract.FavoriteCitiesContract
 import com.example.favorite_cities.CitiesModel
 import com.example.favorite_cities.DialogCreator
-import com.example.favorite_cities.R
 
 class FavoritePresenter(
     private var model: CitiesModel
@@ -42,15 +41,7 @@ class FavoritePresenter(
         view?.getResourceString(id, nameCity)
 
     override fun onCityClicked(nameCity: String) {
-        val dialogCreator = DialogCreator(
-            nameCity,
-            R.string.message_favorite_city,
-            R.string.text_button_remove,
-            R.string.message_after_removal,
-            R.string.button_cancel,
-            this::removeCity,
-            this::showMessageAfterPositiveClick
-        )
+        val dialogCreator = initDialogCreator(nameCity)
         view?.showDialogFragment(dialogCreator)
     }
 
@@ -77,5 +68,27 @@ class FavoritePresenter(
         } else {
             view?.showSlideNothingFound(false)
         }
+    }
+
+    private fun initDialogCreator(nameCity: String): DialogCreator {
+        val messageForFavorite = view?.getResourceId("message_favorite_city")
+        val messageAfterRemove = view?.getResourceId("text_button_remove")
+        val removeButton = view?.getResourceId("text_button_remove")
+        val cancel = view?.getResourceId("button_cancel")
+
+        if (messageForFavorite == null || messageAfterRemove == null
+            || removeButton == null || cancel == null
+        )
+            throw IllegalStateException("No such resource")
+
+        return DialogCreator(
+            nameCity,
+            messageForFavorite,
+            removeButton,
+            messageAfterRemove,
+            cancel,
+            this::removeCity,
+            this::showMessageAfterPositiveClick
+        )
     }
 }

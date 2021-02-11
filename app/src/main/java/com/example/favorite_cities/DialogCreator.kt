@@ -17,6 +17,7 @@ class DialogCreator(
     private val functionAfterClick: (String) -> Unit,
     private val showMessageAfterPositiveClick: (Int, String) -> String?
 ) {
+
     fun show(activity: Activity?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)

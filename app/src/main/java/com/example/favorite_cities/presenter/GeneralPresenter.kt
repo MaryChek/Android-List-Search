@@ -2,7 +2,6 @@ package com.example.favorite_cities.presenter
 
 import com.example.favorite_cities.CitiesModel
 import com.example.favorite_cities.DialogCreator
-import com.example.favorite_cities.R
 import com.example.favorite_cities.contract.GeneralCitiesContract
 
 class GeneralPresenter(
@@ -43,25 +42,42 @@ class GeneralPresenter(
         model.removeFavoriteCity(nameCity)
     }
 
-    private fun initDialogCreator(nameCity: String): DialogCreator =
-        when (model.findInFavorites(nameCity)) {
-            true -> DialogCreator(
-                nameCity,
-                R.string.message_favorite_city,
-                R.string.text_button_remove,
-                R.string.message_after_removal,
-                R.string.button_cancel,
-                this::removeCityFromFavorite,
-                this::showMessageAfterPositiveClick
-            )
+    private fun initDialogCreator(nameCity: String): DialogCreator {
+        val messageForFavorite = view?.getResourceId("message_favorite_city")
+        val messageForUnelected = view?.getResourceId("message_unelected_city")
+        val messageAfterAdd = view?.getResourceId("message_after_adding")
+        val messageAfterRemove = view?.getResourceId("text_button_remove")
+        val addButton = view?.getResourceId("text_button_add")
+        val removeButton = view?.getResourceId("text_button_remove")
+        val cancel = view?.getResourceId("button_cancel")
+
+        if (messageForFavorite == null || messageForUnelected == null
+            || messageAfterAdd == null || messageAfterRemove == null
+            || removeButton == null || addButton == null || cancel == null
+        )
+            throw IllegalStateException("No such resource")
+
+        return when (model.findInFavorites(nameCity)) {
+            true -> {
+                DialogCreator(
+                    nameCity,
+                    messageForFavorite,
+                    removeButton,
+                    messageAfterRemove,
+                    cancel,
+                    this::removeCityFromFavorite,
+                    this::showMessageAfterPositiveClick
+                )
+            }
             false -> DialogCreator(
                 nameCity,
-                R.string.message_unelected_city,
-                R.string.text_button_add,
-                R.string.message_after_adding,
-                R.string.button_cancel,
+                messageForUnelected,
+                addButton,
+                messageAfterAdd,
+                cancel,
                 this::addCityToFavorite,
                 this::showMessageAfterPositiveClick
             )
         }
+    }
 }

@@ -8,8 +8,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        Model.onCreate(this.applicationContext)
         createFragmentGeneral()
+        setContentView(R.layout.activity_main)
     }
 
     private fun createFragmentGeneral() {
@@ -17,9 +18,9 @@ class MainActivity : AppCompatActivity() {
         val transaction = frManager.beginTransaction()
         val collectionFragment = CollectionFragment()
         transaction.replace(R.id.frPlace, collectionFragment)
+        transaction.setReorderingAllowed(true)
         transaction.addToBackStack(null)
         transaction.commit()
     }
 }
-
 
