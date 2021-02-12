@@ -12,8 +12,8 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         app = this
-//        val list = this.resources.getStringArray(R.array.cities).toList()
-//        model = CitiesModel(list, PreferenceManager(this))
+        val list = this.resources.getStringArray(R.array.cities).toList()
+        model = CitiesModel(list, PreferenceManager(this))
     }
 
     fun setListToModel(list: List<String>) {

@@ -2,12 +2,11 @@ package com.example.favorite_cities.contract
 
 interface GeneralCitiesContract {
 
-    interface View : BaseContract.View {
-
-        fun showSlidNothingFound(show: Boolean)
+    interface View : CitiesContract.View {
+        fun showSlideNothingFound(show: Boolean)
     }
 
-    interface Presenter : BaseContract.Presenter<View> {
+    interface Presenter : CitiesContract.Presenter<View> {
 
         fun addCityToFavorite(nameCity: String)
 

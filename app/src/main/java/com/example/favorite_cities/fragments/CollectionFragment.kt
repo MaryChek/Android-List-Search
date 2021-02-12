@@ -6,11 +6,30 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
+import com.example.favorite_cities.App
+import com.example.favorite_cities.MainActivity
 import com.example.favorite_cities.R
 import com.example.favorite_cities.adapter.CollectionFragmentAdapter
+import com.example.favorite_cities.contract.CollectionContract
+import com.example.favorite_cities.presenter.CollectionPresenter
 import com.google.android.material.tabs.TabLayout
 
-class CollectionFragment : Fragment() {
+class CollectionFragment : Fragment(), CollectionContract.View {
+    private var presenter: CollectionPresenter? = null
+    private lateinit var pager: ViewPager
+    private lateinit var tabLayout: TabLayout
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        init()
+    }
+
+    override fun init() {
+        val activity = activity as MainActivity
+        val app = activity.applicationContext as App
+        val model = app.model
+        presenter = CollectionPresenter(model)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,14 +40,29 @@ class CollectionFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        pager = view.findViewById(R.id.pager)
+        tabLayout = view.findViewById(R.id.tabLayout)
+        presenter?.onAttachView(this)
+        presenter?.onViewCreated()
+    }
 
-        val collectionAdapter = CollectionFragmentAdapter(childFragmentManager, view)
+    override fun showPagerWithFragments(fragmentsNames: MutableMap<String, CharSequence?>) {
+        pager.adapter = CollectionFragmentAdapter(childFragmentManager, fragmentsNames)
+        presenter?.fragmentsDisplayed()
+    }
 
-        val pager: ViewPager = view.findViewById(R.id.pager)
-        pager.adapter = collectionAdapter
-
-
-        val tabLayout: TabLayout = view.findViewById(R.id.tabLayout)
+    override fun addPagerInTabLayout() {
         tabLayout.setupWithViewPager(pager)
     }
+
+    override fun setFavoriteFragmentAsCurrent() {
+        pager.currentItem = 1
+    }
+
+    override fun getFavoriteFragmentNameId(): CharSequence =
+        resources.getString(R.string.name_fragment_favorite)
+
+    override fun getGeneralFragmentNameId(): CharSequence =
+        resources.getString(R.string.name_fragment_general)
 }

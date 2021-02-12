@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_fragment_general.*
 class GeneralFragment : Fragment(), GeneralCitiesContract.View {
 
     private var adapter: CitiesAdapter? = null
-    private lateinit var presenter: GeneralPresenter
+    private var presenter: GeneralPresenter? = null
     private lateinit var rvGeneralCities: RecyclerView
     private lateinit var svCity: SearchView
     private var manager = ResourceManager()
@@ -50,13 +50,19 @@ class GeneralFragment : Fragment(), GeneralCitiesContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.onAttachView(this)
-        presenter.onViewCreated()
+        presenter?.onAttachView(this)
+        presenter?.onViewCreated()
+    }
+
+    override fun setMenuVisibility(menuVisible: Boolean) {
+        super.setMenuVisibility(menuVisible)
+        if (menuVisible)
+            presenter?.onFragmentVisible()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.onDestroy()
+        presenter?.onDestroy()
     }
 
     override fun showCitiesList(citiesList: List<String>) {
@@ -72,7 +78,7 @@ class GeneralFragment : Fragment(), GeneralCitiesContract.View {
         adapter?.updateList(modifiedList)
     }
 
-    override fun showSlidNothingFound(show: Boolean) {
+    override fun showSlideNothingFound(show: Boolean) {
         val slide = slideNothingFoundInGeneral
         if (show) {
             if (slide.visibility == View.GONE) {
@@ -98,7 +104,7 @@ class GeneralFragment : Fragment(), GeneralCitiesContract.View {
                 }
 
                 override fun onQueryTextChange(enteredText: String?): Boolean {
-                    presenter.searchTextChanged(enteredText)
+                    presenter?.searchTextChanged(enteredText)
                     return false
                 }
             })
@@ -110,7 +116,7 @@ class GeneralFragment : Fragment(), GeneralCitiesContract.View {
     }
 
     override fun onCityClicked(nameCity: String) {
-        presenter.onCityClicked(nameCity)
+        presenter?.onCityClicked(nameCity)
     }
 
     override fun getResourceString(id: Int, vararg formatArgs: Any?): String =
@@ -118,5 +124,9 @@ class GeneralFragment : Fragment(), GeneralCitiesContract.View {
 
     override fun getResourceId(nameString: String): Int? {
         return manager.string(nameString)
+    }
+
+    override fun setEnteredText(text: CharSequence) {
+        svCity.setQuery(text, false)
     }
 }

@@ -10,16 +10,25 @@ class GeneralPresenter(
 
     override fun onViewCreated() {
         super.onViewCreated()
-        view?.showCitiesList(model.getGeneralCities())
+        val enteredText = model.getEnteredTextInGeneral()
+        val citiesList =
+            when (enteredText.isNullOrEmpty()) {
+                true -> model.getGeneralCities()
+                false -> model.getFilteredGeneralCities()
+            }
+        view?.showCitiesList(citiesList)
+        enteredText?.let {
+            view?.setEnteredText(it)
+        }
+    }
+
+    override fun onFragmentVisible() {
+        model.setVisibleFavoriteFragment(false)
     }
 
     override fun searchTextChanged(text: String?) {
         val filteredList = model.filterGeneralList(text)
-        if (filteredList.isEmpty()) {
-            view?.showSlidNothingFound(true)
-        } else {
-            view?.showSlidNothingFound(false)
-        }
+        showOrHideSlideNothingFound()
         view?.updateCitiesList(filteredList)
     }
 
@@ -40,6 +49,14 @@ class GeneralPresenter(
 
     override fun removeCityFromFavorite(nameCity: String) {
         model.removeFavoriteCity(nameCity)
+    }
+
+    private fun showOrHideSlideNothingFound() {
+        if (model.getFilteredGeneralCities().isEmpty()) {
+            view?.showSlideNothingFound(true)
+        } else {
+            view?.showSlideNothingFound(false)
+        }
     }
 
     private fun initDialogCreator(nameCity: String): DialogCreator {

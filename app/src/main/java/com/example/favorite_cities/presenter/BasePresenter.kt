@@ -10,6 +10,7 @@ abstract class BasePresenter<V : BaseContract.View> : BaseContract.Presenter<V> 
     }
 
     override fun onViewCreated() {
+
     }
 
     override fun onDestroy() {

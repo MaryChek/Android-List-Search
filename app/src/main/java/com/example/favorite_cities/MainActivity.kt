@@ -11,7 +11,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 //        Model.onCreate(this.applicationContext)
         val app = this.applicationContext as App
-        app.setListToModel(resources.getStringArray(R.array.cities).toList())
+//        app.setListToModel(resources.getStringArray(R.array.cities).toList())
+
         createFragmentGeneral()
         setContentView(R.layout.activity_main)
     }

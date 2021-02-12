@@ -1,10 +1,10 @@
 package com.example.favorite_cities
 
-import com.example.favorite_cities.R
-
 class ResourceManager {
     fun string(nameResourcesString: String): Int? =
         when (nameResourcesString) {
+            "Nothing found" -> R.string.nothing_found
+            "No favorite cities" -> R.string.no_favorite_cities
             "message_favorite_city" -> R.string.message_favorite_city
             "message_unelected_city" -> R.string.message_unelected_city
             "message_after_adding" -> R.string.message_after_adding

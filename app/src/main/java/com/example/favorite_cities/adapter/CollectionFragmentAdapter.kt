@@ -1,16 +1,14 @@
 package com.example.favorite_cities.adapter
 
-import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.example.favorite_cities.R
 import com.example.favorite_cities.fragments.FavoritesFragment
 import com.example.favorite_cities.fragments.GeneralFragment
 
 class CollectionFragmentAdapter(
     fragmentManager: FragmentManager,
-    private val view: View
+    private val fragmentsName: MutableMap<String, CharSequence?>
 ) : FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getCount(): Int =
@@ -25,8 +23,8 @@ class CollectionFragmentAdapter(
 
     override fun getPageTitle(position: Int): CharSequence {
         return when (position) {
-            0 -> view.resources.getString(R.string.name_fragment_general)
-            else -> view.resources.getString(R.string.name_fragment_favorite)
+            0 -> fragmentsName["General"] ?: ""
+            else -> fragmentsName["Favorite"] ?: ""
         }
     }
 }

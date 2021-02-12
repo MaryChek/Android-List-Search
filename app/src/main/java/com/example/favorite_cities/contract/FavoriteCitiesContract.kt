@@ -2,18 +2,12 @@ package com.example.favorite_cities.contract
 
 interface FavoriteCitiesContract {
 
-    interface View : BaseContract.View {
+    interface View : CitiesContract.View {
 
-        fun showSlideNothingFound(show: Boolean)
-
-        fun showSlideNoFavorites(show: Boolean)
-
-        fun getEnteredText(): String
+        fun showTextSlide(text: String, show: Boolean)
     }
 
-    interface Presenter : BaseContract.Presenter<View> {
-
-        fun onFragmentVisible()
+    interface Presenter : CitiesContract.Presenter<View> {
 
         fun removeCity(nameCity: String)
     }

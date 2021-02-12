@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.TextView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.favorite_cities.*
@@ -18,10 +19,12 @@ import kotlinx.android.synthetic.main.fragment_fragment_favorites.*
 
 class FavoritesFragment : Fragment(), FavoriteCitiesContract.View {
     private var adapter: CitiesAdapter? = null
-    private lateinit var presenter: FavoritePresenter
+    private var presenter: FavoritePresenter? = null
     private lateinit var rvFavoriteCities: RecyclerView
     private lateinit var svCity: SearchView
     private var manager = ResourceManager()
+
+    private lateinit var textSlide: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,24 +50,25 @@ class FavoritesFragment : Fragment(), FavoriteCitiesContract.View {
         )
         rvFavoriteCities = rootView.findViewById(R.id.rvFavoriteCities)
         svCity = rootView.findViewById(R.id.svCity)
+        textSlide = rootView.findViewById(R.id.textSlideInFavorites)
         return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.onAttachView(this)
-        presenter.onViewCreated()
+        presenter?.onAttachView(this)
+        presenter?.onViewCreated()
     }
 
     override fun setMenuVisibility(menuVisible: Boolean) {
         super.setMenuVisibility(menuVisible)
         if (menuVisible)
-            presenter.onFragmentVisible()
+            presenter?.onFragmentVisible()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.onDestroy()
+        presenter?.onDestroy()
     }
 
     override fun showCitiesList(citiesList: List<String>) {
@@ -86,7 +90,7 @@ class FavoritesFragment : Fragment(), FavoriteCitiesContract.View {
                 }
 
                 override fun onQueryTextChange(enteredText: String?): Boolean {
-                    presenter.searchTextChanged(enteredText)
+                    presenter?.searchTextChanged(enteredText)
                     return false
                 }
             })
@@ -100,25 +104,36 @@ class FavoritesFragment : Fragment(), FavoriteCitiesContract.View {
         adapter?.updateList(modifiedList)
     }
 
-    override fun showSlideNothingFound(show: Boolean) {
+    override fun showTextSlide(text: String, show: Boolean) {
         if (show) {
-            if (slideNothingFoundInFavorite.visibility == View.GONE)
-                slideNothingFoundInFavorite.visibility = View.VISIBLE
+            textSlide.text = text
+            textSlide.visibility = View.VISIBLE
         } else {
-            if (slideNothingFoundInFavorite.visibility == View.VISIBLE)
-                slideNothingFoundInFavorite.visibility = View.GONE
+            textSlide.visibility = View.GONE
         }
     }
 
-    override fun showSlideNoFavorites(show: Boolean) {
-        if (show) {
-            if (slideNoFavoriteCities.visibility == View.GONE)
-                slideNoFavoriteCities.visibility = View.VISIBLE
-        } else {
-            if (slideNoFavoriteCities.visibility == View.VISIBLE)
-                slideNoFavoriteCities.visibility = View.GONE
-        }
-    }
+//    override fun showSlideNothingFound(show: Boolean) {
+//        val slide = slideNothingFoundInFavorite
+//        if (show) {
+//            if (slide.visibility == View.GONE)
+//                slide.visibility = View.VISIBLE
+//        } else {
+//            if (slide.visibility == View.VISIBLE)
+//                slide.visibility = View.GONE
+//        }
+//    }
+
+//    override fun showSlideNoFavorites(show: Boolean) {
+//        val slide = slideNoFavoriteCities
+//        if (show) {
+//            if (slide.visibility == View.GONE)
+//                slide.visibility = View.VISIBLE
+//        } else {
+//            if (slide.visibility == View.VISIBLE)
+//                slide.visibility = View.GONE
+//        }
+//    }
 
     override fun itemDecorate() {
         val dividerItem = DividerItemDecoration(activity, RecyclerView.VERTICAL)
@@ -126,7 +141,7 @@ class FavoritesFragment : Fragment(), FavoriteCitiesContract.View {
     }
 
     override fun onCityClicked(nameCity: String) {
-        presenter.onCityClicked(nameCity)
+        presenter?.onCityClicked(nameCity)
     }
 
     override fun getResourceString(id: Int, vararg formatArgs: Any?): String =
@@ -136,7 +151,8 @@ class FavoritesFragment : Fragment(), FavoriteCitiesContract.View {
         return manager.string(nameString)
     }
 
-    override fun getEnteredText(): String =
-        svCity.query.toString()
+    override fun setEnteredText(text: CharSequence) {
+        svCity.setQuery(text, false)
+    }
 }
 
