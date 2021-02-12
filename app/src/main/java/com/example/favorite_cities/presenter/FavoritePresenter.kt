@@ -18,8 +18,8 @@ class FavoritePresenter(
 
     override fun searchTextChanged(text: String?) {
         if (model.getFavoriteCities().isNotEmpty()) {
-            showOrHideSlideNothingFound()
             val filteredList = model.filterFavoriteList(text)
+            showOrHideSlideNothingFound()
             view?.updateCitiesList(filteredList)
         }
     }

@@ -2,9 +2,7 @@ package com.example.favorite_cities.contract
 
 
 interface BaseContract {
-    interface View {
-        fun init()
-    }
+    interface View
 
     interface Presenter<V : View> {
 

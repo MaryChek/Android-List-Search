@@ -9,13 +9,13 @@ interface CitiesContract {
 
         fun updateCitiesList(modifiedList: List<String>)
 
-        fun initList(citiesList: List<String>) // privet
+//        fun initList(citiesList: List<String>) // privet
 
-        fun initListener()
+//        fun initListener()
 
-        fun itemDecorate()
+//        fun itemDecorate()
 
-        fun onCityClicked(nameCity: String)
+//        fun onCityClicked(nameCity: String)
 
         fun getResourceString(id: Int, vararg formatArgs: Any?): String
 

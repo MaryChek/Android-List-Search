@@ -63,7 +63,7 @@ class GeneralPresenter(
         val messageForFavorite = view?.getResourceId("message_favorite_city")
         val messageForUnelected = view?.getResourceId("message_unelected_city")
         val messageAfterAdd = view?.getResourceId("message_after_adding")
-        val messageAfterRemove = view?.getResourceId("text_button_remove")
+        val messageAfterRemove = view?.getResourceId("message_after_removal")
         val addButton = view?.getResourceId("text_button_add")
         val removeButton = view?.getResourceId("text_button_remove")
         val cancel = view?.getResourceId("button_cancel")

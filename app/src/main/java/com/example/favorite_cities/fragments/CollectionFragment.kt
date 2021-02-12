@@ -21,12 +21,14 @@ class CollectionFragment : Fragment(), CollectionContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        init()
+        init(savedInstanceState)
     }
 
-    override fun init() {
+    private fun init(savedInstanceState: Bundle?) {
         val activity = activity as MainActivity
         val app = activity.applicationContext as App
+        if (savedInstanceState != null)
+            app.upDateListInModel()
         val model = app.model
         presenter = CollectionPresenter(model)
     }

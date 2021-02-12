@@ -10,18 +10,16 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.favorite_cities.*
 import com.example.favorite_cities.adapter.CitiesAdapter
+import com.example.favorite_cities.contract.BaseContract
+import com.example.favorite_cities.contract.CitiesContract
 import com.example.favorite_cities.contract.GeneralCitiesContract
-import com.example.favorite_cities.model.Model
 import com.example.favorite_cities.presenter.GeneralPresenter
 import kotlinx.android.synthetic.main.fragment_fragment_general.*
 
-class GeneralFragment : Fragment(), GeneralCitiesContract.View {
 
-    private var adapter: CitiesAdapter? = null
-    private var presenter: GeneralPresenter? = null
-    private lateinit var rvGeneralCities: RecyclerView
-    private lateinit var svCity: SearchView
-    private var manager = ResourceManager()
+class GeneralFragment :
+    BaseCitiesFragment<GeneralCitiesContract.View, GeneralCitiesContract.Presenter>(),
+    GeneralCitiesContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +31,6 @@ class GeneralFragment : Fragment(), GeneralCitiesContract.View {
         val app = activity.applicationContext as App
         val model = app.model
         presenter = GeneralPresenter(model)
-//        val model = Model.model
-//        presenter = GeneralPresenter(model)
     }
 
     override fun onCreateView(
@@ -43,7 +39,7 @@ class GeneralFragment : Fragment(), GeneralCitiesContract.View {
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_fragment_general, container, false)
-        rvGeneralCities = rootView.findViewById(R.id.rvGeneralCities)
+        rvCities = rootView.findViewById(R.id.rvGeneralCities)
         svCity = rootView.findViewById(R.id.svCity)
         return rootView
     }
@@ -52,17 +48,6 @@ class GeneralFragment : Fragment(), GeneralCitiesContract.View {
         super.onViewCreated(view, savedInstanceState)
         presenter?.onAttachView(this)
         presenter?.onViewCreated()
-    }
-
-    override fun setMenuVisibility(menuVisible: Boolean) {
-        super.setMenuVisibility(menuVisible)
-        if (menuVisible)
-            presenter?.onFragmentVisible()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter?.onDestroy()
     }
 
     override fun showCitiesList(citiesList: List<String>) {
@@ -90,35 +75,6 @@ class GeneralFragment : Fragment(), GeneralCitiesContract.View {
         }
     }
 
-    override fun initList(citiesList: List<String>) {
-        itemDecorate()
-        adapter = CitiesAdapter(citiesList, this::onCityClicked)
-        rvGeneralCities.adapter = adapter
-    }
-
-    override fun initListener() {
-        svCity.setOnQueryTextListener(
-            object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    return false
-                }
-
-                override fun onQueryTextChange(enteredText: String?): Boolean {
-                    presenter?.searchTextChanged(enteredText)
-                    return false
-                }
-            })
-    }
-
-    override fun itemDecorate() {
-        val dividerItem = DividerItemDecoration(activity, RecyclerView.VERTICAL)
-        rvGeneralCities.addItemDecoration(dividerItem)
-    }
-
-    override fun onCityClicked(nameCity: String) {
-        presenter?.onCityClicked(nameCity)
-    }
-
     override fun getResourceString(id: Int, vararg formatArgs: Any?): String =
         resources.getString(id, *formatArgs)
 
@@ -129,4 +85,5 @@ class GeneralFragment : Fragment(), GeneralCitiesContract.View {
     override fun setEnteredText(text: CharSequence) {
         svCity.setQuery(text, false)
     }
+
 }
