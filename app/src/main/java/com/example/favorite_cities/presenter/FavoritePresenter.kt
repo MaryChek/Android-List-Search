@@ -79,7 +79,7 @@ class FavoritePresenter(
     private fun showSlideWithText(textResource: String, show: Boolean) {
         val textId = view?.getResourceId(textResource)
         textId?.let {
-            view?.getResourceString(it)?.let {text ->
+            view?.getResourceString(it)?.let { text ->
                 view?.showTextSlide(text, show)
             }
         }

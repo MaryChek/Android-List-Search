@@ -1,17 +1,12 @@
 package com.example.favorite_cities.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import android.widget.TextView
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
 import com.example.favorite_cities.*
 import com.example.favorite_cities.presenter.FavoritePresenter
-import com.example.favorite_cities.adapter.CitiesAdapter
 import com.example.favorite_cities.contract.FavoriteCitiesContract
 
 class FavoritesFragment :

@@ -1,7 +1,7 @@
 package com.example.favorite_cities.contract
 
 interface CollectionContract {
-    interface View: BaseContract.View {
+    interface View : BaseContract.View {
         fun showPagerWithFragments(fragmentsNames: MutableMap<String, CharSequence?>)
 
         fun setFavoriteFragmentAsCurrent()
@@ -13,7 +13,7 @@ interface CollectionContract {
         fun addPagerInTabLayout()
     }
 
-    interface Presenter: BaseContract.Presenter<View> {
+    interface Presenter : BaseContract.Presenter<View> {
         fun fragmentsDisplayed()
     }
 }

@@ -49,6 +49,11 @@ class CollectionFragment : Fragment(), CollectionContract.View {
         presenter?.onViewCreated()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter?.onDestroy()
+    }
+
     override fun showPagerWithFragments(fragmentsNames: MutableMap<String, CharSequence?>) {
         pager.adapter = CollectionFragmentAdapter(childFragmentManager, fragmentsNames)
         presenter?.fragmentsDisplayed()

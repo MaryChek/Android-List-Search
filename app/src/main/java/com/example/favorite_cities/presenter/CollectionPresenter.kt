@@ -7,8 +7,7 @@ class CollectionPresenter(private val model: CitiesModel) :
     BasePresenter<CollectionContract.View>(), CollectionContract.Presenter {
     override fun onViewCreated() {
         super.onViewCreated()
-        val mapFragmentsNames = getMapNames()
-        view?.showPagerWithFragments(mapFragmentsNames)
+        view?.showPagerWithFragments(getMapNames())
     }
 
     override fun fragmentsDisplayed() {
@@ -22,5 +21,4 @@ class CollectionPresenter(private val model: CitiesModel) :
             "Favorite" to view?.getFavoriteFragmentNameId(),
             "General" to view?.getGeneralFragmentNameId()
         )
-
 }
