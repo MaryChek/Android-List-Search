@@ -13,13 +13,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createFragmentGeneral() {
-        val frManager = supportFragmentManager
-        val transaction = frManager.beginTransaction()
+        val fragmentManager = supportFragmentManager
         val collectionFragment = CollectionFragment()
-        transaction.replace(R.id.frPlace, collectionFragment)
-        transaction.setReorderingAllowed(true)
-        transaction.addToBackStack(null)
-        transaction.commit()
+        val transaction = fragmentManager.beginTransaction()
+        transaction.replace(R.id.fragmentContainer, collectionFragment)
+            .setReorderingAllowed(true)
+            .addToBackStack(null)
+            .commit()
     }
 }
-

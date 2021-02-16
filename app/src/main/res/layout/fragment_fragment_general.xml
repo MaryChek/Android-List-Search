@@ -8,12 +8,9 @@
     tools:context=".fragments.GeneralFragment">
 
     <include
-        android:id="@+id/include"
+        android:id="@+id/includeSvCity"
         layout="@layout/sv_city"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,15 +24,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include"
+        app:layout_constraintTop_toBottomOf="@+id/includeSvCity"
         tools:listitem="@layout/list_item_city" />
 
-    <TextView
-        android:id="@+id/slideNothingFoundInGeneral"
+    <include
+        layout="@layout/tv_search_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/nothing_found"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

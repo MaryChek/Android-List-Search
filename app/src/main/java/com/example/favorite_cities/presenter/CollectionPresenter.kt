@@ -1,10 +1,15 @@
 package com.example.favorite_cities.presenter
 
+import android.content.res.Resources
+import com.example.favorite_cities.CitiesFragmentsParams
+import com.example.favorite_cities.R
 import com.example.favorite_cities.contract.CollectionContract
 import com.example.favorite_cities.model.CitiesModel
 
-class CollectionPresenter(private val model: CitiesModel) :
-    BasePresenter<CollectionContract.View>(), CollectionContract.Presenter {
+class CollectionPresenter(
+    private val model: CitiesModel,
+    private val resources: Resources
+) : BasePresenter<CollectionContract.View>(), CollectionContract.Presenter {
     override fun onViewCreated() {
         super.onViewCreated()
         view?.showPagerWithFragments(getMapNames())
@@ -18,7 +23,7 @@ class CollectionPresenter(private val model: CitiesModel) :
 
     private fun getMapNames(): MutableMap<String, CharSequence?> =
         mutableMapOf(
-            "Favorite" to view?.getFavoriteFragmentNameId(),
-            "General" to view?.getGeneralFragmentNameId()
+            CitiesFragmentsParams.FAVORITE to resources.getString(R.string.name_fragment_favorite),
+            CitiesFragmentsParams.GENERAL to resources.getString(R.string.name_fragment_general)
         )
 }

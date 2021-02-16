@@ -1,14 +1,15 @@
 package com.example.favorite_cities.fragments
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.favorite_cities.*
 import com.example.favorite_cities.contract.GeneralCitiesContract
+import com.example.favorite_cities.model.CitiesModel
 import com.example.favorite_cities.presenter.GeneralPresenter
-import kotlinx.android.synthetic.main.fragment_fragment_general.*
-
+import kotlinx.android.synthetic.main.tv_search_error.*
 
 class GeneralFragment :
     BaseCitiesFragment<GeneralCitiesContract.View, GeneralCitiesContract.Presenter>(),
@@ -20,9 +21,9 @@ class GeneralFragment :
     }
 
     override fun init() {
-        val activity = requireActivity() as MainActivity
-        val app = activity.applicationContext as App
-        val model = app.model
+        val activity: Activity = activity as MainActivity
+        val app: App = activity.applicationContext as App
+        val model: CitiesModel = app.model
         presenter = GeneralPresenter(model)
     }
 
@@ -31,7 +32,9 @@ class GeneralFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_fragment_general, container, false)
+        val rootView: View = inflater.inflate(
+            R.layout.fragment_fragment_general, container, false
+        )
         rvCities = rootView.findViewById(R.id.rvGeneralCities)
         svCity = rootView.findViewById(R.id.svCity)
         return rootView
@@ -48,8 +51,8 @@ class GeneralFragment :
         initListener()
     }
 
-    override fun showDialogFragment(dialogCreator: DialogCreator) {
-        dialogCreator.show(activity)
+    override fun showDialogFragment(dialogCreator: DialogCreator?) {
+        dialogCreator?.show(activity)
     }
 
     override fun updateCitiesList(modifiedList: List<String>) {
@@ -57,26 +60,18 @@ class GeneralFragment :
     }
 
     override fun showSlideNothingFound(show: Boolean) {
-        val slide = slideNothingFoundInGeneral
+        val slide = tvSearchError
         if (show) {
-            if (slide.visibility == View.GONE) {
-                slide.visibility = View.VISIBLE
-            }
+            slide.visibility = View.VISIBLE
         } else {
-            if (slide.visibility == View.VISIBLE)
-                slide.visibility = View.GONE
+            slide.visibility = View.GONE
         }
-    }
-
-    override fun getResourceString(id: Int, vararg formatArgs: Any?): String =
-        resources.getString(id, *formatArgs)
-
-    override fun getResourceId(nameString: String): Int? {
-        return manager.string(nameString)
     }
 
     override fun setEnteredText(text: CharSequence) {
         svCity.setQuery(text, false)
     }
 
+    override fun showMessageAfterPositiveClick(stringId: Int, nameCity: String): String =
+        resources.getString(stringId, nameCity)
 }

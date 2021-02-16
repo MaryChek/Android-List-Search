@@ -4,7 +4,7 @@ import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.example.favorite_cities.ResourceManager
+import com.example.favorite_cities.CustomCitiesSearchView
 import com.example.favorite_cities.adapter.CitiesAdapter
 import com.example.favorite_cities.contract.CitiesContract
 
@@ -12,7 +12,6 @@ abstract class BaseCitiesFragment<V : CitiesContract.View, T : CitiesContract.Pr
     Fragment() {
     protected open lateinit var rvCities: RecyclerView
     protected lateinit var svCity: SearchView
-    protected var manager = ResourceManager()
     protected var adapter: CitiesAdapter? = null
     protected var presenter: T? = null
 
@@ -40,11 +39,7 @@ abstract class BaseCitiesFragment<V : CitiesContract.View, T : CitiesContract.Pr
 
     protected fun initListener() {
         svCity.setOnQueryTextListener(
-            object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    return false
-                }
-
+            object : CustomCitiesSearchView() {
                 override fun onQueryTextChange(enteredText: String?): Boolean {
                     presenter?.searchTextChanged(enteredText)
                     return false

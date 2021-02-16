@@ -4,7 +4,7 @@ interface FavoriteCitiesContract {
 
     interface View : CitiesContract.View {
 
-        fun showTextSlide(text: String, show: Boolean)
+        fun showTextSlide(idText: Int, show: Boolean)
     }
 
     interface Presenter : CitiesContract.Presenter<View> {

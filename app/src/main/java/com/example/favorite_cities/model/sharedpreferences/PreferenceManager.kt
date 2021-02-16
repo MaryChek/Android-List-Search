@@ -5,20 +5,24 @@ import android.content.SharedPreferences
 
 class PreferenceManager(context: Context?) {
 
+    companion object {
+        private const val STR_NAME_PREFERENCE = "SharedPreference"
+    }
+
     private var preferences: SharedPreferences? = null
 
     init {
-        preferences = context?.getSharedPreferences("SharedPreference", Context.MODE_PRIVATE)
+        preferences = context?.getSharedPreferences(STR_NAME_PREFERENCE, Context.MODE_PRIVATE)
     }
 
     fun setString(key: String, string: String?) {
-        val editor = preferences?.edit()
+        val editor: SharedPreferences.Editor? = preferences?.edit()
         editor?.putString(key, string)
         editor?.apply()
     }
 
     fun setList(key: String, hashSet: HashSet<String>) {
-        val editor = preferences?.edit()
+        val editor: SharedPreferences.Editor? = preferences?.edit()
         editor?.putStringSet(key, hashSet)
         editor?.apply()
     }
@@ -30,7 +34,7 @@ class PreferenceManager(context: Context?) {
         preferences?.getStringSet(key, setOf()) ?: setOf()
 
     fun setBoolean(key: String, boolean: Boolean) {
-        val editor = preferences?.edit()
+        val editor: SharedPreferences.Editor? = preferences?.edit()
         editor?.putBoolean(key, boolean)
         editor?.apply()
     }

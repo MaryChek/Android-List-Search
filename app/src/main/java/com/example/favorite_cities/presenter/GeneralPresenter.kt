@@ -2,6 +2,7 @@ package com.example.favorite_cities.presenter
 
 import com.example.favorite_cities.model.CitiesModel
 import com.example.favorite_cities.DialogCreator
+import com.example.favorite_cities.R
 import com.example.favorite_cities.contract.GeneralCitiesContract
 
 class GeneralPresenter(
@@ -10,8 +11,8 @@ class GeneralPresenter(
 
     override fun onViewCreated() {
         super.onViewCreated()
-        val enteredText = model.getEnteredTextInGeneral()
-        val citiesList =
+        val enteredText: String? = model.getEnteredTextInGeneral()
+        val citiesList: List<String> =
             when (enteredText.isNullOrEmpty()) {
                 true -> model.getGeneralCities()
                 false -> model.getFilteredGeneralCities()
@@ -27,24 +28,20 @@ class GeneralPresenter(
     }
 
     override fun searchTextChanged(text: String?) {
-        val filteredList = model.filterGeneralList(text)
+        val filteredList: List<String> = model.filterGeneralList(text)
         showOrHideSlideNothingFound()
         view?.updateCitiesList(filteredList)
     }
 
     override fun onCityClicked(nameCity: String) {
-        val dialogCreator = initDialogCreator(nameCity)
+        dialogCreator = initDialogCreator(nameCity)
         view?.showDialogFragment(dialogCreator)
     }
 
-    override fun findCityInFavoriteModel(nameCity: String): Boolean =
-        model.findInFavorites(nameCity)
-
-    override fun showMessageAfterPositiveClick(id: Int, nameCity: String): String? =
-        view?.getResourceString(id, nameCity)
-
     override fun addCityToFavorite(nameCity: String) {
         model.addFavoriteCity(nameCity)
+        println(model.getFilteredFavoriteCities())
+        println(model.getEnteredTextInFavorite())
     }
 
     override fun removeCityFromFavorite(nameCity: String) {
@@ -59,42 +56,25 @@ class GeneralPresenter(
         }
     }
 
-    private fun initDialogCreator(nameCity: String): DialogCreator {
-        val messageForFavorite = view?.getResourceId("message_favorite_city")
-        val messageForUnelected = view?.getResourceId("message_unelected_city")
-        val messageAfterAdd = view?.getResourceId("message_after_adding")
-        val messageAfterRemove = view?.getResourceId("message_after_removal")
-        val addButton = view?.getResourceId("text_button_add")
-        val removeButton = view?.getResourceId("text_button_remove")
-        val cancel = view?.getResourceId("button_cancel")
-
-        if (messageForFavorite == null || messageForUnelected == null
-            || messageAfterAdd == null || messageAfterRemove == null
-            || removeButton == null || addButton == null || cancel == null
-        )
-            throw IllegalStateException("No such resource")
-
-        return when (model.findInFavorites(nameCity)) {
-            true -> {
-                DialogCreator(
-                    nameCity,
-                    messageForFavorite,
-                    removeButton,
-                    messageAfterRemove,
-                    cancel,
-                    this::removeCityFromFavorite,
-                    this::showMessageAfterPositiveClick
-                )
-            }
+    private fun initDialogCreator(nameCity: String): DialogCreator =
+        when (model.findInFavorites(nameCity)) {
+            true -> DialogCreator(
+                nameCity,
+                R.string.message_favorite_city,
+                R.string.text_button_remove,
+                R.string.message_after_removal,
+                R.string.button_cancel,
+                this::removeCityFromFavorite,
+                this.view!!::showMessageAfterPositiveClick
+            )
             false -> DialogCreator(
                 nameCity,
-                messageForUnelected,
-                addButton,
-                messageAfterAdd,
-                cancel,
+                R.string.message_unelected_city,
+                R.string.text_button_add,
+                R.string.message_after_adding,
+                R.string.button_cancel,
                 this::addCityToFavorite,
-                this::showMessageAfterPositiveClick
+                this.view!!::showMessageAfterPositiveClick
             )
         }
-    }
 }

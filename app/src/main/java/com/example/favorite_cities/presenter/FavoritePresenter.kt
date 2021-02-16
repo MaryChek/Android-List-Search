@@ -3,6 +3,7 @@ package com.example.favorite_cities.presenter
 import com.example.favorite_cities.contract.FavoriteCitiesContract
 import com.example.favorite_cities.model.CitiesModel
 import com.example.favorite_cities.DialogCreator
+import com.example.favorite_cities.R
 
 class FavoritePresenter(
     private var model: CitiesModel
@@ -17,8 +18,8 @@ class FavoritePresenter(
     }
 
     override fun searchTextChanged(text: String?) {
+        val filteredList: List<String> = model.filterFavoriteList(text)
         if (model.getFavoriteCities().isNotEmpty()) {
-            val filteredList = model.filterFavoriteList(text)
             showOrHideSlideNothingFound()
             view?.updateCitiesList(filteredList)
         }
@@ -29,19 +30,16 @@ class FavoritePresenter(
         showCitiesListOnOpenFragment()
     }
 
-    override fun showMessageAfterPositiveClick(id: Int, nameCity: String): String? =
-        view?.getResourceString(id, nameCity)
-
     override fun onCityClicked(nameCity: String) {
-        val dialogCreator = initDialogCreator(nameCity)
+        dialogCreator = initDialogCreator(nameCity)
         view?.showDialogFragment(dialogCreator)
     }
 
     override fun removeCity(nameCity: String) {
         model.removeFavoriteCity(nameCity)
-        val newCitiesList =
+        val newCitiesList: List<String> =
             if (model.getFavoriteCities().isEmpty()) {
-                showSlideWithText("No favorite cities", true)
+                showSlideWithText(R.string.no_favorite_cities, true)
                 listOf()
             } else {
                 showOrHideSlideNothingFound()
@@ -50,15 +48,14 @@ class FavoritePresenter(
         view?.updateCitiesList(newCitiesList)
     }
 
-    override fun findCityInFavoriteModel(nameCity: String): Boolean =
-        model.findInFavorites(nameCity)
-
     private fun showCitiesListOnOpenFragment() {
         if (model.getFavoriteCities().isNotEmpty()) {
-            showSlideWithText("No favorite cities", false)
+            showSlideWithText(R.string.no_favorite_cities, false)
             showOrHideSlideNothingFound()
+        } else {
+            showSlideWithText(R.string.no_favorite_cities, true)
         }
-        val newCitiesList = selectListDependingOnTheEnteredText()
+        val newCitiesList: List<String> = selectListDependingOnTheEnteredText()
         view?.showCitiesList(newCitiesList)
     }
 
@@ -70,40 +67,24 @@ class FavoritePresenter(
 
     private fun showOrHideSlideNothingFound() {
         if (model.getFilteredFavoriteCities().isEmpty()) {
-            showSlideWithText("Nothing found", true)
+            showSlideWithText(R.string.nothing_found, true)
         } else {
-            showSlideWithText("Nothing found", false)
+            showSlideWithText(R.string.nothing_found, false)
         }
     }
 
-    private fun showSlideWithText(textResource: String, show: Boolean) {
-        val textId = view?.getResourceId(textResource)
-        textId?.let {
-            view?.getResourceString(it)?.let { text ->
-                view?.showTextSlide(text, show)
-            }
-        }
+    private fun showSlideWithText(idTextResource: Int, show: Boolean) {
+        view?.showTextSlide(idTextResource, show)
     }
 
-    private fun initDialogCreator(nameCity: String): DialogCreator {
-        val messageForFavorite = view?.getResourceId("message_favorite_city")
-        val messageAfterRemove = view?.getResourceId("text_button_remove")
-        val removeButton = view?.getResourceId("text_button_remove")
-        val cancel = view?.getResourceId("button_cancel")
-
-        if (messageForFavorite == null || messageAfterRemove == null
-            || removeButton == null || cancel == null
-        )
-            throw IllegalStateException("No such resource")
-
-        return DialogCreator(
+    private fun initDialogCreator(nameCity: String): DialogCreator =
+        DialogCreator(
             nameCity,
-            messageForFavorite,
-            removeButton,
-            messageAfterRemove,
-            cancel,
+            R.string.message_favorite_city,
+            R.string.text_button_remove,
+            R.string.message_after_removal,
+            R.string.button_cancel,
             this::removeCity,
-            this::showMessageAfterPositiveClick
+            this.view!!::showMessageAfterPositiveClick
         )
-    }
 }

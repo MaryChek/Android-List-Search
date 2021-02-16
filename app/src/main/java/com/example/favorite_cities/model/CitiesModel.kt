@@ -7,79 +7,90 @@ class CitiesModel(
     private var preferenceManager: PreferenceManager
 ) {
 
-    private var favoriteCities: List<String>
-    private var generalFilteredList: List<String>
-    private var favoriteFilteredList: List<String>
+    companion object {
+        private const val GENERAL_ENTERED_TEXT = "General"
+        private const val FAVORITE_ENTERED_TEXT = "Favorite"
+        private const val VISIBILITY_FAVORITE_FRAGMENT = "Visible Favorite Fragment"
+        private const val CITIES_FAVORITE_LIST = "CitiesFavorite"
+    }
 
-    private var currentlyEnteredTextInFavorites: String?
-    private var currentlyEnteredTextInGeneral: String?
+    private var favoriteCities: List<String>
+    private var generalCitiesFiltered: List<String>
+    private var favoriteCitiesFiltered: List<String>
+
+    private var enteredTextInGeneral: String?
+    private var enteredTextInFavorites: String?
 
     init {
-        currentlyEnteredTextInGeneral = getSavedEnteredText("General")
-        currentlyEnteredTextInFavorites = getSavedEnteredText("Favorite")
-
-        generalFilteredList = generalCities
+        enteredTextInGeneral = getSavedEnteredText(GENERAL_ENTERED_TEXT)
+        enteredTextInFavorites = getSavedEnteredText(FAVORITE_ENTERED_TEXT)
 
         favoriteCities = getFavoriteSavedList()
 
-        favoriteFilteredList =
-            if (currentlyEnteredTextInFavorites.isNullOrEmpty()) {
+        generalCitiesFiltered = generalCities
+
+        favoriteCitiesFiltered =
+            if (enteredTextInGeneral.isNullOrEmpty()) {
                 favoriteCities
             } else {
-                filter(currentlyEnteredTextInFavorites, favoriteCities)
+                filter(enteredTextInFavorites, favoriteCities)
             }
+    }
+
+    fun getGeneralCities(): List<String> =
+        generalCities
+
+    fun getFilteredGeneralCities(): List<String> =
+        generalCitiesFiltered
+
+    fun getEnteredTextInGeneral(): String? =
+        enteredTextInGeneral
+
+    fun filterGeneralList(enteredText: String?): List<String> {
+        enteredTextInFavorites = enteredText
+        saveEnteredText(GENERAL_ENTERED_TEXT, enteredText)
+
+        val filteredList: List<String> = filter(enteredText, generalCities)
+        generalCitiesFiltered = filteredList
+        return filteredList
     }
 
     fun getFavoriteCities(): List<String> =
         favoriteCities
 
     fun getFilteredFavoriteCities(): List<String> =
-        favoriteFilteredList
-
-    fun getFilteredGeneralCities(): List<String> =
-        generalFilteredList
+        favoriteCitiesFiltered
 
     fun getEnteredTextInFavorite(): String? =
-        currentlyEnteredTextInFavorites
+        enteredTextInFavorites
 
-    fun getGeneralCities(): List<String> =
-        generalCities
+    fun filterFavoriteList(enteredText: String?): List<String> {
+        enteredTextInFavorites = enteredText
+        saveEnteredText(FAVORITE_ENTERED_TEXT, enteredText)
 
-    fun getEnteredTextInGeneral(): String? =
-        currentlyEnteredTextInGeneral
+        val filteredList: List<String> = filter(enteredText, favoriteCities)
+        favoriteCitiesFiltered = filteredList
+        return filteredList
+    }
 
     fun setVisibleFavoriteFragment(visible: Boolean) {
-        preferenceManager.setBoolean("Visible Favorite Fragment", visible)
+        preferenceManager.setBoolean(VISIBILITY_FAVORITE_FRAGMENT, visible)
     }
 
     fun getVisibleFavoriteFragment(): Boolean =
-        preferenceManager.getBoolean("Visible Favorite Fragment")
-
-    fun filterFavoriteList(enteredText: String?): List<String> {
-        currentlyEnteredTextInFavorites = enteredText
-        saveEnteredText("Favorite", enteredText)
-        val filteredList = filter(enteredText, favoriteCities)
-        favoriteFilteredList = filteredList
-        return filteredList
-    }
-
-    fun filterGeneralList(enteredText: String?): List<String> {
-        currentlyEnteredTextInGeneral = enteredText
-        saveEnteredText("General", enteredText)
-        val filteredList = filter(enteredText, generalCities)
-        generalFilteredList = filteredList
-        return filteredList
-    }
+        preferenceManager.getBoolean(VISIBILITY_FAVORITE_FRAGMENT)
 
     fun addFavoriteCity(nameCity: String) {
         favoriteCities = favoriteCities.plus(nameCity)
-        favoriteFilteredList = filter(currentlyEnteredTextInFavorites, favoriteCities)
+        favoriteCitiesFiltered = filter(enteredTextInFavorites, favoriteCities)
+
         saveFavoriteList(favoriteCities)
     }
 
     fun removeFavoriteCity(nameCity: String) {
         favoriteCities = favoriteCities.minus(nameCity)
-        favoriteFilteredList = favoriteFilteredList.minus(nameCity)
+        favoriteCitiesFiltered = favoriteCitiesFiltered.minus(nameCity)
+
         saveFavoriteList(favoriteCities)
     }
 
@@ -87,7 +98,7 @@ class CitiesModel(
         find(nameCity, favoriteCities)
 
     private fun filter(enteredText: String?, ListCities: List<String>): List<String> {
-        val searchString = enteredText ?: ""
+        val searchString: String = enteredText ?: ""
         return if (searchString.isBlank()) {
             ListCities
         } else {
@@ -110,22 +121,22 @@ class CitiesModel(
         preferenceManager.getString(saveKey)
 
     private fun saveFavoriteList(savedList: List<String>) {
-        val hashSet = getHashSet(savedList)
-        preferenceManager.setList("CitiesFavorite", hashSet)
+        val hashSet: HashSet<String> = getHashSet(savedList)
+        preferenceManager.setList(CITIES_FAVORITE_LIST, hashSet)
     }
 
     private fun getFavoriteSavedList(): List<String> {
-        val hashSet: Set<String> = preferenceManager.getList("CitiesFavorite")
-        var list = listOf<String>()
+        val hashSet: Set<String> = preferenceManager.getList(CITIES_FAVORITE_LIST)
+        var list: List<String> = listOf()
         hashSet.forEach {
-            val index = it.toInt()
+            val index: Int = it.toInt()
             list = list.plus(generalCities[index])
         }
         return list
     }
 
     private fun getHashSet(list: List<String>): HashSet<String> {
-        val hashSet = HashSet<String>()
+        val hashSet: HashSet<String> = HashSet()
         list.forEach {
             hashSet.add(generalCities.indexOf(it).toString())
         }

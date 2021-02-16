@@ -12,14 +12,15 @@ class DialogCreator(
     private val nameDialog: String,
     private val message: Int,
     private val positiveButton: Int,
-    private val messageAfterClickButton: Int,
+    private val idMessageAfterClickButton: Int,
     private val cancel: Int,
     private val functionAfterClick: (String) -> Unit,
     private val showMessageAfterPositiveClick: (Int, String) -> String?
 ) {
+    private lateinit var currentDialog: Dialog
 
     fun show(activity: Activity?): Dialog {
-        return activity?.let {
+        currentDialog = activity?.let {
             val builder = AlertDialog.Builder(it)
             builder.setTitle(nameDialog)
                 .setMessage(message)
@@ -27,12 +28,18 @@ class DialogCreator(
                 .setPositiveButton(positiveButton) { _, _ ->
                     Toast.makeText(
                         activity,
-                        showMessageAfterPositiveClick(messageAfterClickButton, nameDialog),
+                        showMessageAfterPositiveClick(idMessageAfterClickButton, nameDialog),
                         Toast.LENGTH_LONG
                     ).show()
                     functionAfterClick(nameDialog)
-                }.setNegativeButton(cancel) { _, _ -> }
-            builder.show()
+                }
+                .setNegativeButton(cancel) { _, _ -> }
+                .show()
         } ?: throw IllegalStateException("Activity cannot be null")
+        return currentDialog
+    }
+
+    fun onDestroy() {
+        currentDialog.dismiss()
     }
 }

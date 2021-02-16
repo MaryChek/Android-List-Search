@@ -9,23 +9,17 @@ interface CitiesContract {
 
         fun updateCitiesList(modifiedList: List<String>)
 
-        fun getResourceString(id: Int, vararg formatArgs: Any?): String
-
-        fun showDialogFragment(dialogCreator: DialogCreator)
-
-        fun getResourceId(nameString: String): Int?
+        fun showDialogFragment(dialogCreator: DialogCreator?)
 
         fun setEnteredText(text: CharSequence)
+
+        fun showMessageAfterPositiveClick(stringId: Int, nameCity: String): String
     }
 
     interface Presenter<V : View> : BaseContract.Presenter<V> {
         fun onFragmentVisible()
 
         fun searchTextChanged(text: String?)
-
-        fun findCityInFavoriteModel(nameCity: String): Boolean
-
-        fun showMessageAfterPositiveClick(id: Int, nameCity: String): String?
 
         fun onCityClicked(nameCity: String)
     }
