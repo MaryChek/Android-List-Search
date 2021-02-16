@@ -21,11 +21,6 @@ class FavoritePresenter(
         initDialogCreator()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        dialogCreator.onDestroy()
-    }
-
     override fun searchTextChanged(text: String?) {
         val filteredList: List<String> = model.filterFavoriteList(text)
         if (model.getFavoriteCities().isNotEmpty()) {
@@ -58,6 +53,11 @@ class FavoritePresenter(
     override fun afterPositiveClickInDialog(positiveButtonId: Int, nameCity: String) {
         removeCity(nameCity)
         view.showToastWithText(R.string.message_after_removal, nameCity)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        dialogCreator.onDestroy()
     }
 
     private fun initDialogCreator() =

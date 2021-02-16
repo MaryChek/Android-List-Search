@@ -51,6 +51,10 @@ class GeneralFragment :
         initListener()
     }
 
+    override fun updateCitiesList(modifiedList: List<String>) {
+        adapter?.updateList(modifiedList)
+    }
+
     override fun showDialog(
         title: String,
         messageId: Int,
@@ -59,10 +63,6 @@ class GeneralFragment :
     ) = dialogCreator.show(
         activity, title, messageId, negativeButtonId, positiveButtonId
     )
-
-    override fun updateCitiesList(modifiedList: List<String>) {
-        adapter?.updateList(modifiedList)
-    }
 
     override fun showSlideNothingFound(show: Boolean) {
         val slide = tvSearchError
@@ -73,11 +73,11 @@ class GeneralFragment :
         }
     }
 
-    override fun setEnteredText(text: CharSequence) =
-        svCity.setQuery(text, false)
-
     override fun showToastWithText(stringId: Int, nameCity: String) =
         Toast.makeText(
             activity, resources.getString(stringId, nameCity), Toast.LENGTH_LONG
         ).show()
+
+    override fun setEnteredText(text: CharSequence) =
+        svCity.setQuery(text, false)
 }

@@ -55,6 +55,10 @@ class FavoritesFragment :
         initListener()
     }
 
+    override fun updateCitiesList(modifiedList: List<String>) {
+        adapter?.updateList(modifiedList)
+    }
+
     override fun showDialog(
         title: String,
         messageId: Int,
@@ -63,10 +67,6 @@ class FavoritesFragment :
     ) = dialogCreator.show(
         activity, title, messageId, negativeButtonId, positiveButtonId
     )
-
-    override fun updateCitiesList(modifiedList: List<String>) {
-        adapter?.updateList(modifiedList)
-    }
 
     override fun showTextSlide(idText: Int, show: Boolean) {
         val slide: TextView = tvSearchError
@@ -78,13 +78,12 @@ class FavoritesFragment :
         }
     }
 
-    override fun setEnteredText(text: CharSequence) {
-        svCity.setQuery(text, false)
-    }
-
     override fun showToastWithText(stringId: Int, nameCity: String) =
         Toast.makeText(
             activity, resources.getString(stringId, nameCity), Toast.LENGTH_LONG
         ).show()
+
+    override fun setEnteredText(text: CharSequence) =
+        svCity.setQuery(text, false)
 }
 

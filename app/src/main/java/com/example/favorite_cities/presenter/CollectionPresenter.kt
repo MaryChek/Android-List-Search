@@ -1,6 +1,6 @@
 package com.example.favorite_cities.presenter
 
-import com.example.favorite_cities.CitiesFragmentsParams
+import com.example.favorite_cities.FragmentKeys
 import com.example.favorite_cities.R
 import com.example.favorite_cities.contract.CollectionContract
 import com.example.favorite_cities.model.CitiesModel
@@ -20,9 +20,9 @@ class CollectionPresenter(
         view.addPagerInTabLayout()
     }
 
-    private fun getMapNames(): MutableMap<String, Int> =
+    private fun getMapNames(): MutableMap<FragmentKeys, Int> =
         mutableMapOf(
-            CitiesFragmentsParams.FAVORITE to R.string.name_fragment_favorite,
-            CitiesFragmentsParams.GENERAL to R.string.name_fragment_general
+            FragmentKeys.GENERAL to R.string.name_fragment_favorite,
+            FragmentKeys.FAVORITE to R.string.name_fragment_general
         )
 }

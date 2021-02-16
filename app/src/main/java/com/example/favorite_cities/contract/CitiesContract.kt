@@ -9,20 +9,18 @@ interface CitiesContract {
 
         fun showDialog(title: String, messageId: Int, positiveButtonId: Int, negativeButtonId: Int)
 
-        fun setEnteredText(text: CharSequence)
-
         fun showToastWithText(stringId: Int, nameCity: String)
+
+        fun setEnteredText(text: CharSequence)
     }
 
     interface Presenter<V : View> : BaseContract.Presenter<V> {
-        fun onFragmentVisible()
-
         fun searchTextChanged(text: String?)
+
+        fun onFragmentVisible()
 
         fun onCityClicked(nameCity: String)
 
         fun afterPositiveClickInDialog(positiveButtonId: Int, nameCity: String)
-//
-//        fun afterPositiveClickInDialog(nameCity: String)
     }
 }

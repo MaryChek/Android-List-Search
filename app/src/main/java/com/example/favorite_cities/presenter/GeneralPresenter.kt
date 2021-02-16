@@ -27,11 +27,6 @@ class GeneralPresenter(
         initDialogCreator()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        dialogCreator.onDestroy()
-    }
-
     override fun onFragmentVisible() =
         model.setVisibleFavoriteFragment(false)
 
@@ -49,6 +44,11 @@ class GeneralPresenter(
 
     override fun removeFavoriteCity(nameCity: String) =
         model.removeFavoriteCity(nameCity)
+
+    override fun onDestroy() {
+        super.onDestroy()
+        dialogCreator.onDestroy()
+    }
 
     override fun afterPositiveClickInDialog(positiveButtonId: Int, nameCity: String) {
         if (positiveButtonId == R.string.text_button_add) {

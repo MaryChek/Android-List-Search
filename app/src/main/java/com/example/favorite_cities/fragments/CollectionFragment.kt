@@ -5,20 +5,21 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import com.example.favorite_cities.App
-import com.example.favorite_cities.CitiesFragmentsParams
-import com.example.favorite_cities.MainActivity
-import com.example.favorite_cities.R
+import com.example.favorite_cities.*
 import com.example.favorite_cities.adapter.CollectionFragmentAdapter
 import com.example.favorite_cities.contract.CollectionContract
 import com.example.favorite_cities.model.CitiesModel
 import com.example.favorite_cities.presenter.CollectionPresenter
 import com.google.android.material.tabs.TabLayout
 
-class CollectionFragment : Fragment(R.layout.fragment_collection), CollectionContract.View{
+class CollectionFragment : Fragment(R.layout.fragment_collection), CollectionContract.View {
     private var presenter: CollectionPresenter? = null
-    private lateinit var pager: ViewPager
-    private lateinit var tabLayout: TabLayout
+    private lateinit var pagerCities: ViewPager
+    private lateinit var tabLayoutCities: TabLayout
+
+    companion object {
+        const val FAVORITE_FRAGMENT = 1
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +37,8 @@ class CollectionFragment : Fragment(R.layout.fragment_collection), CollectionCon
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        pager = view.findViewById(R.id.pagerCities)
-        tabLayout = view.findViewById(R.id.tabLayoutCities)
+        pagerCities = view.findViewById(R.id.pagerCities)
+        tabLayoutCities = view.findViewById(R.id.tabLayoutCities)
         presenter?.onViewCreated()
     }
 
@@ -46,16 +47,17 @@ class CollectionFragment : Fragment(R.layout.fragment_collection), CollectionCon
         presenter?.onDestroy()
     }
 
-    override fun showPagerWithFragments(fragmentsNames: MutableMap<String, Int>) {
-        pager.adapter = CollectionFragmentAdapter(childFragmentManager, fragmentsNames, resources)
+    override fun showPagerWithFragments(fragmentsNamesId: MutableMap<FragmentKeys, Int>) {
+        pagerCities.adapter =
+            CollectionFragmentAdapter(childFragmentManager, fragmentsNamesId, resources)
         presenter?.fragmentsDisplayed()
     }
 
     override fun addPagerInTabLayout() {
-        tabLayout.setupWithViewPager(pager)
+        tabLayoutCities.setupWithViewPager(pagerCities)
     }
 
     override fun setFavoriteFragmentAsCurrent() {
-        pager.currentItem = CitiesFragmentsParams.FAVORITE_FRAGMENT
+        pagerCities.currentItem = FAVORITE_FRAGMENT
     }
 }
