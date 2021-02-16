@@ -8,8 +8,8 @@ interface GeneralCitiesContract {
 
     interface Presenter : CitiesContract.Presenter<View> {
 
-        fun addCityToFavorite(nameCity: String)
+        fun addFavoriteCity(nameCity: String)
 
-        fun removeCityFromFavorite(nameCity: String)
+        fun removeFavoriteCity(nameCity: String)
     }
 }

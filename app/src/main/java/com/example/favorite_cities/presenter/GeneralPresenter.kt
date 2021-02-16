@@ -6,75 +6,87 @@ import com.example.favorite_cities.R
 import com.example.favorite_cities.contract.GeneralCitiesContract
 
 class GeneralPresenter(
-    private var model: CitiesModel
-) : BasePresenter<GeneralCitiesContract.View>(), GeneralCitiesContract.Presenter {
+    citiesView: GeneralCitiesContract.View,
+    private var model: CitiesModel,
+    private val dialogCreator: DialogCreator
+) : BasePresenter<GeneralCitiesContract.View>(citiesView),
+    GeneralCitiesContract.Presenter {
 
     override fun onViewCreated() {
         super.onViewCreated()
         val enteredText: String? = model.getEnteredTextInGeneral()
-        val citiesList: List<String> =
+        val filteredCitiesList: List<String> =
             when (enteredText.isNullOrEmpty()) {
                 true -> model.getGeneralCities()
                 false -> model.getFilteredGeneralCities()
-            }
-        view?.showCitiesList(citiesList)
+            } // getfilter... model решит, какой показать
+        view.showCitiesList(filteredCitiesList)
         enteredText?.let {
-            view?.setEnteredText(it)
+            view.setEnteredText(it)
         }
+        initDialogCreator()
     }
 
-    override fun onFragmentVisible() {
-        model.setVisibleFavoriteFragment(false)
+    override fun onDestroy() {
+        super.onDestroy()
+        dialogCreator.onDestroy()
     }
+
+    override fun onFragmentVisible() =
+        model.setVisibleFavoriteFragment(false)
 
     override fun searchTextChanged(text: String?) {
-        val filteredList: List<String> = model.filterGeneralList(text)
+        val filteredCitiesList: List<String> = model.filterGeneralList(text)
         showOrHideSlideNothingFound()
-        view?.updateCitiesList(filteredList)
+        view.updateCitiesList(filteredCitiesList)
     }
 
-    override fun onCityClicked(nameCity: String) {
-        dialogCreator = initDialogCreator(nameCity)
-        view?.showDialogFragment(dialogCreator)
-    }
+    override fun onCityClicked(nameCity: String) =
+        showDialogWithParameters(nameCity)
 
-    override fun addCityToFavorite(nameCity: String) {
+    override fun addFavoriteCity(nameCity: String) =
         model.addFavoriteCity(nameCity)
-        println(model.getFilteredFavoriteCities())
-        println(model.getEnteredTextInFavorite())
-    }
 
-    override fun removeCityFromFavorite(nameCity: String) {
+    override fun removeFavoriteCity(nameCity: String) =
         model.removeFavoriteCity(nameCity)
-    }
 
-    private fun showOrHideSlideNothingFound() {
-        if (model.getFilteredGeneralCities().isEmpty()) {
-            view?.showSlideNothingFound(true)
+    override fun afterPositiveClickInDialog(positiveButtonId: Int, nameCity: String) {
+        if (positiveButtonId == R.string.text_button_add) {
+            addFavoriteCity(nameCity)
+            view.showToastWithText(R.string.message_after_adding, nameCity)
         } else {
-            view?.showSlideNothingFound(false)
+            removeFavoriteCity(nameCity)
+            view.showToastWithText(R.string.message_after_removal, nameCity)
         }
     }
 
-    private fun initDialogCreator(nameCity: String): DialogCreator =
-        when (model.findInFavorites(nameCity)) {
-            true -> DialogCreator(
+    private fun initDialogCreator() =
+        dialogCreator.setFunctionOnPositive(this::afterPositiveClickInDialog)
+
+    private fun showOrHideSlideNothingFound() =
+        if (model.getFilteredGeneralCities().isEmpty()) {
+            view.showSlideNothingFound(true)
+        } else {
+            view.showSlideNothingFound(false)
+        }
+
+    private fun showDialogWithParameters(nameCity: String) {
+        val negativeButtonId: Int = R.string.button_cancel
+
+        if (model.findInFavorites(nameCity)) {
+            view.showDialog(
                 nameCity,
                 R.string.message_favorite_city,
-                R.string.text_button_remove,
-                R.string.message_after_removal,
-                R.string.button_cancel,
-                this::removeCityFromFavorite,
-                this.view!!::showMessageAfterPositiveClick
+                negativeButtonId,
+                R.string.text_button_remove
             )
-            false -> DialogCreator(
+        } else {
+            view.showDialog(
                 nameCity,
                 R.string.message_unelected_city,
-                R.string.text_button_add,
-                R.string.message_after_adding,
-                R.string.button_cancel,
-                this::addCityToFavorite,
-                this.view!!::showMessageAfterPositiveClick
+                negativeButtonId,
+                R.string.text_button_add
             )
         }
+    }
 }

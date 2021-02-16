@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import com.example.favorite_cities.*
 import com.example.favorite_cities.presenter.FavoritePresenter
 import com.example.favorite_cities.contract.FavoriteCitiesContract
@@ -27,7 +28,7 @@ class FavoritesFragment :
         val activity: Activity = activity as MainActivity
         val app: App = activity.applicationContext as App
         val model: CitiesModel = app.model
-        presenter = FavoritePresenter(model)
+        presenter = FavoritePresenter(this, model, dialogCreator)
     }
 
     override fun onCreateView(
@@ -46,7 +47,6 @@ class FavoritesFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter?.onAttachView(this)
         presenter?.onViewCreated()
     }
 
@@ -55,9 +55,14 @@ class FavoritesFragment :
         initListener()
     }
 
-    override fun showDialogFragment(dialogCreator: DialogCreator?) {
-        dialogCreator?.show(activity)
-    }
+    override fun showDialog(
+        title: String,
+        messageId: Int,
+        positiveButtonId: Int,
+        negativeButtonId: Int
+    ) = dialogCreator.show(
+        activity, title, messageId, negativeButtonId, positiveButtonId
+    )
 
     override fun updateCitiesList(modifiedList: List<String>) {
         adapter?.updateList(modifiedList)
@@ -77,7 +82,9 @@ class FavoritesFragment :
         svCity.setQuery(text, false)
     }
 
-    override fun showMessageAfterPositiveClick(stringId: Int, nameCity: String): String =
-        resources.getString(stringId, nameCity)
+    override fun showToastWithText(stringId: Int, nameCity: String) =
+        Toast.makeText(
+            activity, resources.getString(stringId, nameCity), Toast.LENGTH_LONG
+        ).show()
 }
 

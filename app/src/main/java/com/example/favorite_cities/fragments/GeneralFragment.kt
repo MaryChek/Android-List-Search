@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.favorite_cities.*
 import com.example.favorite_cities.contract.GeneralCitiesContract
 import com.example.favorite_cities.model.CitiesModel
@@ -24,7 +25,7 @@ class GeneralFragment :
         val activity: Activity = activity as MainActivity
         val app: App = activity.applicationContext as App
         val model: CitiesModel = app.model
-        presenter = GeneralPresenter(model)
+        presenter = GeneralPresenter(this, model, dialogCreator)
     }
 
     override fun onCreateView(
@@ -42,7 +43,6 @@ class GeneralFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter?.onAttachView(this)
         presenter?.onViewCreated()
     }
 
@@ -51,9 +51,14 @@ class GeneralFragment :
         initListener()
     }
 
-    override fun showDialogFragment(dialogCreator: DialogCreator?) {
-        dialogCreator?.show(activity)
-    }
+    override fun showDialog(
+        title: String,
+        messageId: Int,
+        positiveButtonId: Int,
+        negativeButtonId: Int
+    ) = dialogCreator.show(
+        activity, title, messageId, negativeButtonId, positiveButtonId
+    )
 
     override fun updateCitiesList(modifiedList: List<String>) {
         adapter?.updateList(modifiedList)
@@ -68,10 +73,11 @@ class GeneralFragment :
         }
     }
 
-    override fun setEnteredText(text: CharSequence) {
+    override fun setEnteredText(text: CharSequence) =
         svCity.setQuery(text, false)
-    }
 
-    override fun showMessageAfterPositiveClick(stringId: Int, nameCity: String): String =
-        resources.getString(stringId, nameCity)
+    override fun showToastWithText(stringId: Int, nameCity: String) =
+        Toast.makeText(
+            activity, resources.getString(stringId, nameCity), Toast.LENGTH_LONG
+        ).show()
 }

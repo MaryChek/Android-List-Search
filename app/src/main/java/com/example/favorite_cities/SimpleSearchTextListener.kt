@@ -2,7 +2,7 @@ package com.example.favorite_cities
 
 import android.widget.SearchView
 
-abstract class CustomCitiesSearchView : SearchView.OnQueryTextListener {
+abstract class SimpleSearchTextListener : SearchView.OnQueryTextListener {
 
     override fun onQueryTextChange(enteredText: String?): Boolean {
         return false

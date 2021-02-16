@@ -31,14 +31,13 @@ class CollectionFragment : Fragment(R.layout.fragment_collection), CollectionCon
         if (savedInstanceState != null)
             app.updateListInModel()
         val model: CitiesModel = app.model
-        presenter = CollectionPresenter(model, resources)
+        presenter = CollectionPresenter(model, this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         pager = view.findViewById(R.id.pagerCities)
         tabLayout = view.findViewById(R.id.tabLayoutCities)
-        presenter?.onAttachView(this)
         presenter?.onViewCreated()
     }
 
@@ -47,8 +46,8 @@ class CollectionFragment : Fragment(R.layout.fragment_collection), CollectionCon
         presenter?.onDestroy()
     }
 
-    override fun showPagerWithFragments(fragmentsNames: MutableMap<String, CharSequence?>) {
-        pager.adapter = CollectionFragmentAdapter(childFragmentManager, fragmentsNames)
+    override fun showPagerWithFragments(fragmentsNames: MutableMap<String, Int>) {
+        pager.adapter = CollectionFragmentAdapter(childFragmentManager, fragmentsNames, resources)
         presenter?.fragmentsDisplayed()
     }
 

@@ -1,22 +1,17 @@
 package com.example.favorite_cities.presenter
 
-import com.example.favorite_cities.DialogCreator
 import com.example.favorite_cities.contract.BaseContract
 
-abstract class BasePresenter<V : BaseContract.View> : BaseContract.Presenter<V> {
-    protected var view: V? = null
-    protected var dialogCreator: DialogCreator? = null
+abstract class BasePresenter<V : BaseContract.View>(newView: V) :
+    BaseContract.Presenter<V> {
 
-    override fun onAttachView(view: V) {
-        this.view = view
-    }
+    protected val view: V = newView
 
     override fun onViewCreated() {
 
     }
 
     override fun onDestroy() {
-        view = null
-        dialogCreator?.onDestroy()
+
     }
 }
