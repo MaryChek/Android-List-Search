@@ -33,7 +33,6 @@ class DialogCreator {
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
-    fun onDestroy() {
+    fun onDestroy() =
         currentDialog?.dismiss()
-    }
 }

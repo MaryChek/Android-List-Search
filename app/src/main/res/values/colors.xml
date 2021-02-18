@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#D3FD2525</color>
+    <color name="colorPrimaryDark">#B61D1D</color>
+    <color name="colorTabCity">#FF7575</color>
+    <color name="colorAccent">#FD2525</color>
+    <color name="colorFrontLayer">#F5E7E2</color>
+    <color name="colorAppBackground">#FFCCCC</color>
 
     <color name="colorBlack">#000000</color>
     <color name="background_launcher">#FFFFFF</color>

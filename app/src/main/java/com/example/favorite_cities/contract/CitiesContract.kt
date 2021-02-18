@@ -2,12 +2,15 @@ package com.example.favorite_cities.contract
 
 interface CitiesContract {
     interface View : BaseContract.View {
-
         fun showCitiesList(citiesList: List<String>)
 
         fun updateCitiesList(modifiedList: List<String>)
 
         fun showDialog(title: String, messageId: Int, positiveButtonId: Int, negativeButtonId: Int)
+
+        fun showSearchError(textId: Int)
+
+        fun hideSearchError()
 
         fun showToastWithText(stringId: Int, nameCity: String)
 
@@ -15,12 +18,14 @@ interface CitiesContract {
     }
 
     interface Presenter<V : View> : BaseContract.Presenter<V> {
-        fun searchTextChanged(text: String?)
-
         fun onFragmentVisible()
 
         fun onCityClicked(nameCity: String)
 
-        fun afterPositiveClickInDialog(positiveButtonId: Int, nameCity: String)
+        fun searchTextChanged(text: String?)
+
+        fun addFavoriteCity(nameCity: String)
+
+        fun removeFavoriteCity(nameCity: String)
     }
 }

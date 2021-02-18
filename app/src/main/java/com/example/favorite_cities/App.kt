@@ -15,7 +15,7 @@ class App : Application() {
     }
 
     fun updateListInModel() {
-        val list: List<String> = resources.getStringArray(R.array.cities).toList()
-        model = CitiesModel(list, PreferenceManager(this))
+        val newList: List<String> = resources.getStringArray(R.array.cities).toList()
+        model.updateGeneralCitiesList(newList)
     }
 }

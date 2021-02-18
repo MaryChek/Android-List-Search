@@ -4,9 +4,8 @@ interface BaseContract {
     interface View
 
     interface Presenter<V : View> {
+        fun onViewCreated()
 
         fun onDestroy()
-
-        fun onViewCreated()
     }
 }

@@ -1,18 +1,16 @@
 package com.example.favorite_cities.contract
 
-import com.example.favorite_cities.FragmentKeys
-
 interface CollectionContract {
 
     interface View : BaseContract.View {
-        fun showPagerWithFragments(fragmentsNamesId: MutableMap<FragmentKeys, Int>)
+        fun showPagerWithFragments(countFragment: Int)
 
         fun setFavoriteFragmentAsCurrent()
 
-        fun addPagerInTabLayout()
+        fun addPagerInTabLayout(fragmentsNamesId: MutableMap<Int, Int>)
     }
 
     interface Presenter : BaseContract.Presenter<View> {
-        fun fragmentsDisplayed()
+        fun onFragmentsShown()
     }
 }

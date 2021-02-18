@@ -8,81 +8,76 @@ class CitiesModel(
 ) {
 
     companion object {
-        private const val GENERAL_ENTERED_TEXT = "General"
-        private const val FAVORITE_ENTERED_TEXT = "Favorite"
-        private const val VISIBILITY_FAVORITE_FRAGMENT = "Visible Favorite Fragment"
-        private const val CITIES_FAVORITE_LIST = "CitiesFavorite"
+        private const val KEY_SAVED_CITIES_FAVORITE = "CitiesFavorite"
     }
 
-    private var favoriteCities: List<String>
     private var generalCitiesFiltered: List<String>
+    private var favoriteCities: List<String>
     private var favoriteCitiesFiltered: List<String>
 
-    private var enteredTextInGeneral: String?
-    private var enteredTextInFavorites: String?
+    private var generalEnteredText: String? = null
+    private var favoriteEnteredText: String? = null
+
+    private var favoritesFragmentVisibility: Boolean = false
 
     init {
-        enteredTextInGeneral = getSavedEnteredText(GENERAL_ENTERED_TEXT)
-        enteredTextInFavorites = getSavedEnteredText(FAVORITE_ENTERED_TEXT)
-
-        favoriteCities = getFavoriteSavedList()
-
         generalCitiesFiltered = generalCities
-
-        favoriteCitiesFiltered =
-            if (enteredTextInGeneral.isNullOrEmpty()) {
-                favoriteCities
-            } else {
-                filter(enteredTextInFavorites, favoriteCities)
-            }
+        favoriteCities = getFavoriteSavedList()
+        favoriteCitiesFiltered = favoriteCities
     }
 
-    fun getGeneralCities(): List<String> =
-        generalCities
+    fun updateGeneralCitiesList(newCitiesList: List<String>) {
+        generalCities = newCitiesList
+        generalCitiesFiltered = generalCities
+        initFavoriteCitiesLists()
+    }
 
-    fun getFilteredGeneralCities(): List<String> =
+    fun getGeneralCitiesFiltered(): List<String> =
         generalCitiesFiltered
 
-    fun getEnteredTextInGeneral(): String? =
-        enteredTextInGeneral
+    fun isGeneralCitiesFilteredEmpty(): Boolean =
+        generalCitiesFiltered.isEmpty()
+
+    fun getGeneralEnteredText(): String? =
+        generalEnteredText
 
     fun filterGeneralList(enteredText: String?): List<String> {
-        enteredTextInFavorites = enteredText
-        saveEnteredText(GENERAL_ENTERED_TEXT, enteredText)
+        generalEnteredText = enteredText
 
         val filteredList: List<String> = filter(enteredText, generalCities)
         generalCitiesFiltered = filteredList
         return filteredList
     }
 
-    fun getFavoriteCities(): List<String> =
-        favoriteCities
+    fun isFavoriteCitiesEmpty(): Boolean =
+        favoriteCities.isEmpty()
 
-    fun getFilteredFavoriteCities(): List<String> =
+    fun isFavoriteCitiesNotEmpty(): Boolean =
+        favoriteCities.isNotEmpty()
+
+    fun getFavoriteCitiesFiltered(): List<String> =
         favoriteCitiesFiltered
 
-    fun getEnteredTextInFavorite(): String? =
-        enteredTextInFavorites
+    fun isFavoriteCitiesFilteredEmpty(): Boolean =
+        favoriteCitiesFiltered.isEmpty()
 
     fun filterFavoriteList(enteredText: String?): List<String> {
-        enteredTextInFavorites = enteredText
-        saveEnteredText(FAVORITE_ENTERED_TEXT, enteredText)
-
+        favoriteEnteredText = enteredText
         val filteredList: List<String> = filter(enteredText, favoriteCities)
         favoriteCitiesFiltered = filteredList
         return filteredList
     }
 
     fun setVisibleFavoriteFragment(visible: Boolean) {
-        preferenceManager.setBoolean(VISIBILITY_FAVORITE_FRAGMENT, visible)
+        favoritesFragmentVisibility = visible
     }
 
     fun getVisibleFavoriteFragment(): Boolean =
-        preferenceManager.getBoolean(VISIBILITY_FAVORITE_FRAGMENT)
+        favoritesFragmentVisibility
 
     fun addFavoriteCity(nameCity: String) {
         favoriteCities = favoriteCities.plus(nameCity)
-        favoriteCitiesFiltered = filter(enteredTextInFavorites, favoriteCities)
+        favoriteCitiesFiltered = filter(favoriteEnteredText, favoriteCities)
 
         saveFavoriteList(favoriteCities)
     }
@@ -96,6 +91,15 @@ class CitiesModel(
 
     fun findInFavorites(nameCity: String): Boolean =
         find(nameCity, favoriteCities)
+
+    private fun initFavoriteCitiesLists() {
+        favoriteCities = getFavoriteSavedList()
+        favoriteCitiesFiltered =
+            when (favoriteEnteredText.isNullOrEmpty()) {
+                true -> favoriteCities
+                false -> filter(favoriteEnteredText, favoriteCities)
+            }
+    }
 
     private fun filter(enteredText: String?, ListCities: List<String>): List<String> {
         val searchString: String = enteredText ?: ""
@@ -113,20 +117,13 @@ class CitiesModel(
             it == nameCity
         }
 
-    private fun saveEnteredText(saveKey: String, enteredText: String?) {
-        preferenceManager.setString(saveKey, enteredText)
-    }
-
-    private fun getSavedEnteredText(saveKey: String): String? =
-        preferenceManager.getString(saveKey)
-
     private fun saveFavoriteList(savedList: List<String>) {
         val hashSet: HashSet<String> = getHashSet(savedList)
-        preferenceManager.setList(CITIES_FAVORITE_LIST, hashSet)
+        preferenceManager.setList(KEY_SAVED_CITIES_FAVORITE, hashSet)
     }
 
     private fun getFavoriteSavedList(): List<String> {
-        val hashSet: Set<String> = preferenceManager.getList(CITIES_FAVORITE_LIST)
+        val hashSet: Set<String> = preferenceManager.getList(KEY_SAVED_CITIES_FAVORITE)
         var list: List<String> = listOf()
         hashSet.forEach {
             val index: Int = it.toInt()

@@ -7,94 +7,42 @@ import com.example.favorite_cities.R
 
 class FavoritePresenter(
     citiesView: FavoriteCitiesContract.View,
-    private var model: CitiesModel,
-    private val dialogCreator: DialogCreator
-) : BasePresenter<FavoriteCitiesContract.View>(citiesView),
-    FavoriteCitiesContract.Presenter {
+    citiesModel: CitiesModel,
+    CitiesDialogCreator: DialogCreator
+) : BaseCitiesPresenter<FavoriteCitiesContract.View>(citiesView, citiesModel, CitiesDialogCreator),
+    FavoriteCitiesContract.Presenter{
 
     override fun onViewCreated() {
         super.onViewCreated()
-        showCitiesListOnOpenFragment()
-        model.getEnteredTextInFavorite()?.let {
-            view.setEnteredText(it)
-        }
-        initDialogCreator()
-    }
-
-    override fun searchTextChanged(text: String?) {
-        val filteredList: List<String> = model.filterFavoriteList(text)
-        if (model.getFavoriteCities().isNotEmpty()) {
-            showOrHideSlideNothingFound()
-            view.updateCitiesList(filteredList)
-        }
+        showOrHideSearchError()
+        val filteredCities: List<String> = model.getFavoriteCitiesFiltered()
+        view.showCitiesList(filteredCities)
     }
 
     override fun onFragmentVisible() {
         model.setVisibleFavoriteFragment(true)
-        showCitiesListOnOpenFragment()
+        showOrHideSearchError()
+        view.updateCitiesList(model.getFavoriteCitiesFiltered())
     }
 
-    override fun onCityClicked(nameCity: String) =
-        showDialogWithParameters(nameCity)
-
-    override fun removeCity(nameCity: String) {
-        model.removeFavoriteCity(nameCity)
-        val newCitiesList: List<String> =
-            if (model.getFavoriteCities().isEmpty()) {
-                showSlideWithText(R.string.no_favorite_cities, true)
-                listOf()
-            } else {
-                showOrHideSlideNothingFound()
-                model.getFilteredFavoriteCities()
-            }
-        view.updateCitiesList(newCitiesList)
-    }
-
-    override fun afterPositiveClickInDialog(positiveButtonId: Int, nameCity: String) {
-        removeCity(nameCity)
-        view.showToastWithText(R.string.message_after_removal, nameCity)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        dialogCreator.onDestroy()
-    }
-
-    private fun initDialogCreator() =
-        dialogCreator.setFunctionOnPositive(this::afterPositiveClickInDialog)
-
-    private fun showCitiesListOnOpenFragment() {
-        if (model.getFavoriteCities().isNotEmpty()) {
-            showSlideWithText(R.string.no_favorite_cities, false)
-            showOrHideSlideNothingFound()
-        } else {
-            showSlideWithText(R.string.no_favorite_cities, true)
-        }
-        val newCitiesList: List<String> = selectListDependingOnTheEnteredText()
-        view.showCitiesList(newCitiesList)
-    }
-
-    private fun selectListDependingOnTheEnteredText(): List<String> =
-        when (model.getEnteredTextInFavorite().isNullOrEmpty()) {
-            true -> model.getFavoriteCities()
-            false -> model.getFilteredFavoriteCities()
-        }
-
-    private fun showOrHideSlideNothingFound() {
-        if (model.getFilteredFavoriteCities().isEmpty()) {
-            showSlideWithText(R.string.nothing_found, true)
-        } else {
-            showSlideWithText(R.string.nothing_found, false)
+    override fun searchTextChanged(text: String?) {
+        val filteredCities: List<String> = model.filterFavoriteList(text)
+        if (model.isFavoriteCitiesNotEmpty()) {
+            showOrHideSearchError()
+            view.updateCitiesList(filteredCities)
         }
     }
 
-    private fun showSlideWithText(idTextResource: Int, show: Boolean) =
-        view.showTextSlide(idTextResource, show)
-
-    private fun showDialogWithParameters(titleDialog: String) {
-        val messageId: Int = R.string.message_favorite_city
-        val positiveButtonId: Int = R.string.text_button_remove
-        val negativeButtonId: Int = R.string.button_cancel
-        view.showDialog(titleDialog, messageId, negativeButtonId, positiveButtonId)
+    override fun removeFavoriteCity(nameCity: String) {
+        super.removeFavoriteCity(nameCity)
+        showOrHideSearchError()
+        view.updateCitiesList(model.getFavoriteCitiesFiltered())
     }
+
+    private fun showOrHideSearchError() =
+        when {
+            model.isFavoriteCitiesEmpty() -> view.showSearchError(R.string.no_favorite_cities)
+            model.isFavoriteCitiesFilteredEmpty() -> view.showSearchError(R.string.nothing_found)
+            else -> view.hideSearchError()
+        }
 }

@@ -1,6 +1,5 @@
 package com.example.favorite_cities.presenter
 
-import com.example.favorite_cities.FragmentKeys
 import com.example.favorite_cities.R
 import com.example.favorite_cities.contract.CollectionContract
 import com.example.favorite_cities.model.CitiesModel
@@ -10,19 +9,24 @@ class CollectionPresenter(
     citiesView: CollectionContract.View
 ) : BasePresenter<CollectionContract.View>(citiesView), CollectionContract.Presenter {
     override fun onViewCreated() {
-        super.onViewCreated()
-        view.showPagerWithFragments(getMapNames())
+        view.showPagerWithFragments(COUNT_FRAGMENTS)
     }
 
-    override fun fragmentsDisplayed() {
+    override fun onFragmentsShown() {
         if (model.getVisibleFavoriteFragment())
             view.setFavoriteFragmentAsCurrent()
-        view.addPagerInTabLayout()
+        view.addPagerInTabLayout(getFragmentsNamesId())
     }
 
-    private fun getMapNames(): MutableMap<FragmentKeys, Int> =
+    private fun getFragmentsNamesId(): MutableMap<Int, Int> =
         mutableMapOf(
-            FragmentKeys.GENERAL to R.string.name_fragment_favorite,
-            FragmentKeys.FAVORITE to R.string.name_fragment_general
+            FIRST to R.string.name_fragment_general,
+            SECOND to R.string.name_fragment_favorite
         )
+
+    companion object {
+        private const val COUNT_FRAGMENTS = 2
+        private const val FIRST = 0
+        private const val SECOND = 1
+    }
 }
