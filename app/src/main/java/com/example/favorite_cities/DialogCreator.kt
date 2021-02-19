@@ -4,7 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import androidx.appcompat.app.AlertDialog
 
-class DialogCreator {
+open class DialogCreator {
     private var currentDialog: Dialog? = null
 
     private var functionAfterPositiveClick: (Int, String) -> Unit = { _, _ -> }

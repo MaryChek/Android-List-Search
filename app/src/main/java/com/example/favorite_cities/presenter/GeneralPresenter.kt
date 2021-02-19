@@ -6,7 +6,7 @@ import com.example.favorite_cities.R
 import com.example.favorite_cities.contract.FavoriteCitiesContract
 import com.example.favorite_cities.contract.GeneralCitiesContract
 
-class GeneralPresenter(
+open class GeneralPresenter(
     citiesView: GeneralCitiesContract.View,
     citiesModel: CitiesModel,
     CitiesDialogCreator: DialogCreator

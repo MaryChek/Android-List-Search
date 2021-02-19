@@ -8,7 +8,7 @@ import com.example.favorite_cities.*
 import com.example.favorite_cities.contract.GeneralCitiesContract
 import com.example.favorite_cities.presenter.GeneralPresenter
 
-class GeneralFragment :
+open class GeneralFragment :
     BaseCitiesFragment<GeneralCitiesContract.View, GeneralCitiesContract.Presenter>(),
     GeneralCitiesContract.View {
 

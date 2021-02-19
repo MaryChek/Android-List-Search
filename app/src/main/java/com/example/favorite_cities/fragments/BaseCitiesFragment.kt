@@ -20,7 +20,7 @@ abstract class BaseCitiesFragment<V : CitiesContract.View, T : CitiesContract.Pr
     protected var presenter: T? = null
     protected lateinit var rvCities: RecyclerView
     protected lateinit var svCity: SearchView
-    protected val dialogCreator: DialogCreator  = DialogCreator()
+    protected val dialogCreator: DialogCreator = DialogCreator()
     protected lateinit var model: CitiesModel
     private var adapter: CitiesAdapter? = null
 

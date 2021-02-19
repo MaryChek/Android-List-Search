@@ -2,7 +2,7 @@ package com.example.favorite_cities.model
 
 import com.example.favorite_cities.model.sharedpreferences.PreferenceManager
 
-class CitiesModel(
+open class CitiesModel(
     private var generalCities: List<String>,
     private var preferenceManager: PreferenceManager
 ) {
