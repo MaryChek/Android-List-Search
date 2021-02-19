@@ -3,12 +3,10 @@ package com.example.favorite_cities.fragments
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.favorite_cities.*
 import com.example.favorite_cities.adapter.CollectionFragmentAdapter
-import com.example.favorite_cities.contract.CitiesContract
 import com.example.favorite_cities.contract.CollectionContract
 import com.example.favorite_cities.model.CitiesModel
 import com.example.favorite_cities.presenter.CollectionPresenter
