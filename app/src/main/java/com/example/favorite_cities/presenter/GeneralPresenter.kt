@@ -15,6 +15,9 @@ class GeneralPresenter(
 
     override fun onViewCreated() {
         super.onViewCreated()
+        model.getGeneralEnteredText()?.let {
+            view.setEnteredText(it)
+        }
         val filteredCitiesList: List<String> = model.getGeneralCitiesFiltered()
         view.showCitiesList(filteredCitiesList)
     }

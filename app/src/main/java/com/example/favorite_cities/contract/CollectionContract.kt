@@ -5,9 +5,9 @@ interface CollectionContract {
     interface View : BaseContract.View {
         fun showPagerWithFragments(countFragment: Int)
 
-        fun setFavoriteFragmentAsCurrent()
+        fun setFavoriteFragmentAsCurrent(currentFragmentPosition: Int)
 
-        fun addPagerInTabLayout(fragmentsNamesId: MutableMap<Int, Int>)
+        fun addTitlesInTabLayout(fragmentsNamesId: MutableMap<Int, Int>)
     }
 
     interface Presenter : BaseContract.Presenter<View> {

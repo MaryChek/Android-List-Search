@@ -14,6 +14,9 @@ class FavoritePresenter(
 
     override fun onViewCreated() {
         super.onViewCreated()
+        model.getFavoriteEnteredText()?.let {
+            view.setEnteredText(it)
+        }
         showOrHideSearchError()
         val filteredCities: List<String> = model.getFavoriteCitiesFiltered()
         view.showCitiesList(filteredCities)

@@ -16,9 +16,6 @@ abstract class BaseCitiesPresenter<V : CitiesContract.View>(
 
     override fun onViewCreated() {
         initDialogCreator()
-        model.getGeneralEnteredText()?.let {
-            view.setEnteredText(it)
-        }
     }
 
     override fun onDestroy() {

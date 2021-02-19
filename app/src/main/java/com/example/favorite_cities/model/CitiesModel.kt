@@ -28,8 +28,9 @@ class CitiesModel(
 
     fun updateGeneralCitiesList(newCitiesList: List<String>) {
         generalCities = newCitiesList
-        generalCitiesFiltered = generalCities
-        initFavoriteCitiesLists()
+        generalCitiesFiltered = getCurrentCitiesFiltered(generalCities, generalEnteredText)
+        favoriteCities = getFavoriteSavedList()
+        favoriteCitiesFiltered = getCurrentCitiesFiltered(favoriteCities, favoriteEnteredText)
     }
 
     fun getGeneralCitiesFiltered(): List<String> =
@@ -60,6 +61,9 @@ class CitiesModel(
 
     fun isFavoriteCitiesFilteredEmpty(): Boolean =
         favoriteCitiesFiltered.isEmpty()
+
+    fun getFavoriteEnteredText(): String? =
+        favoriteEnteredText
 
     fun filterFavoriteList(enteredText: String?): List<String> {
         favoriteEnteredText = enteredText
@@ -92,14 +96,11 @@ class CitiesModel(
     fun findInFavorites(nameCity: String): Boolean =
         find(nameCity, favoriteCities)
 
-    private fun initFavoriteCitiesLists() {
-        favoriteCities = getFavoriteSavedList()
-        favoriteCitiesFiltered =
-            when (favoriteEnteredText.isNullOrEmpty()) {
-                true -> favoriteCities
-                false -> filter(favoriteEnteredText, favoriteCities)
-            }
-    }
+    private fun getCurrentCitiesFiltered(fullCitiesList: List<String>, enteredText: String?) =
+        when (enteredText.isNullOrEmpty()) {
+            true -> fullCitiesList
+            false -> filter(enteredText, fullCitiesList)
+        }
 
     private fun filter(enteredText: String?, ListCities: List<String>): List<String> {
         val searchString: String = enteredText ?: ""

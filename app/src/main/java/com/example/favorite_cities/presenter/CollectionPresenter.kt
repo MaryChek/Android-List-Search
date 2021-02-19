@@ -14,8 +14,8 @@ class CollectionPresenter(
 
     override fun onFragmentsShown() {
         if (model.getVisibleFavoriteFragment())
-            view.setFavoriteFragmentAsCurrent()
-        view.addPagerInTabLayout(getFragmentsNamesId())
+            view.setFavoriteFragmentAsCurrent(FAVORITE_FRAGMENT_POSITION)
+        view.addTitlesInTabLayout(getFragmentsNamesId())
     }
 
     private fun getFragmentsNamesId(): MutableMap<Int, Int> =
@@ -28,5 +28,6 @@ class CollectionPresenter(
         private const val COUNT_FRAGMENTS = 2
         private const val FIRST = 0
         private const val SECOND = 1
+        const val FAVORITE_FRAGMENT_POSITION = 1
     }
 }

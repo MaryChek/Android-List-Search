@@ -51,7 +51,7 @@ class CollectionFragment : Fragment(R.layout.fragment_collection), CollectionCon
         presenter?.onFragmentsShown()
     }
 
-    override fun addPagerInTabLayout(fragmentsNamesId: MutableMap<Int, Int>) {
+    override fun addTitlesInTabLayout(fragmentsNamesId: MutableMap<Int, Int>) {
         TabLayoutMediator(tabLayoutCities, pagerCities) { tab, position ->
             fragmentsNamesId[position]?.let {
                 tab.text = resources.getString(it)
@@ -59,11 +59,7 @@ class CollectionFragment : Fragment(R.layout.fragment_collection), CollectionCon
         }.attach()
     }
 
-    override fun setFavoriteFragmentAsCurrent() {
-        pagerCities.currentItem = FAVORITE_FRAGMENT
-    }
-
-    companion object {
-        const val FAVORITE_FRAGMENT = 1
+    override fun setFavoriteFragmentAsCurrent(currentFragmentPosition: Int) {
+        pagerCities.currentItem = currentFragmentPosition
     }
 }
