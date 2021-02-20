@@ -1,58 +1,50 @@
 package com.example.favorite_cities
 
 import com.example.favorite_cities.contract.GeneralCitiesContract
-import com.example.favorite_cities.fragments.GeneralFragment
 import com.example.favorite_cities.model.CitiesModel
-import com.example.favorite_cities.model.sharedpreferences.PreferenceManager
 import com.example.favorite_cities.presenter.GeneralPresenter
-//import com.google.common.truth.Truth.assertThat
-import org.hamcrest.MatcherAssert.assertThat
-import org.junit.Before
-//import org.junit.Before
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.times
-import org.mockito.Spy
-import org.mockito.runners.MockitoJUnitRunner
-
-@RunWith(MockitoJUnitRunner::class)
+import java.util.logging.Filter
 
 class FavoritePresenterTest {
 
-//    private val citiesList: List<String> =
-//        listOf("Moscow", "Volgograd", "Perm", "Khabarovsk", "Murmansk")
-
-    @Mock
-    private lateinit var view: GeneralCitiesContract.View
-
-    @Mock
-    private lateinit var model: CitiesModel
-
-    @Mock
-    private val dialogCreator = DialogCreator()
-
-    @Spy
+    private var view: GeneralCitiesContract.View = mock()
+    private var model: CitiesModel = mock()
+    private val dialogCreator: DialogCreator = mock()
     private var presenter: GeneralPresenter = GeneralPresenter(view, model, dialogCreator)
 
-//    @Before
-//    fun setUp() {
-//        presenter
+    @Test
+    fun `searchTextChanged when text is incorrect, and verify showSearchError`() {
+//        model.updateGeneralCitiesList(SIMPLE_CITIES_LIST)
+        val list: List<String> = mock()
+//        whenever(model.filter(INCORRECT_CITY, SIMPLE_CITIES_LIST)).thenReturn(list)
+        whenever(model.filterGeneralList(INCORRECT_CITY)).thenReturn(list)
+        whenever(model.isGeneralCitiesFilteredEmpty()).thenReturn(true)
+        presenter.searchTextChanged(INCORRECT_CITY)
+
+       verify(view, times(1))
+            .showSearchError(R.string.nothing_found)
+    }
+
+//    @Test
+//    fun `onCityClicked clicked on the favorite city, and verify showDialog with button remove`() {
+//        presenter.onCityClicked(FAVORITE_CITY)
+//        verify(view, times(1))
+//    }
+//
+//    @Test
+//    fun `onCityClicked clicked not on the favorite city, and verify showDialog with button add`() {
+//
 //    }
 
-    @Test
-    fun `test_searchTextChanged_incorrectTextEntered_showSearchError` () {
-        Mockito.`when`(model.filterGeneralList("Omsk"))
-            .thenReturn(listOf())
-
-        Mockito.`when`(model.isGeneralCitiesFilteredEmpty())
-            .thenReturn(true)
-
-        val incorrectTextEntered = "Omsk"
-        presenter.searchTextChanged(incorrectTextEntered)
-
-        Mockito.verify(view, times(1))
-            .showSearchError(R.string.nothing_found)
+    companion object {
+        private const val INCORRECT_CITY = "Paris"
+        private const val FAVORITE_CITY = "Anapa"
+        private val SIMPLE_CITIES_LIST = listOf("Anapa", "Moscow", "Orel")
     }
 }

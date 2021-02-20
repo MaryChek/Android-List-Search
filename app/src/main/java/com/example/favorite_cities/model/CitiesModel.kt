@@ -1,19 +1,21 @@
 package com.example.favorite_cities.model
 
+import androidx.annotation.VisibleForTesting
 import com.example.favorite_cities.model.sharedpreferences.PreferenceManager
 
 open class CitiesModel(
-    private var generalCities: List<String>,
-    private var preferenceManager: PreferenceManager
+    newCitiesList: List<String>,
+    private var preferenceManager: PreferenceManager?
 ) {
 
     companion object {
         private const val KEY_SAVED_CITIES_FAVORITE = "CitiesFavorite"
     }
 
-    private var generalCitiesFiltered: List<String>
-    private var favoriteCities: List<String>
-    private var favoriteCitiesFiltered: List<String>
+    private var generalCities: List<String> = listOf()
+    private var generalCitiesFiltered: List<String> = listOf()
+    private var favoriteCities: List<String> = listOf()
+    private var favoriteCitiesFiltered: List<String> = listOf()
 
     private var generalEnteredText: String? = null
     private var favoriteEnteredText: String? = null
@@ -21,6 +23,7 @@ open class CitiesModel(
     private var favoritesFragmentVisibility: Boolean = false
 
     init {
+        generalCities = newCitiesList
         generalCitiesFiltered = generalCities
         favoriteCities = getFavoriteSavedList()
         favoriteCitiesFiltered = favoriteCities
@@ -96,12 +99,16 @@ open class CitiesModel(
     fun findInFavorites(nameCity: String): Boolean =
         find(nameCity, favoriteCities)
 
-    private fun getCurrentCitiesFiltered(fullCitiesList: List<String>, enteredText: String?) =
+    private fun getCurrentCitiesFiltered(
+        fullCitiesList: List<String>,
+        enteredText: String?
+    ): List<String> =
         when (enteredText.isNullOrEmpty()) {
             true -> fullCitiesList
             false -> filter(enteredText, fullCitiesList)
         }
 
+    //    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private fun filter(enteredText: String?, ListCities: List<String>): List<String> {
         val searchString: String = enteredText ?: ""
         return if (searchString.isBlank()) {
@@ -120,13 +127,13 @@ open class CitiesModel(
 
     private fun saveFavoriteList(savedList: List<String>) {
         val hashSet: HashSet<String> = getHashSet(savedList)
-        preferenceManager.setList(KEY_SAVED_CITIES_FAVORITE, hashSet)
+        preferenceManager?.setList(KEY_SAVED_CITIES_FAVORITE, hashSet)
     }
 
     private fun getFavoriteSavedList(): List<String> {
-        val hashSet: Set<String> = preferenceManager.getList(KEY_SAVED_CITIES_FAVORITE)
+        val hashSet: Set<String>? = preferenceManager?.getList(KEY_SAVED_CITIES_FAVORITE)
         var list: List<String> = listOf()
-        hashSet.forEach {
+        hashSet?.forEach {
             val index: Int = it.toInt()
             list = list.plus(generalCities[index])
         }

@@ -1,5 +1,6 @@
 package com.example.favorite_cities.presenter
 
+import androidx.annotation.VisibleForTesting
 import com.example.favorite_cities.DialogCreator
 import com.example.favorite_cities.R
 import com.example.favorite_cities.contract.CitiesContract
@@ -39,7 +40,8 @@ abstract class BaseCitiesPresenter<V : CitiesContract.View>(
     override fun removeFavoriteCity(nameCity: String) =
         model.removeFavoriteCity(nameCity)
 
-    private fun showDialogWithParameters(nameCity: String) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    fun showDialogWithParameters(nameCity: String) {
         val negativeButtonId: Int = R.string.button_cancel
 
         when (model.findInFavorites(nameCity)) {
@@ -73,4 +75,9 @@ abstract class BaseCitiesPresenter<V : CitiesContract.View>(
 
     private fun initDialogCreator() =
         dialogCreator.setFunctionOnPositive(this::afterPositiveClickInDialog)
+//            .setButtonAddTitle()
+//            .setMessageBeforeAdding()
+//            .setButtonRemoveTitle()
+//            .setMessageBeforeRemoving()
+//            .setNegativeButtonTitle()
 }

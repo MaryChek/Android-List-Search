@@ -3,9 +3,11 @@ package com.example.favorite_cities.fragments
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
+import android.widget.ResourceCursorAdapter
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
@@ -102,8 +104,10 @@ abstract class BaseCitiesFragment<V : CitiesContract.View, T : CitiesContract.Pr
 
     private fun itemDecorate() {
         val dividerItem = DividerItemDecoration(activity, RecyclerView.VERTICAL)
-        dividerItem.setDrawable(resources.getDrawable(R.drawable.divider_cities, context?.theme))
-        rvCities.addItemDecoration(dividerItem)
+        ResourcesCompat.getDrawable(resources, R.drawable.divider_cities, context?.theme)?.let {
+            dividerItem.setDrawable(it)
+            rvCities.addItemDecoration(dividerItem)
+        }
     }
 
     private fun onCityClicked(nameCity: String) {
