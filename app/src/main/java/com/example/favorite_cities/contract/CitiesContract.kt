@@ -6,7 +6,9 @@ interface CitiesContract {
 
         fun updateCitiesList(modifiedList: List<String>)
 
-        fun showDialog(title: String, messageId: Int, positiveButtonId: Int, negativeButtonId: Int)
+        fun showDialogAdding()
+
+        fun showDialogRemoving()
 
         fun showSearchError(textId: Int)
 

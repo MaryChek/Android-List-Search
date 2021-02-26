@@ -18,8 +18,7 @@ open class GeneralPresenter(
         model.getGeneralEnteredText()?.let {
             view.setEnteredText(it)
         }
-        val filteredCitiesList: List<String> = model.getGeneralCitiesFiltered()
-        view.showCitiesList(filteredCitiesList)
+        view.showCitiesList(model.getGeneralCitiesFiltered())
     }
 
     override fun onFragmentVisible() {
@@ -27,9 +26,9 @@ open class GeneralPresenter(
     }
 
     override fun searchTextChanged(text: String?) {
-        val filteredCitiesList: List<String> = model.filterGeneralList(text)
+        model.filterGeneralList(text)
         showOrHideSearchError()
-        view.updateCitiesList(filteredCitiesList)
+        view.updateCitiesList(model.getGeneralCitiesFiltered())
     }
 
     private fun showOrHideSearchError() =

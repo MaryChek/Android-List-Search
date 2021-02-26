@@ -7,7 +7,7 @@ interface CollectionContract {
 
         fun setFavoriteFragmentAsCurrent(currentFragmentPosition: Int)
 
-        fun addTitlesInTabLayout(fragmentsNamesId: MutableMap<Int, Int>)
+        fun addTitlesInTabLayout(fragmentsNamesId: Array<Int>)
     }
 
     interface Presenter : BaseContract.Presenter<View> {

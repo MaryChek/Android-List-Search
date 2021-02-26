@@ -16,6 +16,6 @@ class App : Application() {
 
     fun updateListInModel() {
         val newList: List<String> = resources.getStringArray(R.array.cities).toList()
-        model.updateGeneralCitiesList(newList)
+        model.updateCitiesLists(newList)
     }
 }

@@ -3,7 +3,6 @@ package com.example.favorite_cities.fragments
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
-import android.widget.ResourceCursorAdapter
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
@@ -59,14 +58,13 @@ abstract class BaseCitiesFragment<V : CitiesContract.View, T : CitiesContract.Pr
         adapter?.updateList(modifiedList)
     }
 
-    override fun showDialog(
-        title: String,
-        messageId: Int,
-        positiveButtonId: Int,
-        negativeButtonId: Int
-    ) = dialogCreator.show(
-        activity, title, messageId, negativeButtonId, positiveButtonId
-    )
+    override fun showDialogAdding() {
+        dialogCreator.showDialogAdding(activity)
+    }
+
+    override fun showDialogRemoving() {
+        dialogCreator.showDialogRemoving(activity)
+    }
 
     override fun showSearchError(textId: Int) {
         val slide: TextView = tvSearchError

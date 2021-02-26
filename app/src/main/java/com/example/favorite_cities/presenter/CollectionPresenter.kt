@@ -18,16 +18,14 @@ class CollectionPresenter(
         view.addTitlesInTabLayout(getFragmentsNamesId())
     }
 
-    private fun getFragmentsNamesId(): MutableMap<Int, Int> =
-        mutableMapOf(
-            FIRST to R.string.name_fragment_general,
-            SECOND to R.string.name_fragment_favorite
+    private fun getFragmentsNamesId(): Array<Int> =
+        arrayOf(
+            R.string.name_fragment_general,
+            R.string.name_fragment_favorite
         )
 
     companion object {
         private const val COUNT_FRAGMENTS = 2
-        private const val FIRST = 0
-        private const val SECOND = 1
         const val FAVORITE_FRAGMENT_POSITION = 1
     }
 }

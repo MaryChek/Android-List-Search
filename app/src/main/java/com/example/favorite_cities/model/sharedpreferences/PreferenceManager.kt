@@ -3,7 +3,7 @@ package com.example.favorite_cities.model.sharedpreferences
 import android.content.Context
 import android.content.SharedPreferences
 
-class PreferenceManager(context: Context?) {
+open class PreferenceManager(context: Context?) {
 
     companion object {
         private const val STR_NAME_PREFERENCE = "SharedPreference"
@@ -15,12 +15,12 @@ class PreferenceManager(context: Context?) {
         preferences = context?.getSharedPreferences(STR_NAME_PREFERENCE, Context.MODE_PRIVATE)
     }
 
-    fun setList(key: String, hashSet: HashSet<String>) {
+    open fun setList(key: String, set: HashSet<String>) {
         val editor: SharedPreferences.Editor? = preferences?.edit()
-        editor?.putStringSet(key, hashSet)
+        editor?.putStringSet(key, set)
         editor?.apply()
     }
 
-    fun getList(key: String): Set<String> =
+    open fun getList(key: String): Set<String> =
         preferences?.getStringSet(key, setOf()) ?: setOf()
 }

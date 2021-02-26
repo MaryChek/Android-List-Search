@@ -5,12 +5,12 @@ import com.example.favorite_cities.model.CitiesModel
 import com.example.favorite_cities.DialogCreator
 import com.example.favorite_cities.R
 
-class FavoritePresenter(
+open class FavoritePresenter(
     citiesView: FavoriteCitiesContract.View,
     citiesModel: CitiesModel,
     CitiesDialogCreator: DialogCreator
 ) : BaseCitiesPresenter<FavoriteCitiesContract.View>(citiesView, citiesModel, CitiesDialogCreator),
-    FavoriteCitiesContract.Presenter{
+    FavoriteCitiesContract.Presenter {
 
     override fun onViewCreated() {
         super.onViewCreated()
@@ -18,8 +18,7 @@ class FavoritePresenter(
             view.setEnteredText(it)
         }
         showOrHideSearchError()
-        val filteredCities: List<String> = model.getFavoriteCitiesFiltered()
-        view.showCitiesList(filteredCities)
+        view.showCitiesList(model.getFavoriteCitiesFiltered())
     }
 
     override fun onFragmentVisible() {
@@ -29,10 +28,10 @@ class FavoritePresenter(
     }
 
     override fun searchTextChanged(text: String?) {
-        val filteredCities: List<String> = model.filterFavoriteList(text)
+        model.filterFavoriteList(text)
+        showOrHideSearchError()
         if (model.isFavoriteCitiesNotEmpty()) {
-            showOrHideSearchError()
-            view.updateCitiesList(filteredCities)
+            view.updateCitiesList(model.getFavoriteCitiesFiltered())
         }
     }
 

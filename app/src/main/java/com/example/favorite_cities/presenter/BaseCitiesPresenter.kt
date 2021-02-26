@@ -27,8 +27,13 @@ abstract class BaseCitiesPresenter<V : CitiesContract.View>(
 
     }
 
-    override fun onCityClicked(nameCity: String) =
-        showDialogWithParameters(nameCity)
+    override fun onCityClicked(nameCity: String) {
+        dialogCreator.setTitle(nameCity)
+        when (model.findInFavorites(nameCity)) {
+            true -> view.showDialogRemoving()
+            false -> view.showDialogAdding()
+        }
+    }
 
     override fun searchTextChanged(text: String?) {
 
@@ -41,43 +46,27 @@ abstract class BaseCitiesPresenter<V : CitiesContract.View>(
         model.removeFavoriteCity(nameCity)
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    fun showDialogWithParameters(nameCity: String) {
-        val negativeButtonId: Int = R.string.button_cancel
-
-        when (model.findInFavorites(nameCity)) {
-            true -> view.showDialog(
-                nameCity,
-                R.string.message_favorite_city,
-                negativeButtonId,
-                R.string.text_button_remove
-            )
-            false -> view.showDialog(
-                nameCity,
-                R.string.message_unelected_city,
-                negativeButtonId,
-                R.string.text_button_add
-            )
-        }
-    }
-
-    private fun afterPositiveClickInDialog(positiveButtonId: Int, nameCity: String) {
-        when (positiveButtonId) {
-            R.string.text_button_add -> {
-                addFavoriteCity(nameCity)
-                view.showToastWithText(R.string.message_after_adding, nameCity)
-            }
-            R.string.text_button_remove -> {
-                removeFavoriteCity(nameCity)
-                view.showToastWithText(R.string.message_after_removal, nameCity)
+    open fun afterPositiveClickInDialog(positiveButtonId: Int, nameCity: String?) {
+        nameCity?.let {
+            when (positiveButtonId) {
+                R.string.text_button_add -> {
+                    addFavoriteCity(it)
+                    view.showToastWithText(R.string.message_after_adding, it)
+                }
+                R.string.text_button_remove -> {
+                    removeFavoriteCity(it)
+                    view.showToastWithText(R.string.message_after_removal, it)
+                }
             }
         }
     }
 
-    private fun initDialogCreator() =
+    private fun initDialogCreator() {
         dialogCreator.setFunctionOnPositive(this::afterPositiveClickInDialog)
-//            .setButtonAddTitle()
-//            .setMessageBeforeAdding()
-//            .setButtonRemoveTitle()
-//            .setMessageBeforeRemoving()
-//            .setNegativeButtonTitle()
+        dialogCreator.setMessageBeforeAdding(R.string.message_favorite_city)
+        dialogCreator.setButtonRemoveTitle(R.string.text_button_remove)
+        dialogCreator.setMessageBeforeRemoving(R.string.message_unelected_city)
+        dialogCreator.setButtonAddTitle(R.string.text_button_add)
+        dialogCreator.setNegativeButtonTitle(R.string.button_cancel)
+    }
 }

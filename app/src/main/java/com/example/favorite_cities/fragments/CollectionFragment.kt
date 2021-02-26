@@ -51,9 +51,9 @@ class CollectionFragment : Fragment(R.layout.fragment_collection), CollectionCon
         presenter?.onFragmentsShown()
     }
 
-    override fun addTitlesInTabLayout(fragmentsNamesId: MutableMap<Int, Int>) {
+    override fun addTitlesInTabLayout(fragmentsNamesId: Array<Int>) {
         TabLayoutMediator(tabLayoutCities, pagerCities) { tab, position ->
-            fragmentsNamesId[position]?.let {
+            fragmentsNamesId[position].let {
                 tab.text = resources.getString(it)
             }
         }.attach()
