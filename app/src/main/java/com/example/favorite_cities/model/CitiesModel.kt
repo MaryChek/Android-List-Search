@@ -63,12 +63,12 @@ open class CitiesModel(
     open fun isFavoriteCitiesFilteredEmpty(): Boolean =
         favoriteCitiesFiltered.isEmpty()
 
-    fun filterGeneralList(enteredText: String?) {
+    open fun filterGeneralList(enteredText: String?) {
         setGeneralEnteredText(enteredText)
         generalCitiesFiltered = filter(enteredText, generalCities)
     }
 
-    fun filterFavoriteList(enteredText: String?) {
+    open fun filterFavoriteList(enteredText: String?) {
         setFavoriteEnteredText(enteredText)
         favoriteCitiesFiltered = filter(enteredText, favoriteCities)
     }

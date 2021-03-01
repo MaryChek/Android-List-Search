@@ -6,7 +6,7 @@ import com.example.favorite_cities.R
 import com.example.favorite_cities.contract.CitiesContract
 import com.example.favorite_cities.model.CitiesModel
 
-abstract class BaseCitiesPresenter<V : CitiesContract.View>(
+open class BaseCitiesPresenter<V : CitiesContract.View>(
     newView: V,
     newModel: CitiesModel,
     newDialogCreator: DialogCreator

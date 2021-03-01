@@ -14,7 +14,8 @@ class BasePresenterTest {
     private var view: CitiesContract.View = mock()
     private var model: CitiesModel = mock()
     private val dialogCreator: DialogCreator = mock()
-    private val presenter: PresenterTest = PresenterTest(view, model, dialogCreator)
+    private val presenter: BaseCitiesPresenter<CitiesContract.View> =
+        BaseCitiesPresenter(view, model, dialogCreator)
 
 //    @Test
 //    fun `onViewCreated when view created then verify setFunctionOnPositive invoked`() {
@@ -157,12 +158,6 @@ class BasePresenterTest {
         verify(view, times(1))
             .showToastWithText(R.string.message_after_removal, FAVORITE_CITY)
     }
-
-    open class PresenterTest(
-        view: CitiesContract.View,
-        model: CitiesModel,
-        dialogCreator: DialogCreator
-    ) : BaseCitiesPresenter<CitiesContract.View>(view, model, dialogCreator)
 
     companion object {
         private const val FAVORITE_CITY = "Orel"
