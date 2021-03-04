@@ -8,7 +8,7 @@ import com.nhaarman.mockitokotlin2.*
 import org.junit.Test
 import org.mockito.ArgumentMatchers
 
-class FavoritePresenterTest {
+open class FavoritePresenterTest {
 
     private var view: FavoriteCitiesContract.View = mock()
     private var model: CitiesModel = mock()
@@ -45,12 +45,12 @@ class FavoritePresenterTest {
         presenter.onViewCreated()
 
         verify(model, times(1))
-            .getFavoriteEnteredText()
+            .favoriteEnteredText
     }
 
     @Test
     fun `onViewCreated when getFavoriteEnteredText returned not null then verify setEnteredText invoked`() {
-        whenever(model.getFavoriteEnteredText())
+        whenever(model.favoriteEnteredText)
             .thenReturn(SIMPLE_ENTERED_TEXT)
 
         presenter.onViewCreated()
@@ -61,7 +61,7 @@ class FavoritePresenterTest {
 
     @Test
     fun `onViewCreated when getFavoriteEnteredText returned null then verify setEnteredText not invoked`() {
-        whenever(model.getFavoriteEnteredText())
+        whenever(model.favoriteEnteredText)
             .thenReturn(null)
 
         presenter.onViewCreated()
@@ -100,11 +100,11 @@ class FavoritePresenterTest {
     }
 
     @Test
-    fun `onViewCreated when view created then verify showCitiesList invoked`() {
+    fun `onViewCreated when view created then verify updateCitiesList invoked`() {
         presenter.onViewCreated()
 
         verify(view, times(1))
-            .showCitiesList(ArgumentMatchers.anyList())
+            .updateCitiesList(ArgumentMatchers.anyList())
     }
 
     @Test
@@ -116,53 +116,53 @@ class FavoritePresenterTest {
     }
 
     @Test
-    fun `onFragmentVisible when fragment visible then verify setVisibleFavoriteFragment with "true" invoked`() {
-        presenter.onFragmentVisible()
+    fun `onTabVisible when tab is visible then verify positionOfTheCurrentFragment with position favorite fragment invoked`() {
+        presenter.onTabVisible()
 
         verify(model, times(1))
-            .setVisibleFavoriteFragment(true)
+            .positionOfTheCurrentFragment = POSITION_OF_FRAGMENT
     }
 
     @Test
-    fun `onFragmentVisible when favorite cities is empty then verify showSearchError with text "no favorite cities" invoked`() {
+    fun `onTabVisible when favorite cities is empty then verify showSearchError with text "no favorite cities" invoked`() {
         stubWhenFavoriteCitiesIsEmpty(true)
 
-        presenter.onFragmentVisible()
+        presenter.onTabVisible()
 
         verifyShowSearchErrorWithNoFavoriteCities()
     }
 
     @Test
-    fun `onFragmentVisible when favorite cities isn't empty but filtered is empty then verify showSearchError with text "nothing found" invoked`() {
+    fun `onTabVisible when favorite cities isn't empty but filtered is empty then verify showSearchError with text "nothing found" invoked`() {
         stubWhenFavoriteCitiesIsEmpty(false)
         stubWhenFavoriteCitiesFilteredIsEmpty(true)
 
-        presenter.onFragmentVisible()
+        presenter.onTabVisible()
 
         verifyShowSearchErrorWithNothingFound()
     }
 
     @Test
-    fun `onFragmentVisible when favorite cities and filtered lists aren't empty then verify hideSearchError invoked`() {
+    fun `onTabVisible when favorite cities and filtered lists aren't empty then verify hideSearchError invoked`() {
         stubWhenFavoriteCitiesIsEmpty(false)
         stubWhenFavoriteCitiesFilteredIsEmpty(false)
 
-        presenter.onFragmentVisible()
+        presenter.onTabVisible()
 
         verifyHideSearchError()
     }
 
     @Test
-    fun `onFragmentVisible when fragment visible then verify updateCitiesList invoked`() {
-        presenter.onFragmentVisible()
+    fun `onTabVisible when tab is visible then verify updateCitiesList invoked`() {
+        presenter.onTabVisible()
 
         verify(view, times(1))
             .updateCitiesList(ArgumentMatchers.anyList())
     }
 
     @Test
-    fun `onFragmentVisible when fragment visible then verify getFavoriteCitiesFiltered invoked`() {
-        presenter.onFragmentVisible()
+    fun `onTabVisible when fragment visible then verify getFavoriteCitiesFiltered invoked`() {
+        presenter.onTabVisible()
 
         verify(model, times(1))
             .getFavoriteCitiesFiltered()
@@ -170,7 +170,7 @@ class FavoritePresenterTest {
 
     @Test
     fun `searchTextChanged when search text changed to some text then verify filterFavoriteList invoked with this`() {
-        presenter.searchTextChanged(SIMPLE_ENTERED_TEXT)
+        presenter.onSearchTextChanged(SIMPLE_ENTERED_TEXT)
 
         verify(model, times(1))
             .filterFavoriteList(SIMPLE_ENTERED_TEXT)
@@ -180,7 +180,7 @@ class FavoritePresenterTest {
     fun `searchTextChanged when favorite cities is empty then verify showSearchError with text "no favorite cities" invoked`() {
         stubWhenFavoriteCitiesIsEmpty(true)
 
-        presenter.searchTextChanged(any())
+        presenter.onSearchTextChanged(any())
 
         verifyShowSearchErrorWithNoFavoriteCities()
     }
@@ -190,7 +190,7 @@ class FavoritePresenterTest {
         stubWhenFavoriteCitiesIsEmpty(false)
         stubWhenFavoriteCitiesFilteredIsEmpty(true)
 
-        presenter.searchTextChanged(any())
+        presenter.onSearchTextChanged(any())
 
         verifyShowSearchErrorWithNothingFound()
     }
@@ -200,7 +200,7 @@ class FavoritePresenterTest {
         stubWhenFavoriteCitiesIsEmpty(false)
         stubWhenFavoriteCitiesFilteredIsEmpty(false)
 
-        presenter.searchTextChanged(any())
+        presenter.onSearchTextChanged(any())
 
         verifyHideSearchError()
     }
@@ -210,7 +210,7 @@ class FavoritePresenterTest {
         whenever(model.isFavoriteCitiesNotEmpty())
             .thenReturn(false)
 
-        presenter.searchTextChanged(any())
+        presenter.onSearchTextChanged(any())
 
         verify(view, times(0))
             .updateCitiesList(any())
@@ -221,10 +221,10 @@ class FavoritePresenterTest {
         whenever(model.isFavoriteCitiesNotEmpty())
             .thenReturn(true)
 
-        presenter.searchTextChanged(any())
+        presenter.onSearchTextChanged(any())
 
         verify(view, times(1))
-            .updateCitiesList(model.getFavoriteCitiesFiltered())
+            .updateCitiesList(ArgumentMatchers.anyList())
     }
 
     @Test
@@ -232,56 +232,57 @@ class FavoritePresenterTest {
         whenever(model.isFavoriteCitiesNotEmpty())
             .thenReturn(true)
 
-        presenter.searchTextChanged(any())
+        presenter.onSearchTextChanged(any())
 
         verify(model, times(1))
             .getFavoriteCitiesFiltered()
     }
 
-    @Test
-    fun `removeFavoriteCity when the favorite list became empty, then verify showSearchError with text "no favorite cities"`() {
-        stubWhenFavoriteCitiesIsEmpty(true)
-
-        presenter.removeFavoriteCity(FAVORITE_CITY)
-        verifyShowSearchErrorWithNoFavoriteCities()
-    }
-
-    @Test
-    fun `removeFavoriteCity when the favorite list is still not empty, but filtered became empty then verify showSearchError with text "nothing found"`() {
-        stubWhenFavoriteCitiesIsEmpty(false)
-        stubWhenFavoriteCitiesFilteredIsEmpty(true)
-
-        presenter.removeFavoriteCity(FAVORITE_CITY)
-        verifyShowSearchErrorWithNothingFound()
-    }
-
-    @Test
-    fun `removeFavoriteCity when the favorite and filtered lists are still not empty, then verify showSearchError with text "nothing found"`() {
-        stubWhenFavoriteCitiesIsEmpty(false)
-        stubWhenFavoriteCitiesFilteredIsEmpty(false)
-
-        presenter.removeFavoriteCity(FAVORITE_CITY)
-        verifyHideSearchError()
-    }
-
-    @Test
-    fun `removeFavoriteCity when remove favorite city then verify updateCitiesList invoked`() {
-        presenter.removeFavoriteCity(FAVORITE_CITY)
-
-        verify(view, times(1))
-            .updateCitiesList(ArgumentMatchers.anyList())
-    }
-
-    @Test
-    fun `removeFavoriteCity when remove favorite city then verify getFavoriteCitiesFiltered invoked`() {
-        presenter.removeFavoriteCity(FAVORITE_CITY)
-
-        verify(model, times(1))
-            .getFavoriteCitiesFiltered()
-    }
+//    @Test
+//    fun `removeFavoriteCity when the favorite list became empty, then verify showSearchError with text "no favorite cities"`() {
+//        stubWhenFavoriteCitiesIsEmpty(true)
+//
+//        presenter.removeFavoriteCity(FAVORITE_CITY)
+//        verifyShowSearchErrorWithNoFavoriteCities()
+//    }
+//
+//    @Test
+//    fun `removeFavoriteCity when the favorite list is still not empty, but filtered became empty then verify showSearchError with text "nothing found"`() {
+//        stubWhenFavoriteCitiesIsEmpty(false)
+//        stubWhenFavoriteCitiesFilteredIsEmpty(true)
+//
+//        presenter.removeFavoriteCity(FAVORITE_CITY)
+//        verifyShowSearchErrorWithNothingFound()
+//    }
+//
+//    @Test
+//    fun `removeFavoriteCity when the favorite and filtered lists are still not empty, then verify showSearchError with text "nothing found"`() {
+//        stubWhenFavoriteCitiesIsEmpty(false)
+//        stubWhenFavoriteCitiesFilteredIsEmpty(false)
+//
+//        presenter.removeFavoriteCity(FAVORITE_CITY)
+//        verifyHideSearchError()
+//    }
+//
+//    @Test
+//    fun `removeFavoriteCity when remove favorite city then verify updateCitiesList invoked`() {
+//        presenter.removeFavoriteCity(FAVORITE_CITY)
+//
+//        verify(view, times(1))
+//            .updateCitiesList(ArgumentMatchers.anyList())
+//    }
+//
+//    @Test
+//    fun `removeFavoriteCity when remove favorite city then verify getFavoriteCitiesFiltered invoked`() {
+//        presenter.removeFavoriteCity(FAVORITE_CITY)
+//
+//        verify(model, times(1))
+//            .getFavoriteCitiesFiltered()
+//    }
 
     companion object {
         private const val SIMPLE_ENTERED_TEXT = "o"
         private const val FAVORITE_CITY = "Orel"
+        private const val POSITION_OF_FRAGMENT = 1
     }
 }

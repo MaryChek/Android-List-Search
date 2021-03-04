@@ -16,17 +16,4 @@ class FavoritesFragment :
         super.onCreate(savedInstanceState)
         presenter = FavoritePresenter(this, model, dialogCreator)
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val rootView: View = inflater.inflate(
-            R.layout.fragment_fragment_favorites, container, false
-        )
-        rvCities = rootView.findViewById(R.id.rvFavoriteCities)
-        svCity = rootView.findViewById(R.id.svCity)
-        return rootView
-    }
 }

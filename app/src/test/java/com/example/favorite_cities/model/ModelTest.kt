@@ -1,5 +1,8 @@
 package com.example.favorite_cities.model
 
+import android.content.res.Resources
+import com.example.favorite_cities.App
+import com.example.favorite_cities.R
 import com.example.favorite_cities.model.sharedpreferences.PreferenceManager
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Assert
@@ -7,7 +10,8 @@ import org.junit.Test
 
 class ModelTest {
     private val preferenceManager: PreferenceManager = mock()
-    private var model: CitiesModel = CitiesModel(SIMPLE_CITIES_LIST, preferenceManager)
+    private val activity: App = mock()
+    private var model: CitiesModel = CitiesModel(activity)
 
     private fun stubToGetTheFavoriteList() {
         val setOfIndexOfTheFavorites: Set<String> =
@@ -30,7 +34,15 @@ class ModelTest {
 
     @Test
     fun `updateCitiesLists when update cities list then assert generalCities`() {
-        model.updateCitiesLists(SIMPLE_CITIES_LIST)
+        val mockRes: Resources = mock()
+        whenever(activity.resources)
+            .thenReturn(mockRes)
+        whenever(activity.resources.getStringArray(any()))
+            .thenReturn(arrayOf<String>())
+        whenever(activity.resources.getStringArray(R.array.cities).toList())
+            .thenReturn(SIMPLE_CITIES_LIST)
+
+        model.updateCitiesLists()
 
         val citiesListsExpected: List<String> = SIMPLE_CITIES_LIST
         val citiesListActual: List<String> = model.generalCities
@@ -40,20 +52,20 @@ class ModelTest {
     @Test
     fun `updateCitiesLists when general entered text is null or empty then assert generalCitiesFiltered`() {
         model.setGeneralEnteredText(null)
-        model.updateCitiesLists(SIMPLE_CITIES_LIST)
+        model.updateCitiesLists()
 
         val citiesListsExpected: List<String> = SIMPLE_CITIES_LIST
-        val citiesListActual: List<String> = model.getGeneralCitiesFiltered()
+        val citiesListActual: List<String> = model.generalCitiesFiltered
         Assert.assertEquals(citiesListsExpected, citiesListActual)
     }
 
     @Test
     fun `updateCitiesLists when general entered text isn't null or empty then assert generalCitiesFiltered`() {
         model.setGeneralEnteredText(SIMPLE_ENTERED_TEXT)
-        model.updateCitiesLists(SIMPLE_CITIES_LIST)
+        model.updateCitiesLists()
 
         val citiesListsExpected: List<String> = GENERAL_CITIES_BY_ENTERED_TEXT
-        val citiesListActual: List<String> = model.getGeneralCitiesFiltered()
+        val citiesListActual: List<String> = model.generalCitiesFiltered
         Assert.assertEquals(citiesListsExpected, citiesListActual)
     }
 
@@ -62,7 +74,7 @@ class ModelTest {
         setSimpleFavoriteCities(null)
         stubToGetTheFavoriteList()
 
-        model.updateCitiesLists(SIMPLE_CITIES_LIST)
+        model.updateCitiesLists()
 
         val citiesListsExpected: List<String> = listOf()
         val citiesListActual: List<String> = model.favoriteCities
@@ -74,10 +86,10 @@ class ModelTest {
         setSimpleFavoriteCities(null)
         stubToGetTheFavoriteList()
 
-        model.updateCitiesLists(SIMPLE_CITIES_LIST)
+        model.updateCitiesLists()
 
         val citiesListsExpected: List<String> = listOf()
-        val citiesListActual: List<String> = model.getFavoriteCitiesFiltered()
+        val citiesListActual: List<String> = model.favoriteCitiesFiltered
         Assert.assertEquals(citiesListsExpected, citiesListActual)
     }
 
@@ -86,7 +98,7 @@ class ModelTest {
         setSimpleFavoriteCities(SIMPLE_FAVORITE_CITIES_LIST)
         stubToGetTheFavoriteList()
 
-        model.updateCitiesLists(SIMPLE_CITIES_LIST)
+        model.updateCitiesLists()
 
         val citiesListsExpected: List<String> = SIMPLE_FAVORITE_CITIES_LIST
         val citiesListActual: List<String> = model.favoriteCities
@@ -99,10 +111,10 @@ class ModelTest {
         stubToGetTheFavoriteList()
 
         model.setFavoriteEnteredText(null)
-        model.updateCitiesLists(SIMPLE_CITIES_LIST)
+        model.updateCitiesLists()
 
         val citiesListsExpected: List<String> = SIMPLE_FAVORITE_CITIES_LIST
-        val citiesListActual: List<String> = model.getFavoriteCitiesFiltered()
+        val citiesListActual: List<String> = model.favoriteCitiesFiltered
         Assert.assertEquals(citiesListsExpected, citiesListActual)
     }
 
@@ -112,10 +124,10 @@ class ModelTest {
         stubToGetTheFavoriteList()
         model.setFavoriteEnteredText(SIMPLE_ENTERED_TEXT)
 
-        model.updateCitiesLists(SIMPLE_CITIES_LIST)
+        model.updateCitiesLists()
 
         val citiesListsExpected: List<String> = FAVORITE_CITIES_BY_ENTERED_TEXT
-        val citiesListActual: List<String> = model.getFavoriteCitiesFiltered()
+        val citiesListActual: List<String> = model.favoriteCitiesFiltered
         Assert.assertEquals(citiesListsExpected, citiesListActual)
     }
 
@@ -124,7 +136,7 @@ class ModelTest {
         model.filterGeneralList(SIMPLE_ENTERED_TEXT)
 
         val enteredTextExpected: String = SIMPLE_ENTERED_TEXT
-        val enteredTextActual: String? = model.getGeneralEnteredText()
+        val enteredTextActual: String? = model.generalEnteredText
         Assert.assertEquals(enteredTextExpected, enteredTextActual)
     }
 
@@ -133,7 +145,7 @@ class ModelTest {
         model.filterGeneralList(BLANK_ENTERED_TEXT)
 
         val citiesListsExpected: List<String> = SIMPLE_CITIES_LIST
-        val citiesListActual: List<String> = model.getGeneralCitiesFiltered()
+        val citiesListActual: List<String> = model.generalCitiesFiltered
         Assert.assertEquals(citiesListsExpected, citiesListActual)
     }
 
@@ -142,7 +154,7 @@ class ModelTest {
         model.filterGeneralList(SIMPLE_ENTERED_TEXT)
 
         val citiesListsExpected: List<String> = GENERAL_CITIES_BY_ENTERED_TEXT
-        val citiesListActual: List<String> = model.getGeneralCitiesFiltered()
+        val citiesListActual: List<String> = model.generalCitiesFiltered
         Assert.assertEquals(citiesListsExpected, citiesListActual)
     }
 
@@ -151,7 +163,7 @@ class ModelTest {
         model.filterFavoriteList(SIMPLE_ENTERED_TEXT)
 
         val enteredTextExpected: String = SIMPLE_ENTERED_TEXT
-        val enteredTextActual: String? = model.getFavoriteEnteredText()
+        val enteredTextActual: String? = model.favoriteEnteredText
         Assert.assertEquals(enteredTextExpected, enteredTextActual)
     }
 
@@ -161,7 +173,7 @@ class ModelTest {
         model.filterFavoriteList(SIMPLE_ENTERED_TEXT)
 
         val citiesListsExpected: List<String> = listOf()
-        val citiesListActual: List<String> = model.getFavoriteCitiesFiltered()
+        val citiesListActual: List<String> = model.favoriteCitiesFiltered
         Assert.assertEquals(citiesListsExpected, citiesListActual)
     }
 
@@ -171,7 +183,7 @@ class ModelTest {
         model.filterFavoriteList(BLANK_ENTERED_TEXT)
 
         val citiesListsExpected: List<String> = SIMPLE_FAVORITE_CITIES_LIST
-        val citiesListActual: List<String> = model.getFavoriteCitiesFiltered()
+        val citiesListActual: List<String> = model.favoriteCitiesFiltered
         Assert.assertEquals(citiesListsExpected, citiesListActual)
     }
 
@@ -181,26 +193,8 @@ class ModelTest {
         model.filterFavoriteList(SIMPLE_ENTERED_TEXT)
 
         val citiesListsExpected: List<String> = FAVORITE_CITIES_BY_ENTERED_TEXT
-        val citiesListActual: List<String> = model.getFavoriteCitiesFiltered()
+        val citiesListActual: List<String> = model.favoriteCitiesFiltered
         Assert.assertEquals(citiesListsExpected, citiesListActual)
-    }
-
-    @Test
-    fun `setVisibleFavoriteFragment when value = true then assert returned value getVisibleFavoriteFragment`() {
-        model.setVisibleFavoriteFragment(true)
-
-        val visibleExpected = true
-        val visibleActual = model.getVisibleFavoriteFragment()
-        Assert.assertEquals(visibleExpected, visibleActual)
-    }
-
-    @Test
-    fun `setVisibleFavoriteFragment when value = false then assert returned value getVisibleFavoriteFragment`() {
-        model.setVisibleFavoriteFragment(false)
-
-        val visibleExpected = false
-        val visibleActual = model.getVisibleFavoriteFragment()
-        Assert.assertEquals(visibleExpected, visibleActual)
     }
 
     @Test
@@ -220,7 +214,7 @@ class ModelTest {
         model.addFavoriteCity(SIMPLE_CITY)
 
         val citiesListsExpected: List<String> = SIMPLE_FAVORITE_CITIES_LIST.plus(SIMPLE_CITY)
-        val citiesListActual: List<String> = model.getFavoriteCitiesFiltered()
+        val citiesListActual: List<String> = model.favoriteCitiesFiltered
         Assert.assertEquals(citiesListsExpected, citiesListActual)
     }
 
@@ -234,7 +228,7 @@ class ModelTest {
             .filter {
                 it.contains(SIMPLE_ENTERED_TEXT, true)
             }
-        val citiesListActual: List<String> = model.getFavoriteCitiesFiltered()
+        val citiesListActual: List<String> = model.favoriteCitiesFiltered
         Assert.assertEquals(citiesListsExpected, citiesListActual)
     }
 
@@ -265,7 +259,7 @@ class ModelTest {
 
         val citiesListsExpected: List<String> =
             FAVORITE_CITIES_BY_ENTERED_TEXT.minus(SIMPLE_FAVORITE_CITY)
-        val citiesListActual: List<String> = model.getFavoriteCitiesFiltered()
+        val citiesListActual: List<String> = model.favoriteCitiesFiltered
         Assert.assertEquals(citiesListsExpected, citiesListActual)
     }
 

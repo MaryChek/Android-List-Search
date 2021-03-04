@@ -6,17 +6,20 @@ import com.example.favorite_cities.fragments.FavoritesFragment
 import com.example.favorite_cities.fragments.GeneralFragment
 
 class CollectionFragmentAdapter(
-    fragment: Fragment,
-    private val countFragment: Int
+    fragment: Fragment
 ) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int =
-        countFragment
+        COUNT_OF_PAGE
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> GeneralFragment()
             else -> FavoritesFragment()
         }
+    }
+
+    companion object {
+        private const val COUNT_OF_PAGE = 2
     }
 }

@@ -30,7 +30,7 @@ class BasePresenterTest {
         presenter.onViewCreated()
 
         verify(dialogCreator, times(1))
-            .setMessageBeforeAdding(R.string.message_favorite_city)
+            .setMessageBeforeAdding(R.string.message_for_unelected_city)
     }
 
     @Test
@@ -46,7 +46,7 @@ class BasePresenterTest {
         presenter.onViewCreated()
 
         verify(dialogCreator, times(1))
-            .setMessageBeforeRemoving(R.string.message_unelected_city)
+            .setMessageBeforeRemoving(R.string.message_for_favorite_city)
     }
 
     @Test
@@ -110,22 +110,22 @@ class BasePresenterTest {
         verify(view, times(1))
             .showDialogAdding()
     }
-
-    @Test
-    fun `addFavoriteCity when add favorite city then verify addFavoriteCity invoked`() {
-        presenter.addFavoriteCity(FAVORITE_CITY)
-
-        verify(model, times(1))
-            .addFavoriteCity(FAVORITE_CITY)
-    }
-
-    @Test
-    fun `removeFavoriteCity when remove favorite city then verify removeFavoriteCity invoked`() {
-        presenter.removeFavoriteCity(FAVORITE_CITY)
-
-        verify(model, times(1))
-            .removeFavoriteCity(FAVORITE_CITY)
-    }
+//
+//    @Test
+//    fun `addFavoriteCity when add favorite city then verify addFavoriteCity invoked`() {
+//        presenter.addFavoriteCity(FAVORITE_CITY)
+//
+//        verify(model, times(1))
+//            .addFavoriteCity(FAVORITE_CITY)
+//    }
+//
+//    @Test
+//    fun `removeFavoriteCity when remove favorite city then verify removeFavoriteCity invoked`() {
+//        presenter.removeFavoriteCity(FAVORITE_CITY)
+//
+//        verify(model, times(1))
+//            .removeFavoriteCity(FAVORITE_CITY)
+//    }
 
     @Test
     fun `afterPositiveClickInDialog when clicked add button then verify addFavoriteCity invoked`() {
@@ -140,7 +140,7 @@ class BasePresenterTest {
         presenter.afterPositiveClickInDialog(R.string.text_button_add, FAVORITE_CITY)
 
         verify(view, times(1))
-            .showToastWithText(R.string.message_after_adding, FAVORITE_CITY)
+            .showUserMessage(R.string.message_after_adding, FAVORITE_CITY)
     }
 
     @Test
@@ -156,7 +156,7 @@ class BasePresenterTest {
         presenter.afterPositiveClickInDialog(R.string.text_button_remove, FAVORITE_CITY)
 
         verify(view, times(1))
-            .showToastWithText(R.string.message_after_removal, FAVORITE_CITY)
+            .showUserMessage(R.string.message_after_removal, FAVORITE_CITY)
     }
 
     companion object {

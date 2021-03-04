@@ -1,16 +1,20 @@
 package com.example.favorite_cities.contract
 
+import androidx.annotation.StringRes
+
 interface CollectionContract {
 
     interface View : BaseContract.View {
-        fun showPagerWithFragments(countFragment: Int)
+        fun showPagerWithFragments()
 
-        fun setFavoriteFragmentAsCurrent(currentFragmentPosition: Int)
+        fun setCurrentFragmentByPosition(position: Int)
 
-        fun addTitlesInTabLayout(fragmentsNamesId: Array<Int>)
+        fun setTitlesInTabLayout(@StringRes tabTitleResIds: List<Int>)
     }
 
     interface Presenter : BaseContract.Presenter<View> {
         fun onFragmentsShown()
+
+        fun onPageSelected(position: Int)
     }
 }

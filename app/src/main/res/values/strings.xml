@@ -40,8 +40,8 @@
     <string name="name_fragment_general">General</string>
     <string name="name_fragment_favorite">Favorite</string>
     <string name="no_favorite_cities">No favorite cities</string>
-    <string name="message_unelected_city">Want to add this city to your favorites?</string>
-    <string name="message_favorite_city">Want to remove this city from your favorites?</string>
+    <string name="message_for_unelected_city">Want to add this city to your favorites?</string>
+    <string name="message_for_favorite_city">Want to remove this city from your favorites?</string>
     <string name="text_button_add">Add</string>
     <string name="text_button_remove">Remove</string>
     <string name="button_cancel">Cancel</string>

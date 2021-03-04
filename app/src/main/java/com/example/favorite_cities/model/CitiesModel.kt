@@ -1,162 +1,126 @@
 package com.example.favorite_cities.model
 
 import androidx.annotation.VisibleForTesting
+import com.example.favorite_cities.App
+import com.example.favorite_cities.R
 import com.example.favorite_cities.model.sharedpreferences.PreferenceManager
 
-open class CitiesModel(
-    newCitiesList: List<String>,
-    private var preferenceManager: PreferenceManager?
+class CitiesModel(
+    private val activity: App,
+    newCitiesList: List<String> = activity.resources.getStringArray(R.array.cities).toList(),
+    private val preferenceManager: PreferenceManager = PreferenceManager(activity)
 ) {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     var generalCities: List<String> = listOf()
+
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     var favoriteCities: List<String> = listOf()
 
-    private var generalCitiesFiltered: List<String> = listOf()
-    private var favoriteCitiesFiltered: List<String> = listOf()
+    var generalEnteredText: String? = null
+        private set
+    var favoriteEnteredText: String? = null
+        private set
 
-    private var generalEnteredText: String? = null
-    private var favoriteEnteredText: String? = null
-
-    private var favoritesFragmentVisibility: Boolean = false
+    var positionOfTheCurrentFragment = 0
 
     init {
         generalCities = newCitiesList
-        generalCitiesFiltered = generalCities
         favoriteCities = getFavoriteSavedList()
-        favoriteCitiesFiltered = favoriteCities
     }
 
-    fun updateCitiesLists(newCitiesList: List<String>) {
-        generalCities = newCitiesList
-        generalCitiesFiltered = getCurrentCitiesList(generalCities, generalEnteredText)
+    fun updateCitiesLists() {
+        generalCities = activity.resources.getStringArray(R.array.cities).toList()
         favoriteCities = getFavoriteSavedList()
-        favoriteCitiesFiltered = getCurrentCitiesList(favoriteCities, favoriteEnteredText)
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    open fun updateFavoriteCities(newCitiesList: List<String>) {
+    fun updateFavoriteCities(newCitiesList: List<String>) {
         favoriteCities = newCitiesList
     }
 
-    open fun getGeneralCitiesFiltered(): List<String> =
-        generalCitiesFiltered
+    fun getGeneralCitiesFiltered(): List<String> =
+        filter(generalEnteredText, generalCities)
 
-    open fun getFavoriteCitiesFiltered(): List<String> =
-        favoriteCitiesFiltered
+    fun getFavoriteCitiesFiltered(): List<String> =
+        filter(favoriteEnteredText, favoriteCities)
 
-    open fun getGeneralEnteredText(): String? =
-        generalEnteredText
-
-    open fun getFavoriteEnteredText(): String? =
-        favoriteEnteredText
-
-    open fun isFavoriteCitiesEmpty(): Boolean =
+    fun isFavoriteCitiesEmpty(): Boolean =
         favoriteCities.isEmpty()
 
-    open fun isFavoriteCitiesNotEmpty(): Boolean =
+    fun isFavoriteCitiesNotEmpty(): Boolean =
         favoriteCities.isNotEmpty()
 
-    open fun isGeneralCitiesFilteredEmpty(): Boolean =
-        generalCitiesFiltered.isEmpty()
+//    fun isGeneralCitiesFilteredEmpty(): Boolean =
+//        getGeneralCitiesFiltered().isEmpty()
+//
+//    fun isFavoriteCitiesFilteredEmpty(): Boolean =
+//        getFavoriteCitiesFiltered().isEmpty()
 
-    open fun isFavoriteCitiesFilteredEmpty(): Boolean =
-        favoriteCitiesFiltered.isEmpty()
-
-    open fun filterGeneralList(enteredText: String?) {
+    fun filterGeneralList(enteredText: String?) =
         setGeneralEnteredText(enteredText)
-        generalCitiesFiltered = filter(enteredText, generalCities)
-    }
 
-    open fun filterFavoriteList(enteredText: String?) {
+    fun filterFavoriteList(enteredText: String?) =
         setFavoriteEnteredText(enteredText)
-        favoriteCitiesFiltered = filter(enteredText, favoriteCities)
-    }
 
-    open fun setVisibleFavoriteFragment(visible: Boolean) {
-        favoritesFragmentVisibility = visible
-    }
-
-    open fun getVisibleFavoriteFragment(): Boolean =
-        favoritesFragmentVisibility
-
-    open fun addFavoriteCity(nameCity: String) {
+    fun addFavoriteCity(nameCity: String) {
         favoriteCities = favoriteCities.plus(nameCity)
-        favoriteCitiesFiltered = filter(favoriteEnteredText, favoriteCities)
-
         saveFavoriteList(favoriteCities)
     }
 
-    open fun removeFavoriteCity(nameCity: String) {
+    fun removeFavoriteCity(nameCity: String) {
         favoriteCities = favoriteCities.minus(nameCity)
-        favoriteCitiesFiltered = favoriteCitiesFiltered.minus(nameCity)
-
         saveFavoriteList(favoriteCities)
     }
 
-    open fun findInFavorites(nameCity: String): Boolean =
-        find(nameCity, favoriteCities)
+    fun findInFavorites(nameCity: String): Boolean =
+        favoriteCities.any {
+            it == nameCity
+        }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    open fun setGeneralEnteredText(value: String?) {
+    fun setGeneralEnteredText(value: String?) {
         generalEnteredText = value
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    open fun setFavoriteEnteredText(value: String?) {
+    fun setFavoriteEnteredText(value: String?) {
         favoriteEnteredText = value
     }
 
-    private fun getCurrentCitiesList(
-        fullCitiesList: List<String>,
-        enteredText: String?
-    ): List<String> =
-        when (enteredText.isNullOrEmpty()) {
-            true -> fullCitiesList
-            false -> filter(enteredText, fullCitiesList)
-        }
-
-    private fun filter(enteredText: String?, ListCities: List<String>): List<String> {
-        val searchString: String = enteredText ?: ""
-        return if (searchString.isBlank()) {
-            ListCities
-        } else {
-            ListCities.filter {
-                it.contains(searchString, true)
+    private fun filter(enteredText: String?, ListCities: List<String>): List<String> =
+        when (enteredText.isNullOrBlank()) {
+            true -> ListCities
+            false -> ListCities.filter {
+                it.contains(enteredText, true)
             }
-        }
-    }
-
-    private fun find(nameCity: String, listCities: List<String>): Boolean =
-        listCities.any {
-            it == nameCity
         }
 
     private fun saveFavoriteList(savedList: List<String>) {
-        val citiesIndexSet: HashSet<String> = getIndexHashSetOf(savedList)
-        preferenceManager?.setList(KEY_SAVED_CITIES_FAVORITE, citiesIndexSet)
+        val citiesIndexSet: Set<String> = getIndexSetOf(savedList)
+        preferenceManager.putSetByKey(KEY_INDEXES_OF_FAVORITE, citiesIndexSet)
     }
 
     private fun getFavoriteSavedList(): List<String> {
-        val hashSet: Set<String>? = preferenceManager?.getList(KEY_SAVED_CITIES_FAVORITE)
-        var list: List<String> = listOf()
-        hashSet?.forEach {
-            val index: Int = it.toInt()
-            list = list.plus(generalCities[index])
+        val list: MutableList<String> = mutableListOf()
+        preferenceManager.getSetByKey(KEY_INDEXES_OF_FAVORITE).forEach { strIndex ->
+            strIndex.toIntOrNull()?.let {
+                list.add(generalCities[it])
+            }
         }
         return list
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    open fun getIndexHashSetOf(list: List<String>): HashSet<String> {
-        val indexSet: HashSet<String> = HashSet()
+    fun getIndexSetOf(list: List<String>): Set<String> {
+        val setOfIndex: MutableSet<String> = mutableSetOf()
         list.forEach {
-            indexSet.add(generalCities.indexOf(it).toString())
+            val strIndex = generalCities.indexOf(it).toString()
+            setOfIndex.add(strIndex)
         }
-        return indexSet
+        return setOfIndex
     }
 
     companion object {
-        private const val KEY_SAVED_CITIES_FAVORITE = "CitiesFavorite"
+        private const val KEY_INDEXES_OF_FAVORITE = "CitiesFavorite"
     }
 }

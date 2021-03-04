@@ -40,8 +40,8 @@
     <string name="name_fragment_general">Основное</string>
     <string name="name_fragment_favorite">Избранное</string>
     <string name="no_favorite_cities">Нет избранных городов</string>
-    <string name="message_unelected_city">Хотите добавить этот город в избранное?</string>
-    <string name="message_favorite_city">Хотите убрать этот город из избранного?</string>
+    <string name="message_for_unelected_city">Хотите добавить этот город в избранное?</string>
+    <string name="message_for_favorite_city">Хотите убрать этот город из избранного?</string>
     <string name="text_button_add">Добавить</string>
     <string name="text_button_remove">Удалить</string>
     <string name="button_cancel">Отмена</string>

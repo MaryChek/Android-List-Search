@@ -1,23 +1,26 @@
 package com.example.favorite_cities.fragments
 
-import android.app.Activity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.favorite_cities.*
 import com.example.favorite_cities.adapter.CollectionFragmentAdapter
 import com.example.favorite_cities.contract.CollectionContract
+import com.example.favorite_cities.databinding.FragmentCollectionBinding
 import com.example.favorite_cities.model.CitiesModel
 import com.example.favorite_cities.presenter.CollectionPresenter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
-class CollectionFragment : Fragment(R.layout.fragment_collection), CollectionContract.View {
+class CollectionFragment : Fragment(), CollectionContract.View {
     private var presenter: CollectionPresenter? = null
-    private lateinit var adapter: CollectionFragmentAdapter
-    private lateinit var pagerCities: ViewPager2
-    private lateinit var tabLayoutCities: TabLayout
+    private var adapter: CollectionFragmentAdapter? = null
+    private var pagerCities: ViewPager2? = null
+    private var tabLayoutCities: TabLayout? = null
+    private var binding: FragmentCollectionBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,19 +28,38 @@ class CollectionFragment : Fragment(R.layout.fragment_collection), CollectionCon
     }
 
     private fun init(savedInstanceState: Bundle?) {
-        val activity: Activity = activity as MainActivity
-        val app: App = activity.applicationContext as App
-        if (savedInstanceState != null)
-            app.updateListInModel()
+        val app: App = requireActivity().applicationContext as App
         val model: CitiesModel = app.model
+        if (savedInstanceState != null) {
+            model.updateCitiesLists()
+        }
         presenter = CollectionPresenter(model, this)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentCollectionBinding.inflate(inflater, container, false)
+        pagerCities = binding?.pagerCities
+        tabLayoutCities = binding?.tabLayoutCities
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        pagerCities = view.findViewById(R.id.pagerCities)
-        tabLayoutCities = view.findViewById(R.id.tabLayoutCities)
+        registerOnPageChange()
         presenter?.onViewCreated()
+    }
+
+    private fun registerOnPageChange() {
+        pagerCities?.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                presenter?.onPageSelected(position)
+            }
+        })
     }
 
     override fun onDestroy() {
@@ -45,21 +67,26 @@ class CollectionFragment : Fragment(R.layout.fragment_collection), CollectionCon
         presenter?.onDestroy()
     }
 
-    override fun showPagerWithFragments(countFragment: Int) {
-        adapter = CollectionFragmentAdapter(this, countFragment)
-        pagerCities.adapter = adapter
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
+
+    override fun showPagerWithFragments() {
+        adapter = CollectionFragmentAdapter(this)
+        pagerCities?.adapter = adapter
         presenter?.onFragmentsShown()
     }
 
-    override fun addTitlesInTabLayout(fragmentsNamesId: Array<Int>) {
-        TabLayoutMediator(tabLayoutCities, pagerCities) { tab, position ->
-            fragmentsNamesId[position].let {
+    override fun setTitlesInTabLayout(tabTitleResIds: List<Int>) {
+        TabLayoutMediator(tabLayoutCities!!, pagerCities!!) { tab, position ->
+            tabTitleResIds[position].let {
                 tab.text = resources.getString(it)
             }
         }.attach()
     }
 
-    override fun setFavoriteFragmentAsCurrent(currentFragmentPosition: Int) {
-        pagerCities.currentItem = currentFragmentPosition
+    override fun setCurrentFragmentByPosition(position: Int) {
+        pagerCities?.currentItem = position
     }
 }

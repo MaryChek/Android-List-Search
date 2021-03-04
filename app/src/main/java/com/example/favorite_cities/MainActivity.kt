@@ -13,9 +13,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createFragmentGeneral() {
-        val fragmentManager = supportFragmentManager
         val collectionFragment = CollectionFragment()
-        val transaction = fragmentManager.beginTransaction()
+        val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fragmentContainer, collectionFragment)
             .setReorderingAllowed(true)
             .addToBackStack(null)

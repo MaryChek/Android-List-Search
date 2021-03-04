@@ -2,91 +2,63 @@ package com.example.favorite_cities
 
 import android.app.Activity
 import android.app.Dialog
+import android.app.SharedElementCallback
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import java.util.*
+import kotlin.reflect.KFunction1
 
-open class DialogCreator {
+class DialogCreator {
     private var currentDialog: Dialog? = null
 
-    private var functionAfterPositiveClick: (Int, String?) -> Unit = { _, _ -> }
+    private lateinit var functionAfterPositiveClick: (String) -> Unit
     private var title: String? = null
-    private var positiveButtonAdd: Int? = null
-    private var positiveButtonRemove: Int? = null
+    private var positiveButton: Int? = null
     private var negativeButton: Int? = null
-    private var messageBeforeAdding: Int? = null
-    private var messageBeforeRemoving: Int? = null
+    private var message: Int? = null
 
-    open fun setTitle(newTitle: String?) {
+    fun setTitle(newTitle: String?) {
         title = newTitle
     }
 
-    open fun setFunctionOnPositive(function: (Int, String?) -> Unit) {
+    fun setFunctionOnPositive(function: (String) -> Unit) {
         functionAfterPositiveClick = function
     }
 
-    open fun setButtonAddTitle(titleId: Int) {
-        positiveButtonAdd = titleId
+    fun setPositiveButtonTitle(@StringRes titleId: Int) {
+        positiveButton = titleId
     }
 
-    open fun setMessageBeforeAdding(messageId: Int) {
-        messageBeforeAdding = messageId
+    fun setMessage(@StringRes messageId: Int) {
+        message = messageId
     }
 
-    open fun setButtonRemoveTitle(titleId: Int) {
-        positiveButtonRemove = titleId
-    }
-
-    open fun setMessageBeforeRemoving(messageId: Int) {
-        messageBeforeRemoving = messageId
-    }
-
-    open fun setNegativeButtonTitle(titleId: Int) {
+    fun setNegativeButtonTitle(@StringRes titleId: Int) {
         negativeButton = titleId
     }
 
-    fun showDialogAdding(activity: Activity?) {
-        currentDialog = activity?.let {
+    fun showDialog(activity: Activity, callbackParams: String) {
+        currentDialog = activity.let {
             val builder = AlertDialog.Builder(it)
                 .setCancelable(true)
             title?.let { title ->
                 builder.setTitle(title)
             }
-            messageBeforeAdding?.let { message ->
+            message?.let { message ->
                 builder.setMessage(message)
             }
-            positiveButtonAdd?.let { buttonTitle ->
+            positiveButton?.let { buttonTitle ->
                 builder.setPositiveButton(buttonTitle) { _, _ ->
-                    functionAfterPositiveClick(buttonTitle, title)
+                    functionAfterPositiveClick(callbackParams)
                 }
             }
             negativeButton?.let { negativeButton ->
                 builder.setNegativeButton(negativeButton) { _, _ -> }
             }
             builder.show()
-        } ?: throw IllegalStateException("Activity cannot be null")
+        }
     }
 
-    fun showDialogRemoving(activity: Activity?) {
-        currentDialog = activity?.let {
-            val builder = AlertDialog.Builder(it)
-                .setCancelable(true)
-            title?.let { title ->
-                builder.setTitle(title)
-            }
-            messageBeforeRemoving?.let { message ->
-                builder.setMessage(message)
-            }
-            positiveButtonRemove?.let { buttonTitle ->
-                builder.setPositiveButton(buttonTitle) { _, _ ->
-                    functionAfterPositiveClick(buttonTitle, title)
-                }
-            }
-            negativeButton?.let { negativeButton ->
-                builder.setNegativeButton(negativeButton) { _, _ -> }
-            }
-            builder.show()
-        } ?: throw IllegalStateException("Activity cannot be null")
-    }
-
-    open fun onDestroy() =
+    fun onDestroy() =
         currentDialog?.dismiss()
 }

@@ -12,48 +12,34 @@ class CollectionPresenterTest {
     private val presenter: CollectionPresenter = CollectionPresenter(model, view)
 
     @Test
-    fun `onViewCreated when view created then verify showPagerWithFragments with count fragments`() {
+    fun `onViewCreated when view created then verify showPagerWithFragments invoked`() {
         presenter.onViewCreated()
 
         verify(view, times(1))
-            .showPagerWithFragments(COUNT_FRAGMENTS)
+            .showPagerWithFragments()
     }
 
     @Test
-    fun `onFragmentsShown when getVisibleFavoriteFragment returned "true" then verify setFavoriteFragmentAsCurrent invoked`() {
-        whenever(model.getVisibleFavoriteFragment())
-            .thenReturn(true)
-
+    fun `onFragmentsShown when fragments are show then verify setFavoriteFragmentAsCurrent invoked`() {
         presenter.onFragmentsShown()
 
         verify(view, times(1))
-            .setFavoriteFragmentAsCurrent(FAVORITE_FRAGMENT_POSITION)
+            .setCurrentFragmentByPosition(any())
     }
 
     @Test
-    fun `onFragmentsShown when getVisibleFavoriteFragment returned "false" then verify setFavoriteFragmentAsCurrent not invoked`() {
-        whenever(model.getVisibleFavoriteFragment())
-            .thenReturn(false)
-
-        presenter.onFragmentsShown()
-
-        verify(view, times(0))
-            .setFavoriteFragmentAsCurrent(any())
-    }
-    @Test
-    fun `onFragmentsShown when fragments show then verify addTitlesInTabLayout with map of titles`() {
+    fun `onFragmentsShown when fragments are show then verify setTitlesInTabLayout with map of titles`() {
         presenter.onFragmentsShown()
 
         verify(view, times(1))
-            .addTitlesInTabLayout(MAP_OF_FRAGMENTS_TITLES)
+            .setTitlesInTabLayout(LiST_OF_TITLE_RES_IDS)
     }
 
     companion object {
         private const val COUNT_FRAGMENTS = 2
-        private val MAP_OF_FRAGMENTS_TITLES = arrayOf(
+        private val LiST_OF_TITLE_RES_IDS = listOf(
             R.string.name_fragment_general,
             R.string.name_fragment_favorite
         )
-        const val FAVORITE_FRAGMENT_POSITION = 1
     }
 }

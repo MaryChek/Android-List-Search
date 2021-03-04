@@ -77,11 +77,11 @@ class GeneralPresenterTest {
     }
 
     @Test
-    fun `onFragmentVisible when fragment visible then verify setVisibleFavoriteFragment with "false" invoked`() {
+    fun `onFragmentVisible when fragment visible then verify setPositionOfTheCurrentFragment with position general fragment invoked`() {
         presenter.onFragmentVisible()
 
         verify(model, times(1))
-            .setVisibleFavoriteFragment(false)
+            .setPositionOfTheCurrentFragment(POSITION_OF_FRAGMENT)
     }
 
     @Test
@@ -128,5 +128,6 @@ class GeneralPresenterTest {
 
     companion object {
         private const val SIMPLE_ENTERED_TEXT = "o"
+        private const val POSITION_OF_FRAGMENT = 0
     }
 }

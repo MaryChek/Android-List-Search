@@ -16,17 +16,4 @@ class GeneralFragment :
         super.onCreate(savedInstanceState)
         presenter = GeneralPresenter(this, model, dialogCreator)
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val rootView: View = inflater.inflate(
-            R.layout.fragment_fragment_general, container, false
-        )
-        rvCities = rootView.findViewById(R.id.rvGeneralCities)
-        svCity = rootView.findViewById(R.id.svCity)
-        return rootView
-    }
 }

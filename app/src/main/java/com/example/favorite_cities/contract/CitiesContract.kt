@@ -1,33 +1,33 @@
 package com.example.favorite_cities.contract
 
+import androidx.annotation.StringRes
+
 interface CitiesContract {
     interface View : BaseContract.View {
-        fun showCitiesList(citiesList: List<String>)
-
         fun updateCitiesList(modifiedList: List<String>)
 
-        fun showDialogAdding()
+        fun showDialogAdding(nameCity: String)
 
-        fun showDialogRemoving()
+        fun showDialogRemoving(nameCity: String)
 
-        fun showSearchError(textId: Int)
+        fun showEmptyListHint(@StringRes textId: Int)
 
-        fun hideSearchError()
+        fun hideEmptyListHint()
 
-        fun showToastWithText(stringId: Int, nameCity: String)
+        fun showUserMessage(@StringRes stringId: Int, nameCity: String)
 
         fun setEnteredText(text: CharSequence)
     }
 
     interface Presenter<V : View> : BaseContract.Presenter<V> {
-        fun onFragmentVisible()
+        fun onTabVisible()
 
         fun onCityClicked(nameCity: String)
 
-        fun searchTextChanged(text: String?)
+        fun onSearchTextChanged(text: String?)
 
-        fun addFavoriteCity(nameCity: String)
+        fun onAddButtonClick(nameCity: String)
 
-        fun removeFavoriteCity(nameCity: String)
+        fun onRemoveButtonClick(nameCity: String)
     }
 }

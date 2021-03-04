@@ -1,5 +1,6 @@
 package com.example.favorite_cities.presenter
 
+import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
 import com.example.favorite_cities.DialogCreator
 import com.example.favorite_cities.R
@@ -12,61 +13,96 @@ open class BaseCitiesPresenter<V : CitiesContract.View>(
     newDialogCreator: DialogCreator
 ) : BasePresenter<V>(newView), CitiesContract.Presenter<V> {
 
-    private val dialogCreator: DialogCreator = newDialogCreator
     protected val model: CitiesModel = newModel
+    private val dialogCreator: DialogCreator = newDialogCreator
+
+    protected open fun getCitiesCollection(): CitiesKey =
+        CitiesKey.GENERAL
 
     override fun onViewCreated() {
-        initDialogCreator()
+        getEnteredText()?.let {
+            view.setEnteredText(it)
+        }
+        view.updateCitiesList(getFilteredList())
     }
+
+    private fun getEnteredText(): String? =
+        when (getCitiesCollection()) {
+            CitiesKey.FAVORITE -> model.favoriteEnteredText
+            CitiesKey.GENERAL -> model.generalEnteredText
+        }
 
     override fun onDestroy() {
         dialogCreator.onDestroy()
     }
 
-    override fun onFragmentVisible() {
-
+    override fun onTabVisible() {
+        if (isCollectionFavorite()) {
+            showOrHideEmptyListHint()
+            view.updateCitiesList(model.getFavoriteCitiesFiltered())
+        }
     }
 
     override fun onCityClicked(nameCity: String) {
         dialogCreator.setTitle(nameCity)
         when (model.findInFavorites(nameCity)) {
-            true -> view.showDialogRemoving()
-            false -> view.showDialogAdding()
+            true -> view.showDialogRemoving(nameCity)
+            false -> view.showDialogAdding(nameCity)
         }
     }
 
-    override fun searchTextChanged(text: String?) {
-
+    override fun onSearchTextChanged(text: String?) {
+        filter(text)
+        showOrHideEmptyListHint()
+        view.updateCitiesList(getFilteredList())
     }
 
-    override fun addFavoriteCity(nameCity: String) =
+    private fun filter(text: String?) =
+        when (getCitiesCollection()) {
+            CitiesKey.FAVORITE -> model.filterFavoriteList(text)
+            CitiesKey.GENERAL -> model.filterGeneralList(text)
+        }
+
+    private fun getFilteredList(): List<String> =
+        when (getCitiesCollection()) {
+            CitiesKey.FAVORITE -> model.getFavoriteCitiesFiltered()
+            CitiesKey.GENERAL -> model.getGeneralCitiesFiltered()
+        }
+
+    override fun onAddButtonClick(nameCity: String) {
+        addFavoriteCity(nameCity)
+        view.showUserMessage(R.string.message_after_adding, nameCity)
+    }
+
+    override fun onRemoveButtonClick(nameCity: String) {
+        removeFavoriteCity(nameCity)
+        view.showUserMessage(R.string.message_after_removal, nameCity)
+    }
+
+    private fun addFavoriteCity(nameCity: String) =
         model.addFavoriteCity(nameCity)
 
-    override fun removeFavoriteCity(nameCity: String) =
+    protected open fun removeFavoriteCity(nameCity: String) {
         model.removeFavoriteCity(nameCity)
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    open fun afterPositiveClickInDialog(positiveButtonId: Int, nameCity: String?) {
-        nameCity?.let {
-            when (positiveButtonId) {
-                R.string.text_button_add -> {
-                    addFavoriteCity(it)
-                    view.showToastWithText(R.string.message_after_adding, it)
-                }
-                R.string.text_button_remove -> {
-                    removeFavoriteCity(it)
-                    view.showToastWithText(R.string.message_after_removal, it)
-                }
-            }
+        if (isCollectionFavorite()) {
+            showOrHideEmptyListHint()
+            view.updateCitiesList(getFilteredList())
         }
     }
 
-    private fun initDialogCreator() {
-        dialogCreator.setFunctionOnPositive(this::afterPositiveClickInDialog)
-        dialogCreator.setMessageBeforeAdding(R.string.message_favorite_city)
-        dialogCreator.setButtonRemoveTitle(R.string.text_button_remove)
-        dialogCreator.setMessageBeforeRemoving(R.string.message_unelected_city)
-        dialogCreator.setButtonAddTitle(R.string.text_button_add)
-        dialogCreator.setNegativeButtonTitle(R.string.button_cancel)
+    protected open fun showOrHideEmptyListHint() =
+        if (isCollectionFavorite() && model.isFavoriteCitiesEmpty()) {
+            view.showEmptyListHint(R.string.no_favorite_cities)
+        } else if (getFilteredList().isEmpty()) {
+            view.showEmptyListHint(R.string.nothing_found)
+        } else {
+            view.hideEmptyListHint()
+        }
+
+    private fun isCollectionFavorite(): Boolean =
+        getCitiesCollection() == CitiesKey.FAVORITE
+
+    protected enum class CitiesKey {
+        GENERAL, FAVORITE
     }
 }
