@@ -1,20 +1,14 @@
 package com.example.favorite_cities.presenter
 
-import androidx.annotation.StringRes
-import androidx.annotation.VisibleForTesting
-import com.example.favorite_cities.DialogCreator
 import com.example.favorite_cities.R
 import com.example.favorite_cities.contract.CitiesContract
+import com.example.favorite_cities.model.City
 import com.example.favorite_cities.model.CitiesModel
 
 open class BaseCitiesPresenter<V : CitiesContract.View>(
-    newView: V,
-    newModel: CitiesModel,
-    newDialogCreator: DialogCreator
-) : BasePresenter<V>(newView), CitiesContract.Presenter<V> {
-
-    protected val model: CitiesModel = newModel
-    private val dialogCreator: DialogCreator = newDialogCreator
+    view: V,
+    protected val model: CitiesModel
+) : BasePresenter<V>(view), CitiesContract.Presenter<V> {
 
     protected open fun getCitiesCollection(): CitiesKey =
         CitiesKey.GENERAL
@@ -32,19 +26,14 @@ open class BaseCitiesPresenter<V : CitiesContract.View>(
             CitiesKey.GENERAL -> model.generalEnteredText
         }
 
-    override fun onDestroy() {
-        dialogCreator.onDestroy()
-    }
-
     override fun onTabVisible() {
         if (isCollectionFavorite()) {
             showOrHideEmptyListHint()
-            view.updateCitiesList(model.getFavoriteCitiesFiltered())
         }
+        view.updateCitiesList(getFilteredList())
     }
 
-    override fun onCityClicked(nameCity: String) {
-        dialogCreator.setTitle(nameCity)
+    override fun onCityIconClicked(nameCity: String) {
         when (model.findInFavorites(nameCity)) {
             true -> view.showDialogRemoving(nameCity)
             false -> view.showDialogAdding(nameCity)
@@ -63,7 +52,7 @@ open class BaseCitiesPresenter<V : CitiesContract.View>(
             CitiesKey.GENERAL -> model.filterGeneralList(text)
         }
 
-    private fun getFilteredList(): List<String> =
+    private fun getFilteredList(): List<City> =
         when (getCitiesCollection()) {
             CitiesKey.FAVORITE -> model.getFavoriteCitiesFiltered()
             CitiesKey.GENERAL -> model.getGeneralCitiesFiltered()
@@ -79,15 +68,16 @@ open class BaseCitiesPresenter<V : CitiesContract.View>(
         view.showUserMessage(R.string.message_after_removal, nameCity)
     }
 
-    private fun addFavoriteCity(nameCity: String) =
+    private fun addFavoriteCity(nameCity: String) {
         model.addFavoriteCity(nameCity)
+        showOrHideEmptyListHint()
+        view.updateCitiesList(getFilteredList())
+    }
 
     protected open fun removeFavoriteCity(nameCity: String) {
         model.removeFavoriteCity(nameCity)
-        if (isCollectionFavorite()) {
-            showOrHideEmptyListHint()
-            view.updateCitiesList(getFilteredList())
-        }
+        showOrHideEmptyListHint()
+        view.updateCitiesList(getFilteredList())
     }
 
     protected open fun showOrHideEmptyListHint() =

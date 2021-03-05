@@ -9,16 +9,8 @@ class CollectionPresenter(
     citiesView: CollectionContract.View
 ) : BasePresenter<CollectionContract.View>(citiesView), CollectionContract.Presenter {
     override fun onViewCreated() {
-        view.showPagerWithFragments()
-    }
-
-    override fun onFragmentsShown() {
-        view.setCurrentFragmentByPosition(model.positionOfTheCurrentFragment)
+        view.setCurrentPageByPosition(model.positionOfTheCurrentFragment)
         view.setTitlesInTabLayout(getTabTitleResIds())
-    }
-
-    override fun onPageSelected(position: Int) {
-        model.positionOfTheCurrentFragment = position
     }
 
     private fun getTabTitleResIds(): List<Int> =
@@ -26,4 +18,8 @@ class CollectionPresenter(
             R.string.name_fragment_general,
             R.string.name_fragment_favorite
         )
+
+    override fun onPageSelected(position: Int) {
+        model.positionOfTheCurrentFragment = position
+    }
 }

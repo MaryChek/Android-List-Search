@@ -49,8 +49,14 @@ class CollectionFragment : Fragment(), CollectionContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initPager()
         registerOnPageChange()
         presenter?.onViewCreated()
+    }
+
+    private fun initPager() {
+        adapter = CollectionFragmentAdapter(this)
+        pagerCities?.adapter = adapter
     }
 
     private fun registerOnPageChange() {
@@ -62,22 +68,6 @@ class CollectionFragment : Fragment(), CollectionContract.View {
         })
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter?.onDestroy()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
-    }
-
-    override fun showPagerWithFragments() {
-        adapter = CollectionFragmentAdapter(this)
-        pagerCities?.adapter = adapter
-        presenter?.onFragmentsShown()
-    }
-
     override fun setTitlesInTabLayout(tabTitleResIds: List<Int>) {
         TabLayoutMediator(tabLayoutCities!!, pagerCities!!) { tab, position ->
             tabTitleResIds[position].let {
@@ -86,7 +76,12 @@ class CollectionFragment : Fragment(), CollectionContract.View {
         }.attach()
     }
 
-    override fun setCurrentFragmentByPosition(position: Int) {
+    override fun setCurrentPageByPosition(position: Int) {
         pagerCities?.currentItem = position
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 }

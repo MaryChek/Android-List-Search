@@ -10,8 +10,4 @@ open class BasePresenter<V : BaseContract.View>(newView: V) :
     override fun onViewCreated() {
 
     }
-
-    override fun onDestroy() {
-
-    }
 }

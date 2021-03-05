@@ -1,10 +1,11 @@
 package com.example.favorite_cities.contract
 
 import androidx.annotation.StringRes
+import com.example.favorite_cities.model.City
 
 interface CitiesContract {
     interface View : BaseContract.View {
-        fun updateCitiesList(modifiedList: List<String>)
+        fun updateCitiesList(modifiedListCities: List<City>)
 
         fun showDialogAdding(nameCity: String)
 
@@ -19,10 +20,10 @@ interface CitiesContract {
         fun setEnteredText(text: CharSequence)
     }
 
-    interface Presenter<V : View> : BaseContract.Presenter<V> {
+    interface Presenter<V: View> : BaseContract.Presenter<V> {
         fun onTabVisible()
 
-        fun onCityClicked(nameCity: String)
+        fun onCityIconClicked(nameCity: String)
 
         fun onSearchTextChanged(text: String?)
 

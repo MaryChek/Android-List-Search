@@ -38,23 +38,28 @@ class CitiesModel(
         favoriteCities = newCitiesList
     }
 
-    fun getGeneralCitiesFiltered(): List<String> =
-        filter(generalEnteredText, generalCities)
+    fun getGeneralCitiesFiltered(): List<City> =
+        getCitiesOf(filter(generalEnteredText, generalCities))
 
-    fun getFavoriteCitiesFiltered(): List<String> =
-        filter(favoriteEnteredText, favoriteCities)
+    fun getFavoriteCitiesFiltered(): List<City> =
+        getCitiesOf(filter(favoriteEnteredText, favoriteCities))
+
+    private fun getCitiesOf(list: List<String>): List<City> {
+        val citiesList: MutableList<City> = mutableListOf()
+        list.forEach {
+            val city = City()
+            city.name = it
+            city.favorite = findInFavorites(it)
+            citiesList.add(city)
+        }
+        return citiesList
+    }
 
     fun isFavoriteCitiesEmpty(): Boolean =
         favoriteCities.isEmpty()
 
     fun isFavoriteCitiesNotEmpty(): Boolean =
         favoriteCities.isNotEmpty()
-
-//    fun isGeneralCitiesFilteredEmpty(): Boolean =
-//        getGeneralCitiesFiltered().isEmpty()
-//
-//    fun isFavoriteCitiesFilteredEmpty(): Boolean =
-//        getFavoriteCitiesFiltered().isEmpty()
 
     fun filterGeneralList(enteredText: String?) =
         setGeneralEnteredText(enteredText)

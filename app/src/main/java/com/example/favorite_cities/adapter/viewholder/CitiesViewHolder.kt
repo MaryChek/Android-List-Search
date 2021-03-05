@@ -1,22 +1,24 @@
 package com.example.favorite_cities.adapter.viewholder
 
 import android.view.View
-import android.widget.TextView
+import android.widget.CheckBox
+import android.widget.ImageButton
+import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.recyclerview.widget.RecyclerView
-import com.example.favorite_cities.R
+import com.example.favorite_cities.databinding.ListItemCityBinding
 
 class CitiesViewHolder(
-    view: View, cityClickListener: (String) -> Unit
+    view: View, cityIconClickListener: (String) -> Unit
 ) : RecyclerView.ViewHolder(view) {
-    val tvCities: TextView = view.findViewById(R.id.tvCities)
+    val binding: ListItemCityBinding = ListItemCityBinding.bind(view)
+    val ibCityStar: AppCompatCheckBox = binding.ibCityStar
 
     var item: String? = null
 
-
     init {
-        tvCities.setOnClickListener {
+        ibCityStar.setOnClickListener {
             item?.let { city ->
-                cityClickListener(city)
+                cityIconClickListener(city)
             }
         }
     }

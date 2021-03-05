@@ -1,9 +1,11 @@
 package com.example.favorite_cities.fragments
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
@@ -17,12 +19,14 @@ import com.example.favorite_cities.adapter.CitiesAdapter
 import com.example.favorite_cities.contract.CitiesContract
 import com.example.favorite_cities.databinding.FragmentCitiesListBinding
 import com.example.favorite_cities.model.CitiesModel
+import com.example.favorite_cities.model.City
+import com.example.favorite_cities.model.CityAttributes
 import kotlinx.android.synthetic.main.fragment_cities_list.*
 
-abstract class BaseCitiesFragment<V : CitiesContract.View, T : CitiesContract.Presenter<V>> :
-    Fragment(), CitiesContract.View {
+abstract class BaseCitiesFragment<T : CitiesContract.Presenter<CitiesContract.View>>(
+    private val dialogCreator: DialogCreator = DialogCreator()
+) : Fragment(), CitiesContract.View {
     protected var presenter: T? = null
-    protected val dialogCreator: DialogCreator = DialogCreator()
     protected lateinit var model: CitiesModel
     private var rvCities: RecyclerView? = null
     private var svCity: SearchView? = null
@@ -48,15 +52,19 @@ abstract class BaseCitiesFragment<V : CitiesContract.View, T : CitiesContract.Pr
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initList(emptyList())
+        initList()
         initListener()
         presenter?.onViewCreated()
     }
 
-    private fun initList(citiesList: List<String>) {
-        adapter = CitiesAdapter(citiesList, this::onCityClicked)
+    private fun initList() {
+        adapter = CitiesAdapter(listOf(CityAttributes()), this::onCityIconClicked)
         rvCities?.adapter = adapter
         addDividerItem()
+    }
+
+    private fun onCityIconClicked(nameCity: String) {
+        presenter?.onCityIconClicked(nameCity)
     }
 
     private fun addDividerItem() {
@@ -77,25 +85,43 @@ abstract class BaseCitiesFragment<V : CitiesContract.View, T : CitiesContract.Pr
             })
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter?.onDestroy()
+    override fun setEnteredText(text: CharSequence) {
+        svCity?.setQuery(text, false)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
+    override fun updateCitiesList(modifiedListCities: List<City>) {
+        adapter?.updateList(getCitiesAttributes(modifiedListCities))
     }
+
+    private fun getCitiesAttributes(listCities: List<City>): List<CityAttributes> {
+        val citiesAttributes: MutableList<CityAttributes> = mutableListOf()
+        listCities.forEach {
+            val nameCity = it.name
+            val drawable = getCityIconDrawable(it.favorite)
+            citiesAttributes.add(CityAttributes(nameCity, drawable))
+        }
+        return citiesAttributes
+    }
+
+    private fun getCityIconDrawable(isFavorite: Boolean): Drawable? =
+        when (isFavorite) {
+            true -> ResourcesCompat.getDrawable(
+                resources,
+                android.R.drawable.btn_star_big_on,
+                context?.theme
+            )
+            false -> ResourcesCompat.getDrawable(
+                resources,
+                android.R.drawable.btn_star_big_off,
+                context?.theme
+            )
+        }
 
     override fun setMenuVisibility(menuVisible: Boolean) {
         super.setMenuVisibility(menuVisible)
         if (menuVisible) {
             presenter?.onTabVisible()
         }
-    }
-
-    override fun updateCitiesList(modifiedList: List<String>) {
-        adapter?.updateList(modifiedList)
     }
 
     override fun showDialogAdding(nameCity: String) {
@@ -107,6 +133,10 @@ abstract class BaseCitiesFragment<V : CitiesContract.View, T : CitiesContract.Pr
         dialogCreator.showDialog(requireActivity(), nameCity)
     }
 
+    private fun onAddButtonClick(nameCity: String) {
+        presenter?.onAddButtonClick(nameCity)
+    }
+
     override fun showDialogRemoving(nameCity: String) {
         dialogCreator.setTitle(nameCity)
         dialogCreator.setMessage(R.string.message_for_favorite_city)
@@ -114,10 +144,6 @@ abstract class BaseCitiesFragment<V : CitiesContract.View, T : CitiesContract.Pr
         dialogCreator.setNegativeButtonTitle(R.string.button_cancel)
         dialogCreator.setFunctionOnPositive(this::onRemoveButtonClick)
         dialogCreator.showDialog(requireActivity(), nameCity)
-    }
-
-    private fun onAddButtonClick(nameCity: String) {
-        presenter?.onAddButtonClick(nameCity)
     }
 
     private fun onRemoveButtonClick(nameCity: String) {
@@ -139,11 +165,13 @@ abstract class BaseCitiesFragment<V : CitiesContract.View, T : CitiesContract.Pr
             activity, resources.getString(stringId, nameCity), Toast.LENGTH_LONG
         ).show()
 
-    override fun setEnteredText(text: CharSequence) {
-        svCity?.setQuery(text, false)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 
-    private fun onCityClicked(nameCity: String) {
-        presenter?.onCityClicked(nameCity)
+    override fun onDestroy() {
+        super.onDestroy()
+        dialogCreator.onDestroy()
     }
 }

@@ -1,16 +1,12 @@
 package com.example.favorite_cities.presenter
 
-import com.example.favorite_cities.contract.FavoriteCitiesContract
 import com.example.favorite_cities.model.CitiesModel
-import com.example.favorite_cities.DialogCreator
-import com.example.favorite_cities.R
+import com.example.favorite_cities.contract.CitiesContract
 
 class FavoritePresenter(
-    citiesView: FavoriteCitiesContract.View,
-    citiesModel: CitiesModel,
-    CitiesDialogCreator: DialogCreator
-) : BaseCitiesPresenter<FavoriteCitiesContract.View>(citiesView, citiesModel, CitiesDialogCreator),
-    FavoriteCitiesContract.Presenter {
+    citiesView: CitiesContract.View,
+    citiesModel: CitiesModel
+) : BaseCitiesPresenter<CitiesContract.View>(citiesView, citiesModel) {
 
     override fun getCitiesCollection(): CitiesKey =
         CitiesKey.FAVORITE
