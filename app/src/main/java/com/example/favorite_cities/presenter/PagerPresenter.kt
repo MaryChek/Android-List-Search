@@ -1,14 +1,15 @@
 package com.example.favorite_cities.presenter
 
 import com.example.favorite_cities.R
-import com.example.favorite_cities.contract.CollectionContract
+import com.example.favorite_cities.contract.PagerContract
 import com.example.favorite_cities.model.CitiesModel
 
-class CollectionPresenter(
+class PagerPresenter(
     private val model: CitiesModel,
-    citiesView: CollectionContract.View
-) : BasePresenter<CollectionContract.View>(citiesView), CollectionContract.Presenter {
-    override fun onViewCreated() {
+    citiesView: PagerContract.View
+) : BasePresenter<PagerContract.View>(citiesView), PagerContract.Presenter {
+
+    override fun onActivityStart() {
         view.selectItemOnPager(model.positionOfTheCurrentPage)
         view.setTitlesInTabLayout(getTabTitleResIds())
     }

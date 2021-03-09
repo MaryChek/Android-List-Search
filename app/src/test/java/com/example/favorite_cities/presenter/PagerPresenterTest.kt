@@ -1,15 +1,15 @@
 package com.example.favorite_cities.presenter
 
 import com.example.favorite_cities.R
-import com.example.favorite_cities.contract.CollectionContract
+import com.example.favorite_cities.contract.PagerContract
 import com.example.favorite_cities.model.CitiesModel
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Test
 
-class CollectionPresenterTest {
+class PagerPresenterTest {
     private val model: CitiesModel = mock()
-    private val view: CollectionContract.View = mock()
-    private val presenter: CollectionPresenter = CollectionPresenter(model, view)
+    private val view: PagerContract.View = mock()
+    private val presenter: PagerPresenter = PagerPresenter(model, view)
 
     @Test
     fun `onViewCreated when view created then verify showPagerWithFragments invoked`() {

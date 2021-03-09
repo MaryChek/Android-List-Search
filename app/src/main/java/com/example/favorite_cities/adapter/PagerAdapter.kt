@@ -1,13 +1,14 @@
 package com.example.favorite_cities.adapter
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.favorite_cities.fragments.FavoritesFragment
 import com.example.favorite_cities.fragments.GeneralFragment
 
-class CollectionFragmentAdapter(
-    fragment: Fragment
-) : FragmentStateAdapter(fragment) {
+class PagerAdapter(
+    fragmentActivity: FragmentActivity
+) : FragmentStateAdapter(fragmentActivity) {
 
     override fun getItemCount(): Int =
         COUNT_OF_PAGE

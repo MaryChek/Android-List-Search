@@ -2,7 +2,7 @@ package com.example.favorite_cities.contract
 
 import androidx.annotation.StringRes
 
-interface CollectionContract {
+interface PagerContract {
 
     interface View : BaseContract.View {
         fun selectItemOnPager(position: Int)
@@ -11,6 +11,8 @@ interface CollectionContract {
     }
 
     interface Presenter : BaseContract.Presenter<View> {
+        fun onActivityStart()
+
         fun onPageSelected(position: Int)
     }
 }
