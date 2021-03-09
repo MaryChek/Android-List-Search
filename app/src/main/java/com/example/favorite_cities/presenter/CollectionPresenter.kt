@@ -9,7 +9,7 @@ class CollectionPresenter(
     citiesView: CollectionContract.View
 ) : BasePresenter<CollectionContract.View>(citiesView), CollectionContract.Presenter {
     override fun onViewCreated() {
-        view.setCurrentPageByPosition(model.positionOfTheCurrentFragment)
+        view.selectItemOnPager(model.positionOfTheCurrentPage)
         view.setTitlesInTabLayout(getTabTitleResIds())
     }
 
@@ -20,6 +20,6 @@ class CollectionPresenter(
         )
 
     override fun onPageSelected(position: Int) {
-        model.positionOfTheCurrentFragment = position
+        model.positionOfTheCurrentPage = position
     }
 }

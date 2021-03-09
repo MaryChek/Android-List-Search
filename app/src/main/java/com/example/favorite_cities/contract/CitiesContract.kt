@@ -1,11 +1,11 @@
 package com.example.favorite_cities.contract
 
 import androidx.annotation.StringRes
-import com.example.favorite_cities.model.City
+import com.example.favorite_cities.model.CityIcon
 
 interface CitiesContract {
     interface View : BaseContract.View {
-        fun updateCitiesList(modifiedListCities: List<City>)
+        fun updateCitiesList(modifiedListCities: List<CityIcon>)
 
         fun showDialogAdding(nameCity: String)
 

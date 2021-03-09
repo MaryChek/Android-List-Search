@@ -32,12 +32,5 @@
             android:button="@android:drawable/btn_star">
 
         </androidx.appcompat.widget.AppCompatCheckBox>
-<!--        <ImageButton-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_alignParentTop="true"-->
-<!--            android:layout_alignParentBottom="true"-->
-<!--            android:background="@color/colorFrontLayer"-->
-<!--             />-->
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

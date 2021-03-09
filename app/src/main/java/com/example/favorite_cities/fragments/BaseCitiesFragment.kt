@@ -1,14 +1,16 @@
 package com.example.favorite_cities.fragments
 
+import android.app.Activity
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
+import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
@@ -19,8 +21,8 @@ import com.example.favorite_cities.adapter.CitiesAdapter
 import com.example.favorite_cities.contract.CitiesContract
 import com.example.favorite_cities.databinding.FragmentCitiesListBinding
 import com.example.favorite_cities.model.CitiesModel
-import com.example.favorite_cities.model.City
 import com.example.favorite_cities.model.CityAttributes
+import com.example.favorite_cities.model.CityIcon
 import kotlinx.android.synthetic.main.fragment_cities_list.*
 
 abstract class BaseCitiesFragment<T : CitiesContract.Presenter<CitiesContract.View>>(
@@ -77,45 +79,44 @@ abstract class BaseCitiesFragment<T : CitiesContract.Presenter<CitiesContract.Vi
 
     private fun initListener() {
         svCity?.setOnQueryTextListener(
-            object : SimpleSearchTextListener() {
+            object : SearchView.OnQueryTextListener {
                 override fun onQueryTextChange(enteredText: String?): Boolean {
                     presenter?.onSearchTextChanged(enteredText)
                     return false
                 }
+
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    hideKeyboard()
+                    return true
+                }
             })
+    }
+
+    private fun hideKeyboard() {
+        val inputManager: InputMethodManager? =
+            activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager?.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
     }
 
     override fun setEnteredText(text: CharSequence) {
         svCity?.setQuery(text, false)
     }
 
-    override fun updateCitiesList(modifiedListCities: List<City>) {
+    override fun updateCitiesList(modifiedListCities: List<CityIcon>) {
         adapter?.updateList(getCitiesAttributes(modifiedListCities))
     }
 
-    private fun getCitiesAttributes(listCities: List<City>): List<CityAttributes> {
+    private fun getCitiesAttributes(listCities: List<CityIcon>): List<CityAttributes> {
         val citiesAttributes: MutableList<CityAttributes> = mutableListOf()
         listCities.forEach {
-            val nameCity = it.name
-            val drawable = getCityIconDrawable(it.favorite)
-            citiesAttributes.add(CityAttributes(nameCity, drawable))
+            val drawable: Drawable? = getCityIconDrawable(it.iconId)
+            citiesAttributes.add(CityAttributes(it.name, drawable))
         }
         return citiesAttributes
     }
 
-    private fun getCityIconDrawable(isFavorite: Boolean): Drawable? =
-        when (isFavorite) {
-            true -> ResourcesCompat.getDrawable(
-                resources,
-                android.R.drawable.btn_star_big_on,
-                context?.theme
-            )
-            false -> ResourcesCompat.getDrawable(
-                resources,
-                android.R.drawable.btn_star_big_off,
-                context?.theme
-            )
-        }
+    private fun getCityIconDrawable(@DrawableRes iconId: Int): Drawable? =
+        ResourcesCompat.getDrawable(resources, iconId, context?.theme)
 
     override fun setMenuVisibility(menuVisible: Boolean) {
         super.setMenuVisibility(menuVisible)

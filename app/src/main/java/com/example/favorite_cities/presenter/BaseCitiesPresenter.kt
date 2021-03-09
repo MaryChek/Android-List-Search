@@ -2,8 +2,8 @@ package com.example.favorite_cities.presenter
 
 import com.example.favorite_cities.R
 import com.example.favorite_cities.contract.CitiesContract
-import com.example.favorite_cities.model.City
 import com.example.favorite_cities.model.CitiesModel
+import com.example.favorite_cities.model.CityIcon
 
 open class BaseCitiesPresenter<V : CitiesContract.View>(
     view: V,
@@ -52,7 +52,7 @@ open class BaseCitiesPresenter<V : CitiesContract.View>(
             CitiesKey.GENERAL -> model.filterGeneralList(text)
         }
 
-    private fun getFilteredList(): List<City> =
+    private fun getFilteredList(): List<CityIcon> =
         when (getCitiesCollection()) {
             CitiesKey.FAVORITE -> model.getFavoriteCitiesFiltered()
             CitiesKey.GENERAL -> model.getGeneralCitiesFiltered()

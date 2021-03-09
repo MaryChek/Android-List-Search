@@ -1,10 +1,11 @@
 package com.example.favorite_cities.model
 
 import android.graphics.drawable.Drawable
+import androidx.annotation.DrawableRes
 
-data class City(
-    var name: String = "",
-    var favorite: Boolean = false
+data class CityIcon(
+    var name: String,
+    @DrawableRes var iconId: Int
 )
 
 data class CityAttributes(

@@ -76,7 +76,7 @@ class CollectionFragment : Fragment(), CollectionContract.View {
         }.attach()
     }
 
-    override fun setCurrentPageByPosition(position: Int) {
+    override fun selectItemOnPager(position: Int) {
         pagerCities?.currentItem = position
     }
 

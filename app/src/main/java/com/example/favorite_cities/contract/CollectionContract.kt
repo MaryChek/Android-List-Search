@@ -5,7 +5,7 @@ import androidx.annotation.StringRes
 interface CollectionContract {
 
     interface View : BaseContract.View {
-        fun setCurrentPageByPosition(position: Int)
+        fun selectItemOnPager(position: Int)
 
         fun setTitlesInTabLayout(@StringRes tabTitleResIds: List<Int>)
     }

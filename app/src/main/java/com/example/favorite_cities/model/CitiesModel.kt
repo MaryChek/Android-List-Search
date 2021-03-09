@@ -21,7 +21,7 @@ class CitiesModel(
     var favoriteEnteredText: String? = null
         private set
 
-    var positionOfTheCurrentFragment = 0
+    var positionOfTheCurrentPage = 0
 
     init {
         generalCities = newCitiesList
@@ -38,22 +38,33 @@ class CitiesModel(
         favoriteCities = newCitiesList
     }
 
-    fun getGeneralCitiesFiltered(): List<City> =
-        getCitiesOf(filter(generalEnteredText, generalCities))
+    fun getGeneralCitiesFiltered(): List<CityIcon> =
+        getListOfCityIcons(filter(generalEnteredText, generalCities), ListType.GENERAL)
 
-    fun getFavoriteCitiesFiltered(): List<City> =
-        getCitiesOf(filter(favoriteEnteredText, favoriteCities))
+    fun getFavoriteCitiesFiltered(): List<CityIcon> =
+        getListOfCityIcons(filter(favoriteEnteredText, favoriteCities), ListType.FAVORITE)
 
-    private fun getCitiesOf(list: List<String>): List<City> {
-        val citiesList: MutableList<City> = mutableListOf()
-        list.forEach {
-            val city = City()
-            city.name = it
-            city.favorite = findInFavorites(it)
-            citiesList.add(city)
+    private fun getListOfCityIcons(listCities: List<String>, type: ListType): List<CityIcon> {
+        val cityIconsList: MutableList<CityIcon> = mutableListOf()
+        listCities.forEach { nameCity ->
+            val iconId: Int = getIconIdByListType(type, nameCity)
+            val cityIcon = CityIcon(nameCity, iconId)
+            cityIconsList.add(cityIcon)
         }
-        return citiesList
+        return cityIconsList
     }
+
+    private fun getIconIdByListType(type: ListType, nameCity: String): Int =
+        when (type) {
+            ListType.GENERAL -> {
+                if (findInFavorites(nameCity)) {
+                    android.R.drawable.btn_star_big_on
+                } else {
+                    android.R.drawable.btn_star_big_off
+                }
+            }
+            ListType.FAVORITE -> android.R.drawable.ic_menu_delete
+        }
 
     fun isFavoriteCitiesEmpty(): Boolean =
         favoriteCities.isEmpty()
@@ -127,5 +138,9 @@ class CitiesModel(
 
     companion object {
         private const val KEY_INDEXES_OF_FAVORITE = "CitiesFavorite"
+    }
+
+    enum class ListType {
+        GENERAL, FAVORITE
     }
 }
