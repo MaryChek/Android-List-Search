@@ -33,10 +33,10 @@ class CitiesModel(
         favoriteCities = getFavoriteSavedList()
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    fun updateFavoriteCities(newCitiesList: List<String>) {
-        favoriteCities = newCitiesList
-    }
+//    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+//    fun updateFavoriteCities(newCitiesList: List<String>) {
+//        favoriteCities = newCitiesList
+//    }
 
     fun getGeneralCitiesFiltered(): List<CityIcon> =
         getListOfCityIcons(filter(generalEnteredText, generalCities), ListType.GENERAL)
@@ -72,36 +72,26 @@ class CitiesModel(
     fun isFavoriteCitiesNotEmpty(): Boolean =
         favoriteCities.isNotEmpty()
 
-    fun filterGeneralList(enteredText: String?) =
-        setGeneralEnteredText(enteredText)
+    fun filterGeneralList(enteredText: String?) {
+        generalEnteredText = enteredText
+    }
 
-    fun filterFavoriteList(enteredText: String?) =
-        setFavoriteEnteredText(enteredText)
+    fun filterFavoriteList(enteredText: String?) {
+        favoriteEnteredText = enteredText
+    }
 
     fun addFavoriteCity(nameCity: String) {
         favoriteCities = favoriteCities.plus(nameCity)
-        saveFavoriteList(favoriteCities)
     }
 
     fun removeFavoriteCity(nameCity: String) {
         favoriteCities = favoriteCities.minus(nameCity)
-        saveFavoriteList(favoriteCities)
     }
 
     fun findInFavorites(nameCity: String): Boolean =
         favoriteCities.any {
             it == nameCity
         }
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    fun setGeneralEnteredText(value: String?) {
-        generalEnteredText = value
-    }
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    fun setFavoriteEnteredText(value: String?) {
-        favoriteEnteredText = value
-    }
 
     private fun filter(enteredText: String?, ListCities: List<String>): List<String> =
         when (enteredText.isNullOrBlank()) {
@@ -110,6 +100,9 @@ class CitiesModel(
                 it.contains(enteredText, true)
             }
         }
+
+    fun saveCitiesLists() =
+        saveFavoriteList(favoriteCities)
 
     private fun saveFavoriteList(savedList: List<String>) {
         val citiesIndexSet: Set<String> = getIndexSetOf(savedList)
@@ -126,8 +119,7 @@ class CitiesModel(
         return list
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    fun getIndexSetOf(list: List<String>): Set<String> {
+    private fun getIndexSetOf(list: List<String>): Set<String> {
         val setOfIndex: MutableSet<String> = mutableSetOf()
         list.forEach {
             val strIndex = generalCities.indexOf(it).toString()

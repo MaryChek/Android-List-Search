@@ -166,6 +166,11 @@ abstract class BaseCitiesFragment<T : CitiesContract.Presenter<CitiesContract.Vi
             activity, resources.getString(stringId, nameCity), Toast.LENGTH_LONG
         ).show()
 
+    override fun onPause() {
+        super.onPause()
+        presenter?.onViewPause()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null

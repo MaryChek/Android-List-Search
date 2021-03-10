@@ -74,13 +74,13 @@ open class BaseCitiesPresenter<V : CitiesContract.View>(
         view.updateCitiesList(getFilteredList())
     }
 
-    protected open fun removeFavoriteCity(nameCity: String) {
+    private fun removeFavoriteCity(nameCity: String) {
         model.removeFavoriteCity(nameCity)
         showOrHideEmptyListHint()
         view.updateCitiesList(getFilteredList())
     }
 
-    protected open fun showOrHideEmptyListHint() =
+    private fun showOrHideEmptyListHint() =
         if (isCollectionFavorite() && model.isFavoriteCitiesEmpty()) {
             view.showEmptyListHint(R.string.no_favorite_cities)
         } else if (getFilteredList().isEmpty()) {
@@ -91,6 +91,10 @@ open class BaseCitiesPresenter<V : CitiesContract.View>(
 
     private fun isCollectionFavorite(): Boolean =
         getCitiesCollection() == CitiesKey.FAVORITE
+
+    override fun onViewPause() {
+        model.saveCitiesLists()
+    }
 
     protected enum class CitiesKey {
         GENERAL, FAVORITE

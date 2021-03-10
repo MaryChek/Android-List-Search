@@ -32,5 +32,7 @@ interface CitiesContract {
         fun onAddButtonClick(nameCity: String)
 
         fun onRemoveButtonClick(nameCity: String)
+
+        fun onViewPause()
     }
 }
