@@ -11,7 +11,7 @@ interface PagerContract {
     }
 
     interface Presenter : BaseContract.Presenter<View> {
-        fun onActivityStart()
+//        fun onActivityStart()
 
         fun onPageSelected(position: Int)
     }

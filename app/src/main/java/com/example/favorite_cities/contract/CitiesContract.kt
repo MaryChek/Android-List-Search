@@ -7,9 +7,9 @@ interface CitiesContract {
     interface View : BaseContract.View {
         fun updateCitiesList(modifiedListCities: List<CityIcon>)
 
-        fun showDialogAdding(nameCity: String)
+        fun showAddToFavoriteActionConfirmation(nameCity: String)
 
-        fun showDialogRemoving(nameCity: String)
+        fun showRemoveFromFavoriteActionConfirmation(nameCity: String)
 
         fun showEmptyListHint(@StringRes textId: Int)
 
@@ -21,7 +21,7 @@ interface CitiesContract {
     }
 
     interface Presenter<V: View> : BaseContract.Presenter<V> {
-        fun onViewCreated()
+//        fun onViewCreated()
 
         fun onTabVisible()
 
@@ -29,9 +29,9 @@ interface CitiesContract {
 
         fun onSearchTextChanged(text: String?)
 
-        fun onAddButtonClick(nameCity: String)
+        fun onAddToFavoriteClick(nameCity: String)
 
-        fun onRemoveButtonClick(nameCity: String)
+        fun onRemoveFromFavoriteClick(nameCity: String)
 
         fun onViewPause()
     }

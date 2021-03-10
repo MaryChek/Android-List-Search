@@ -6,4 +6,7 @@ open class BasePresenter<V : BaseContract.View>(newView: V) :
     BaseContract.Presenter<V> {
 
     protected val view: V = newView
+
+    override fun onViewCreated() =
+        Unit
 }

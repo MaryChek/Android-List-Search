@@ -125,7 +125,7 @@ abstract class BaseCitiesFragment<T : CitiesContract.Presenter<CitiesContract.Vi
         }
     }
 
-    override fun showDialogAdding(nameCity: String) {
+    override fun showAddToFavoriteActionConfirmation(nameCity: String) {
         dialogCreator.setTitle(nameCity)
         dialogCreator.setMessage(R.string.message_for_unelected_city)
         dialogCreator.setPositiveButtonTitle(R.string.text_button_add)
@@ -135,10 +135,10 @@ abstract class BaseCitiesFragment<T : CitiesContract.Presenter<CitiesContract.Vi
     }
 
     private fun onAddButtonClick(nameCity: String) {
-        presenter?.onAddButtonClick(nameCity)
+        presenter?.onAddToFavoriteClick(nameCity)
     }
 
-    override fun showDialogRemoving(nameCity: String) {
+    override fun showRemoveFromFavoriteActionConfirmation(nameCity: String) {
         dialogCreator.setTitle(nameCity)
         dialogCreator.setMessage(R.string.message_for_favorite_city)
         dialogCreator.setPositiveButtonTitle(R.string.text_button_remove)
@@ -148,7 +148,7 @@ abstract class BaseCitiesFragment<T : CitiesContract.Presenter<CitiesContract.Vi
     }
 
     private fun onRemoveButtonClick(nameCity: String) {
-        presenter?.onRemoveButtonClick(nameCity)
+        presenter?.onRemoveFromFavoriteClick(nameCity)
     }
 
     override fun showEmptyListHint(@StringRes textId: Int) {

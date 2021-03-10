@@ -9,7 +9,7 @@ class PagerPresenter(
     citiesView: PagerContract.View
 ) : BasePresenter<PagerContract.View>(citiesView), PagerContract.Presenter {
 
-    override fun onActivityStart() {
+    override fun onViewCreated() {
         view.selectItemOnPager(model.positionOfTheCurrentPage)
         view.setTitlesInTabLayout(getTabTitleResIds())
     }

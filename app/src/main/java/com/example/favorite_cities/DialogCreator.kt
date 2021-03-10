@@ -39,23 +39,23 @@ class DialogCreator {
 
     fun showDialog(activity: Activity, callbackParams: String) {
         currentDialog = activity.let {
-            val builder = AlertDialog.Builder(it)
+            val builderDialog = AlertDialog.Builder(it)
                 .setCancelable(true)
             title?.let { title ->
-                builder.setTitle(title)
+                builderDialog?.setTitle(title)
             }
             message?.let { message ->
-                builder.setMessage(message)
+                builderDialog?.setMessage(message)
             }
             positiveButton?.let { buttonTitle ->
-                builder.setPositiveButton(buttonTitle) { _, _ ->
+                builderDialog?.setPositiveButton(buttonTitle) { _, _ ->
                     functionAfterPositiveClick(callbackParams)
                 }
             }
             negativeButton?.let { negativeButton ->
-                builder.setNegativeButton(negativeButton) { _, _ -> }
+                builderDialog?.setNegativeButton(negativeButton) { _, _ -> }
             }
-            builder.show()
+            builderDialog?.show()
         }
     }
 

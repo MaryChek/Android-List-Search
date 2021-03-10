@@ -27,8 +27,6 @@
             android:id="@+id/ibCityStar"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginEnd="10dp"
-            android:button="@android:drawable/btn_star">
-        </androidx.appcompat.widget.AppCompatCheckBox>
+            android:layout_marginEnd="10dp" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

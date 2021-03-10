@@ -35,8 +35,8 @@ open class BaseCitiesPresenter<V : CitiesContract.View>(
 
     override fun onCityIconClicked(nameCity: String) {
         when (model.findInFavorites(nameCity)) {
-            true -> view.showDialogRemoving(nameCity)
-            false -> view.showDialogAdding(nameCity)
+            true -> view.showRemoveFromFavoriteActionConfirmation(nameCity)
+            false -> view.showAddToFavoriteActionConfirmation(nameCity)
         }
     }
 
@@ -58,20 +58,20 @@ open class BaseCitiesPresenter<V : CitiesContract.View>(
             CitiesKey.GENERAL -> model.getGeneralCitiesFiltered()
         }
 
-    override fun onAddButtonClick(nameCity: String) {
+    override fun onAddToFavoriteClick(nameCity: String) {
         addFavoriteCity(nameCity)
         view.showUserMessage(R.string.message_after_adding, nameCity)
-    }
-
-    override fun onRemoveButtonClick(nameCity: String) {
-        removeFavoriteCity(nameCity)
-        view.showUserMessage(R.string.message_after_removal, nameCity)
     }
 
     private fun addFavoriteCity(nameCity: String) {
         model.addFavoriteCity(nameCity)
         showOrHideEmptyListHint()
         view.updateCitiesList(getFilteredList())
+    }
+
+    override fun onRemoveFromFavoriteClick(nameCity: String) {
+        removeFavoriteCity(nameCity)
+        view.showUserMessage(R.string.message_after_removal, nameCity)
     }
 
     private fun removeFavoriteCity(nameCity: String) {

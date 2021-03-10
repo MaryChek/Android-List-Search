@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2C25FF</color>
+    <color name="colorPrimaryDark">#17249B</color>
+    <color name="colorTabCity">#688EFF</color>
+    <color name="colorAccent">#0004FF</color>
+    <color name="colorFrontLayer">#F5F6FD</color>
+    <color name="colorAppBackground">#B6BDFF</color>
+
+    <color name="colorBlack">#000000</color>
+    <color name="background_launcher">#FFFFFF</color>
+</resources>

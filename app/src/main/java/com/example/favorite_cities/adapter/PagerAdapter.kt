@@ -7,8 +7,8 @@ import com.example.favorite_cities.fragments.FavoritesFragment
 import com.example.favorite_cities.fragments.GeneralFragment
 
 class PagerAdapter(
-    fragmentActivity: FragmentActivity
-) : FragmentStateAdapter(fragmentActivity) {
+    fragment: Fragment
+) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int =
         COUNT_OF_PAGE

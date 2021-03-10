@@ -1,18 +1,21 @@
 package com.example.favorite_cities
 
 import android.os.Bundle
-import androidx.fragment.app.FragmentActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.favorite_cities.adapter.PagerAdapter
 import com.example.favorite_cities.contract.PagerContract
-import com.example.favorite_cities.databinding.PagerActivityBinding
+import com.example.favorite_cities.databinding.PagerFragmentBinding
 import com.example.favorite_cities.model.CitiesModel
 import com.example.favorite_cities.presenter.PagerPresenter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
-class PagerActivity : FragmentActivity(), PagerContract.View {
-    private var binding: PagerActivityBinding? = null
+class PagerFragment : Fragment(), PagerContract.View, OnBackPressed {
+    private var binding: PagerFragmentBinding? = null
     private var presenter: PagerPresenter? = null
     private var adapter: PagerAdapter? = null
     private var pagerCities: ViewPager2? = null
@@ -20,22 +23,34 @@ class PagerActivity : FragmentActivity(), PagerContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = PagerActivityBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
         init(savedInstanceState)
-        initPager()
-        registerOnPageChange()
     }
 
     private fun init(savedInstanceState: Bundle?) {
-        val app: App = this.applicationContext as App
+        val app: App = requireActivity().applicationContext as App
         val model: CitiesModel = app.model
         if (savedInstanceState != null) {
             model.updateCitiesLists()
         }
         presenter = PagerPresenter(model, this)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = PagerFragmentBinding.inflate(inflater, container, false)
         pagerCities = binding?.pagerCities
         tabLayoutCities = binding?.tabLayoutCities
+        return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initPager()
+        registerOnPageChange()
+        presenter?.onViewCreated()
     }
 
     private fun initPager() {
@@ -52,18 +67,13 @@ class PagerActivity : FragmentActivity(), PagerContract.View {
         })
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed(): Boolean =
         if (pagerCities?.currentItem == 0) {
-            super.onBackPressed()
+            true
         } else {
             pagerCities?.currentItem = pagerCities?.currentItem?.minus(1)!!
+            false
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        presenter?.onActivityStart()
-    }
 
     override fun setTitlesInTabLayout(tabTitleResIds: List<Int>) {
         TabLayoutMediator(tabLayoutCities!!, pagerCities!!) { tab, position ->
