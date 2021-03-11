@@ -4,9 +4,10 @@
     <color name="colorPrimaryDark">#65179B</color>
     <color name="colorTabCity">#BD68FF</color>
     <color name="colorAccent">#9100FF</color>
-    <color name="colorFrontLayer">#FAF5FD</color>
     <color name="colorAppBackground">#DCB6FF</color>
 
-    <color name="colorBlack">#000000</color>
+    <color name="colorFrontLayer">#FAF5FD</color>
+    <color name="colorActionBar">#FAF5FD</color>
+    <color name="colorText">#000000</color>
     <color name="background_launcher">#FFFFFF</color>
 </resources>

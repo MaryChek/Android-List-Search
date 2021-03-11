@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.favorite_cities.*
 import com.example.favorite_cities.adapter.CitiesAdapter
+import com.example.favorite_cities.adapter.CitiesListAdapter
 import com.example.favorite_cities.contract.CitiesContract
 import com.example.favorite_cities.databinding.FragmentCitiesListBinding
 import com.example.favorite_cities.model.CitiesModel
@@ -32,7 +33,8 @@ abstract class BaseCitiesFragment<T : CitiesContract.Presenter<CitiesContract.Vi
     protected lateinit var model: CitiesModel
     private var rvCities: RecyclerView? = null
     private var svCity: SearchView? = null
-    private var adapter: CitiesAdapter? = null
+//    private var adapter: CitiesAdapter? = null
+    private var adapter: CitiesListAdapter? = null
     private var binding: FragmentCitiesListBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +62,8 @@ abstract class BaseCitiesFragment<T : CitiesContract.Presenter<CitiesContract.Vi
     }
 
     private fun initList() {
-        adapter = CitiesAdapter(listOf(CityAttributes()), this::onCityIconClicked)
+//        adapter = CitiesAdapter(listOf(CityAttributes()), this::onCityIconClicked)
+        adapter = CitiesListAdapter(this::onCityIconClicked)
         rvCities?.adapter = adapter
         addDividerItem()
     }
@@ -103,7 +106,8 @@ abstract class BaseCitiesFragment<T : CitiesContract.Presenter<CitiesContract.Vi
     }
 
     override fun updateCitiesList(modifiedListCities: List<CityIcon>) {
-        adapter?.updateList(getCitiesAttributes(modifiedListCities))
+        adapter?.submitList(getCitiesAttributes(modifiedListCities))
+//        adapter?.updateList(getCitiesAttributes(modifiedListCities))
     }
 
     private fun getCitiesAttributes(listCities: List<CityIcon>): List<CityAttributes> {
@@ -163,7 +167,7 @@ abstract class BaseCitiesFragment<T : CitiesContract.Presenter<CitiesContract.Vi
 
     override fun showUserMessage(@StringRes stringId: Int, nameCity: String) =
         Toast.makeText(
-            activity, resources.getString(stringId, nameCity), Toast.LENGTH_LONG
+            requireActivity(), "ok", Toast.LENGTH_LONG
         ).show()
 
     override fun onPause() {
