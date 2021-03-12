@@ -1,12 +1,9 @@
-package com.example.favorite_cities
+package com.example.favorite_cities.view
 
 import android.app.Activity
 import android.app.Dialog
-import android.app.SharedElementCallback
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
-import java.util.*
-import kotlin.reflect.KFunction1
 
 class DialogCreator {
     private var currentDialog: Dialog? = null

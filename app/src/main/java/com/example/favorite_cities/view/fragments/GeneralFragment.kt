@@ -1,14 +1,14 @@
-package com.example.favorite_cities.fragments
+package com.example.favorite_cities.view.fragments
 
 import android.os.Bundle
 import com.example.favorite_cities.contract.CitiesContract
-import com.example.favorite_cities.presenter.FavoritePresenter
+import com.example.favorite_cities.presenter.GeneralPresenter
 
-class FavoritesFragment :
+class GeneralFragment :
     BaseCitiesFragment<CitiesContract.Presenter<CitiesContract.View>>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        presenter = FavoritePresenter(this, model)
+        presenter = GeneralPresenter(this, model)
     }
 }

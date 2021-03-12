@@ -2,7 +2,7 @@ package com.example.favorite_cities.presenter
 
 import com.example.favorite_cities.R
 import com.example.favorite_cities.contract.PagerContract
-import com.example.favorite_cities.model.CitiesModel
+import com.example.favorite_cities.model.cities.CitiesModel
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Test
 

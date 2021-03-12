@@ -2,7 +2,7 @@ package com.example.favorite_cities.presenter
 
 import com.example.favorite_cities.R
 import com.example.favorite_cities.contract.PagerContract
-import com.example.favorite_cities.model.CitiesModel
+import com.example.favorite_cities.model.cities.CitiesModel
 
 class PagerPresenter(
     private val model: CitiesModel,

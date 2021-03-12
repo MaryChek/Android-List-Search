@@ -2,8 +2,8 @@ package com.example.favorite_cities.presenter
 
 import com.example.favorite_cities.R
 import com.example.favorite_cities.contract.CitiesContract
-import com.example.favorite_cities.model.CitiesModel
-import com.example.favorite_cities.model.CityIcon
+import com.example.favorite_cities.model.cities.CitiesModel
+import com.example.favorite_cities.model.cities.CityIcon
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Test
 
@@ -206,6 +206,11 @@ open class FavoritePresenterTest {
     companion object {
         private const val SIMPLE_ENTERED_TEXT = "o"
         private const val FAVORITE_CITY = "Orel"
-        private val SIMPLE_LIST_OF_CITY_ICON = listOf(CityIcon("Moscow", 0))
+        private val SIMPLE_LIST_OF_CITY_ICON = listOf(
+            CityIcon(
+                "Moscow",
+                0
+            )
+        )
     }
 }

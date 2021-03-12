@@ -1,8 +1,8 @@
-package com.example.favorite_cities.model
+package com.example.favorite_cities.model.cities
 
 import androidx.annotation.VisibleForTesting
-import com.example.favorite_cities.App
 import com.example.favorite_cities.R
+import com.example.favorite_cities.App
 import com.example.favorite_cities.model.sharedpreferences.PreferenceManager
 
 class CitiesModel(
@@ -47,10 +47,14 @@ class CitiesModel(
     }
 
     fun getGeneralCitiesIconFiltered(): List<CityIcon> =
-        getListOfCityIcons(filter(generalEnteredText, generalCities), ListType.GENERAL)
+        getListOfCityIcons(filter(generalEnteredText, generalCities),
+            ListType.GENERAL
+        )
 
     fun getFavoriteCitiesIconFiltered(): List<CityIcon> =
-        getListOfCityIcons(filter(favoriteEnteredText, favoriteCities), ListType.FAVORITE)
+        getListOfCityIcons(filter(favoriteEnteredText, favoriteCities),
+            ListType.FAVORITE
+        )
 
     private fun filter(enteredText: String?, ListCities: List<String>): List<String> =
         when (enteredText.isNullOrBlank()) {
@@ -64,7 +68,11 @@ class CitiesModel(
         val cityIconsList: MutableList<CityIcon> = mutableListOf()
         listCities.forEach { nameCity ->
             val iconId: Int = getIconIdByListType(type, nameCity)
-            val cityIcon = CityIcon(nameCity, iconId)
+            val cityIcon =
+                CityIcon(
+                    nameCity,
+                    iconId
+                )
             cityIconsList.add(cityIcon)
         }
         return cityIconsList

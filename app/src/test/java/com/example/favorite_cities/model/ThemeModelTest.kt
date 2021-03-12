@@ -1,6 +1,8 @@
 package com.example.favorite_cities.model
 
 import com.example.favorite_cities.model.sharedpreferences.PreferenceManager
+import com.example.favorite_cities.model.theme.Theme
+import com.example.favorite_cities.model.theme.ThemeModel
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Assert
 import org.junit.Test
@@ -11,7 +13,9 @@ class ThemeModelTest {
     private fun initModel(stabValueForPreference: Int): ThemeModel {
         whenever(preferenceManager.getIntByKey(KEY_FOR_THEME))
             .thenReturn(stabValueForPreference)
-        return ThemeModel(preferenceManager)
+        return ThemeModel(
+            preferenceManager
+        )
     }
 
     @Test

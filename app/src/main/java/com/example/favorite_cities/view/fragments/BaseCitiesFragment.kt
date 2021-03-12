@@ -1,4 +1,4 @@
-package com.example.favorite_cities.fragments
+package com.example.favorite_cities.view.fragments
 
 import android.app.Activity
 import android.graphics.drawable.Drawable
@@ -20,9 +20,11 @@ import com.example.favorite_cities.*
 import com.example.favorite_cities.adapter.CitiesListAdapter
 import com.example.favorite_cities.contract.CitiesContract
 import com.example.favorite_cities.databinding.FragmentCitiesListBinding
-import com.example.favorite_cities.model.CitiesModel
-import com.example.favorite_cities.model.CityAttributes
-import com.example.favorite_cities.model.CityIcon
+import com.example.favorite_cities.App
+import com.example.favorite_cities.model.cities.CitiesModel
+import com.example.favorite_cities.view.CityAttributes
+import com.example.favorite_cities.model.cities.CityIcon
+import com.example.favorite_cities.view.DialogCreator
 import kotlinx.android.synthetic.main.fragment_cities_list.*
 
 abstract class BaseCitiesFragment<T : CitiesContract.Presenter<CitiesContract.View>>(
@@ -110,7 +112,12 @@ abstract class BaseCitiesFragment<T : CitiesContract.Presenter<CitiesContract.Vi
         val citiesAttributes: MutableList<CityAttributes> = mutableListOf()
         listCities.forEach {
             val drawable: Drawable? = getCityIconDrawable(it.iconId)
-            citiesAttributes.add(CityAttributes(it.name, drawable))
+            citiesAttributes.add(
+                CityAttributes(
+                    it.name,
+                    drawable
+                )
+            )
         }
         return citiesAttributes
     }

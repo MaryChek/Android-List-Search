@@ -1,10 +1,9 @@
 package com.example.favorite_cities.adapter
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.favorite_cities.fragments.FavoritesFragment
-import com.example.favorite_cities.fragments.GeneralFragment
+import com.example.favorite_cities.view.fragments.FavoritesFragment
+import com.example.favorite_cities.view.fragments.GeneralFragment
 
 class PagerAdapter(
     fragment: Fragment

@@ -1,13 +1,16 @@
-package com.example.favorite_cities
+package com.example.favorite_cities.view
 
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.favorite_cities.presenter.ActivityPresenter
+import com.example.favorite_cities.App
+import com.example.favorite_cities.R
 import com.example.favorite_cities.contract.ActivityContract
 import com.example.favorite_cities.databinding.IconForActionBarBinding
-import com.example.favorite_cities.fragments.PagerFragment
+import com.example.favorite_cities.view.fragments.PagerFragment
 
 class MainActivity : AppCompatActivity(), ActivityContract.View {
     private var presenter: ActivityPresenter? = null
@@ -19,7 +22,8 @@ class MainActivity : AppCompatActivity(), ActivityContract.View {
         setContentView(R.layout.activity_main)
         createFragmentPager()
         val model = (this.applicationContext as App).themeModel
-        presenter = ActivityPresenter(model, this)
+        presenter =
+            ActivityPresenter(model, this)
         presenter?.onViewCreated()
     }
 

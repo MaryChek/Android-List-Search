@@ -3,7 +3,7 @@ package com.example.favorite_cities.adapter.viewholder
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.favorite_cities.databinding.ListItemCityBinding
-import com.example.favorite_cities.model.CityAttributes
+import com.example.favorite_cities.view.CityAttributes
 
 class CitiesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val binding: ListItemCityBinding = ListItemCityBinding.bind(view)

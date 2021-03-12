@@ -1,7 +1,7 @@
 package com.example.favorite_cities.contract
 
 import androidx.annotation.StringRes
-import com.example.favorite_cities.model.CityIcon
+import com.example.favorite_cities.model.cities.CityIcon
 
 interface CitiesContract {
     interface View : BaseContract.View {

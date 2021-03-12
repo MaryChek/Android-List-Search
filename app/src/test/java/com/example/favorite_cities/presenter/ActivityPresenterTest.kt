@@ -1,16 +1,16 @@
 package com.example.favorite_cities.presenter
 
-import com.example.favorite_cities.ActivityPresenter
 import com.example.favorite_cities.contract.ActivityContract
-import com.example.favorite_cities.model.Theme
-import com.example.favorite_cities.model.ThemeModel
+import com.example.favorite_cities.model.theme.Theme
+import com.example.favorite_cities.model.theme.ThemeModel
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Test
 
 class ActivityPresenterTest {
     private val view: ActivityContract.View = mock()
     private val model: ThemeModel = mock()
-    private val presenter: ActivityPresenter = ActivityPresenter(model, view)
+    private val presenter: ActivityPresenter =
+        ActivityPresenter(model, view)
 
     @Test
     fun `onViewCreated when theme is light then verify changeThemeToLight invoked`() {

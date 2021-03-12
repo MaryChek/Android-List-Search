@@ -1,4 +1,4 @@
-package com.example.favorite_cities.model
+package com.example.favorite_cities.model.theme
 
 import com.example.favorite_cities.model.sharedpreferences.PreferenceManager
 
@@ -15,8 +15,14 @@ class ThemeModel(
 
     fun saveTheme() =
         when (theme) {
-            Theme.LIGHT -> preferenceManager.putIntByKey(KEY_FOR_THEME, INDEX_LIGHT_THEME)
-            Theme.DARK -> preferenceManager.putIntByKey(KEY_FOR_THEME, INDEX_DARK_THEME)
+            Theme.LIGHT -> preferenceManager.putIntByKey(
+                KEY_FOR_THEME,
+                INDEX_LIGHT_THEME
+            )
+            Theme.DARK -> preferenceManager.putIntByKey(
+                KEY_FOR_THEME,
+                INDEX_DARK_THEME
+            )
         }
 
     companion object {

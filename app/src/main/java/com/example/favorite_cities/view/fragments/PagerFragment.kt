@@ -1,4 +1,4 @@
-package com.example.favorite_cities.fragments
+package com.example.favorite_cities.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.favorite_cities.App
-import com.example.favorite_cities.OnBackPressed
+import com.example.favorite_cities.view.OnBackPressed
 import com.example.favorite_cities.adapter.PagerAdapter
 import com.example.favorite_cities.contract.PagerContract
 import com.example.favorite_cities.databinding.PagerFragmentBinding
-import com.example.favorite_cities.model.CitiesModel
+import com.example.favorite_cities.model.cities.CitiesModel
 import com.example.favorite_cities.presenter.PagerPresenter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator

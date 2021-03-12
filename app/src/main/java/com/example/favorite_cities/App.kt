@@ -1,9 +1,9 @@
 package com.example.favorite_cities
 
 import android.app.Application
-import com.example.favorite_cities.model.CitiesModel
-import com.example.favorite_cities.model.ThemeModel
+import com.example.favorite_cities.model.cities.CitiesModel
 import com.example.favorite_cities.model.sharedpreferences.PreferenceManager
+import com.example.favorite_cities.model.theme.ThemeModel
 
 class App : Application() {
     lateinit var citiesModel: CitiesModel
@@ -15,6 +15,8 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         citiesModel = CitiesModel(this)
-        themeModel = ThemeModel(PreferenceManager(this))
+        themeModel = ThemeModel(
+            PreferenceManager(this)
+        )
     }
 }

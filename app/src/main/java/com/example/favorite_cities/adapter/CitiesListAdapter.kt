@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.favorite_cities.R
 import com.example.favorite_cities.adapter.viewholder.CitiesViewHolder
-import com.example.favorite_cities.model.CityAttributes
+import com.example.favorite_cities.view.CityAttributes
 
 class CitiesListAdapter(
     private val cityIconClickListener: (String) -> Unit

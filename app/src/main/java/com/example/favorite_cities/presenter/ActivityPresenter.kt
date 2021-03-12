@@ -1,9 +1,8 @@
-package com.example.favorite_cities
+package com.example.favorite_cities.presenter
 
 import com.example.favorite_cities.contract.ActivityContract
-import com.example.favorite_cities.model.Theme
-import com.example.favorite_cities.model.ThemeModel
-import com.example.favorite_cities.presenter.BasePresenter
+import com.example.favorite_cities.model.theme.Theme
+import com.example.favorite_cities.model.theme.ThemeModel
 
 class ActivityPresenter(
     private val model: ThemeModel,

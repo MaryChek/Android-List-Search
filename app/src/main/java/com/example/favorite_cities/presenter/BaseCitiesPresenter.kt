@@ -2,8 +2,8 @@ package com.example.favorite_cities.presenter
 
 import com.example.favorite_cities.R
 import com.example.favorite_cities.contract.CitiesContract
-import com.example.favorite_cities.model.CitiesModel
-import com.example.favorite_cities.model.CityIcon
+import com.example.favorite_cities.model.cities.CitiesModel
+import com.example.favorite_cities.model.cities.CityIcon
 
 open class BaseCitiesPresenter<V : CitiesContract.View>(
     view: V,

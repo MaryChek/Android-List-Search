@@ -1,7 +1,7 @@
 package com.example.favorite_cities.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.favorite_cities.model.CityAttributes
+import com.example.favorite_cities.view.CityAttributes
 
 class CitiesDiff : DiffUtil.ItemCallback<CityAttributes>() {
     override fun areContentsTheSame(oldItem: CityAttributes, newItem: CityAttributes): Boolean =
