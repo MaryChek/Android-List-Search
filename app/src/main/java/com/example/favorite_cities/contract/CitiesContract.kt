@@ -21,8 +21,6 @@ interface CitiesContract {
     }
 
     interface Presenter<V: View> : BaseContract.Presenter<V> {
-//        fun onViewCreated()
-
         fun onTabVisible()
 
         fun onCityIconClicked(nameCity: String)

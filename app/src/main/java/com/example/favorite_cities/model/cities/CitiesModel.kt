@@ -17,10 +17,10 @@ class CitiesModel(
     var favoriteCities: List<String> = listOf()
 
     var generalEnteredText: String? = null
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+        @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
         set
     var favoriteEnteredText: String? = null
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+        @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
         set
 
     var positionOfTheCurrentPage = 0
@@ -47,12 +47,14 @@ class CitiesModel(
     }
 
     fun getGeneralCitiesIconFiltered(): List<CityIcon> =
-        getListOfCityIcons(filter(generalEnteredText, generalCities),
+        getListOfCityIcons(
+            filter(generalEnteredText, generalCities),
             ListType.GENERAL
         )
 
     fun getFavoriteCitiesIconFiltered(): List<CityIcon> =
-        getListOfCityIcons(filter(favoriteEnteredText, favoriteCities),
+        getListOfCityIcons(
+            filter(favoriteEnteredText, favoriteCities),
             ListType.FAVORITE
         )
 
@@ -67,27 +69,23 @@ class CitiesModel(
     private fun getListOfCityIcons(listCities: List<String>, type: ListType): List<CityIcon> {
         val cityIconsList: MutableList<CityIcon> = mutableListOf()
         listCities.forEach { nameCity ->
-            val iconId: Int = getIconIdByListType(type, nameCity)
-            val cityIcon =
-                CityIcon(
-                    nameCity,
-                    iconId
-                )
+            val iconId: Int = getIconByListType(type, nameCity)
+            val cityIcon = CityIcon(nameCity, iconId)
             cityIconsList.add(cityIcon)
         }
         return cityIconsList
     }
 
-    private fun getIconIdByListType(type: ListType, nameCity: String): Int =
+    private fun getIconByListType(type: ListType, nameCity: String): Int =
         when (type) {
-            ListType.GENERAL -> {
-                if (findInFavorites(nameCity)) {
-                    android.R.drawable.btn_star_big_on
-                } else {
-                    android.R.drawable.btn_star_big_off
-                }
-            }
+            ListType.GENERAL -> getIconForGeneralCity(nameCity)
             ListType.FAVORITE -> android.R.drawable.ic_menu_delete
+        }
+
+    private fun getIconForGeneralCity(nameCity: String): Int =
+        when (findInFavorites(nameCity)) {
+            true -> android.R.drawable.btn_star_big_on
+            false -> android.R.drawable.btn_star_big_off
         }
 
     fun isFavoriteCitiesEmpty(): Boolean =

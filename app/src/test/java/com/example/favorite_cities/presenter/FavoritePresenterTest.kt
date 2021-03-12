@@ -20,10 +20,9 @@ open class FavoritePresenterTest {
 
     private fun stubWhenFavoriteCitiesFilteredIsEmpty(value: Boolean) {
         val list: List<CityIcon> =
-            if (value) {
-                emptyList()
-            } else {
-                SIMPLE_LIST_OF_CITY_ICON
+            when (value) {
+                true -> emptyList()
+                false -> SIMPLE_LIST_OF_CITY_ICON
             }
 
         whenever(model.getFavoriteCitiesIconFiltered())
@@ -206,11 +205,6 @@ open class FavoritePresenterTest {
     companion object {
         private const val SIMPLE_ENTERED_TEXT = "o"
         private const val FAVORITE_CITY = "Orel"
-        private val SIMPLE_LIST_OF_CITY_ICON = listOf(
-            CityIcon(
-                "Moscow",
-                0
-            )
-        )
+        private val SIMPLE_LIST_OF_CITY_ICON = listOf(CityIcon("Moscow", 0))
     }
 }

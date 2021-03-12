@@ -11,12 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="8dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:scaleType="center"
         app:backgroundTint="@color/colorPrimary"
-        app:elevation="4dp"
         app:fabSize="mini"
-        app:rippleColor="#3cffffff"
         app:srcCompat="@drawable/ic_baseline_brightness_4_24"
         app:tint="@color/colorActionBar" />
 </LinearLayout>

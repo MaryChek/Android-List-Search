@@ -13,12 +13,7 @@ class CitiesModelTest {
     private val preferenceManager: PreferenceManager = mock()
     private val activity: App = mock()
     private val resources: Resources = mock()
-    private val model: CitiesModel =
-        CitiesModel(
-            activity,
-            SIMPLE_CITIES_LIST,
-            preferenceManager
-        )
+    private val model: CitiesModel = CitiesModel(activity, SIMPLE_CITIES_LIST, preferenceManager)
 
     private fun stubToGetStringArray() {
         whenever(resources.getStringArray(any()))
@@ -35,105 +30,35 @@ class CitiesModelTest {
 
     private fun getGeneralCitiesIconList(): List<CityIcon> {
         val generalCitiesIconList: MutableList<CityIcon> = mutableListOf()
-        generalCitiesIconList.add(
-            CityIcon(
-                "Anapa",
-                DRAWABLE_FOR_FAVORITE_IN_GENERAL
-            )
-        )
-        generalCitiesIconList.add(
-            CityIcon(
-                "Moscow",
-                DRAWABLE_FOR_FAVORITE_IN_GENERAL
-            )
-        )
-        generalCitiesIconList.add(
-            CityIcon(
-                "Orel",
-                DRAWABLE_FOR_FAVORITE_IN_GENERAL
-            )
-        )
-        generalCitiesIconList.add(
-            CityIcon(
-                "Omsk",
-                DRAWABLE_FOR_GENERAL
-            )
-        )
-        generalCitiesIconList.add(
-            CityIcon(
-                "Khabarovsk",
-                DRAWABLE_FOR_GENERAL
-            )
-        )
+        generalCitiesIconList.add(CityIcon("Anapa", DRAWABLE_FOR_FAVORITE_IN_GENERAL))
+        generalCitiesIconList.add(CityIcon("Moscow", DRAWABLE_FOR_FAVORITE_IN_GENERAL))
+        generalCitiesIconList.add(CityIcon("Orel", DRAWABLE_FOR_FAVORITE_IN_GENERAL))
+        generalCitiesIconList.add(CityIcon("Omsk", DRAWABLE_FOR_GENERAL))
+        generalCitiesIconList.add(CityIcon("Khabarovsk", DRAWABLE_FOR_GENERAL))
         return generalCitiesIconList
     }
 
     private fun getGeneralCitiesIconListByEnteredText(): List<CityIcon> {
         val generalCitiesIconList: MutableList<CityIcon> = mutableListOf()
-        generalCitiesIconList.add(
-            CityIcon(
-                "Moscow",
-                DRAWABLE_FOR_FAVORITE_IN_GENERAL
-            )
-        )
-        generalCitiesIconList.add(
-            CityIcon(
-                "Orel",
-                DRAWABLE_FOR_FAVORITE_IN_GENERAL
-            )
-        )
-        generalCitiesIconList.add(
-            CityIcon(
-                "Omsk",
-                DRAWABLE_FOR_GENERAL
-            )
-        )
-        generalCitiesIconList.add(
-            CityIcon(
-                "Khabarovsk",
-                DRAWABLE_FOR_GENERAL
-            )
-        )
+        generalCitiesIconList.add(CityIcon("Moscow", DRAWABLE_FOR_FAVORITE_IN_GENERAL))
+        generalCitiesIconList.add(CityIcon("Orel", DRAWABLE_FOR_FAVORITE_IN_GENERAL))
+        generalCitiesIconList.add(CityIcon("Omsk", DRAWABLE_FOR_GENERAL))
+        generalCitiesIconList.add(CityIcon("Khabarovsk", DRAWABLE_FOR_GENERAL))
         return generalCitiesIconList
     }
 
     private fun getFavoriteCitiesIconList(): List<CityIcon> {
         val favoriteCitiesIconList: MutableList<CityIcon> = mutableListOf()
-        favoriteCitiesIconList.add(
-            CityIcon(
-                "Anapa",
-                DRAWABLE_FOR_FAVORITE
-            )
-        )
-        favoriteCitiesIconList.add(
-            CityIcon(
-                "Moscow",
-                DRAWABLE_FOR_FAVORITE
-            )
-        )
-        favoriteCitiesIconList.add(
-            CityIcon(
-                "Orel",
-                DRAWABLE_FOR_FAVORITE
-            )
-        )
+        favoriteCitiesIconList.add(CityIcon("Anapa", DRAWABLE_FOR_FAVORITE))
+        favoriteCitiesIconList.add(CityIcon("Moscow", DRAWABLE_FOR_FAVORITE))
+        favoriteCitiesIconList.add(CityIcon("Orel", DRAWABLE_FOR_FAVORITE))
         return favoriteCitiesIconList
     }
 
     private fun getFavoriteCitiesIconListByEnteredText(): List<CityIcon> {
         val favoriteCitiesIconList: MutableList<CityIcon> = mutableListOf()
-        favoriteCitiesIconList.add(
-            CityIcon(
-                "Moscow",
-                DRAWABLE_FOR_FAVORITE
-            )
-        )
-        favoriteCitiesIconList.add(
-            CityIcon(
-                "Orel",
-                DRAWABLE_FOR_FAVORITE
-            )
-        )
+        favoriteCitiesIconList.add(CityIcon("Moscow", DRAWABLE_FOR_FAVORITE))
+        favoriteCitiesIconList.add(CityIcon("Orel", DRAWABLE_FOR_FAVORITE))
         return favoriteCitiesIconList
     }
 

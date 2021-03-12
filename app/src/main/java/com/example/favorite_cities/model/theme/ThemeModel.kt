@@ -15,14 +15,8 @@ class ThemeModel(
 
     fun saveTheme() =
         when (theme) {
-            Theme.LIGHT -> preferenceManager.putIntByKey(
-                KEY_FOR_THEME,
-                INDEX_LIGHT_THEME
-            )
-            Theme.DARK -> preferenceManager.putIntByKey(
-                KEY_FOR_THEME,
-                INDEX_DARK_THEME
-            )
+            Theme.LIGHT -> preferenceManager.putIntByKey(KEY_FOR_THEME, INDEX_LIGHT_THEME)
+            Theme.DARK -> preferenceManager.putIntByKey(KEY_FOR_THEME, INDEX_DARK_THEME)
         }
 
     companion object {

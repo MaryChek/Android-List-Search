@@ -9,7 +9,7 @@ import com.example.favorite_cities.view.CityAttributes
 
 class CitiesListAdapter(
     private val cityIconClickListener: (String) -> Unit
-) : ListAdapter<CityAttributes, CitiesViewHolder>(CitiesDiff()) {
+) : ListAdapter<CityAttributes, CitiesViewHolder>(CitiesItemDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CitiesViewHolder =
         LayoutInflater.from(parent.context).inflate(

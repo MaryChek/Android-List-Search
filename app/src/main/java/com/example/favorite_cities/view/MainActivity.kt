@@ -22,15 +22,14 @@ class MainActivity : AppCompatActivity(), ActivityContract.View {
         setContentView(R.layout.activity_main)
         createFragmentPager()
         val model = (this.applicationContext as App).themeModel
-        presenter =
-            ActivityPresenter(model, this)
+        presenter = ActivityPresenter(model, this)
         presenter?.onViewCreated()
     }
 
     private fun createFragmentPager() {
         pagerFragment = PagerFragment()
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.activityMain, pagerFragment).commit()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.activityMain, pagerFragment).commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
