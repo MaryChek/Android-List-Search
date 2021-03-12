@@ -7,7 +7,7 @@ import com.example.favorite_cities.model.sharedpreferences.PreferenceManager
 
 class CitiesModel(
     private val activity: App,
-    newCitiesList: List<String> = activity.resources.getStringArray(R.array.cities).toList(),
+    citiesList: List<String> = activity.resources.getStringArray(R.array.cities).toList(),
     private val preferenceManager: PreferenceManager = PreferenceManager(activity)
 ) {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -17,14 +17,16 @@ class CitiesModel(
     var favoriteCities: List<String> = listOf()
 
     var generalEnteredText: String? = null
-        private set
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+        set
     var favoriteEnteredText: String? = null
-        private set
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+        set
 
     var positionOfTheCurrentPage = 0
 
     init {
-        generalCities = newCitiesList
+        generalCities = citiesList
         favoriteCities = getFavoriteSavedList()
     }
 
@@ -33,16 +35,30 @@ class CitiesModel(
         favoriteCities = getFavoriteSavedList()
     }
 
-//    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-//    fun updateFavoriteCities(newCitiesList: List<String>) {
-//        favoriteCities = newCitiesList
-//    }
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    fun getFavoriteSavedList(): List<String> {
+        val list: MutableList<String> = mutableListOf()
+        preferenceManager.getSetByKey(KEY_INDEXES_OF_FAVORITE).forEach { strIndex ->
+            strIndex.toIntOrNull()?.let {
+                list.add(generalCities[it])
+            }
+        }
+        return list
+    }
 
-    fun getGeneralCitiesFiltered(): List<CityIcon> =
+    fun getGeneralCitiesIconFiltered(): List<CityIcon> =
         getListOfCityIcons(filter(generalEnteredText, generalCities), ListType.GENERAL)
 
-    fun getFavoriteCitiesFiltered(): List<CityIcon> =
+    fun getFavoriteCitiesIconFiltered(): List<CityIcon> =
         getListOfCityIcons(filter(favoriteEnteredText, favoriteCities), ListType.FAVORITE)
+
+    private fun filter(enteredText: String?, ListCities: List<String>): List<String> =
+        when (enteredText.isNullOrBlank()) {
+            true -> ListCities
+            false -> ListCities.filter {
+                it.contains(enteredText, true)
+            }
+        }
 
     private fun getListOfCityIcons(listCities: List<String>, type: ListType): List<CityIcon> {
         val cityIconsList: MutableList<CityIcon> = mutableListOf()
@@ -69,9 +85,6 @@ class CitiesModel(
     fun isFavoriteCitiesEmpty(): Boolean =
         favoriteCities.isEmpty()
 
-    fun isFavoriteCitiesNotEmpty(): Boolean =
-        favoriteCities.isNotEmpty()
-
     fun filterGeneralList(enteredText: String?) {
         generalEnteredText = enteredText
     }
@@ -93,30 +106,12 @@ class CitiesModel(
             it == nameCity
         }
 
-    private fun filter(enteredText: String?, ListCities: List<String>): List<String> =
-        when (enteredText.isNullOrBlank()) {
-            true -> ListCities
-            false -> ListCities.filter {
-                it.contains(enteredText, true)
-            }
-        }
-
-    fun saveCitiesLists() =
+    fun saveFavoriteList() =
         saveFavoriteList(favoriteCities)
 
     private fun saveFavoriteList(savedList: List<String>) {
         val citiesIndexSet: Set<String> = getIndexSetOf(savedList)
         preferenceManager.putSetByKey(KEY_INDEXES_OF_FAVORITE, citiesIndexSet)
-    }
-
-    private fun getFavoriteSavedList(): List<String> {
-        val list: MutableList<String> = mutableListOf()
-        preferenceManager.getSetByKey(KEY_INDEXES_OF_FAVORITE).forEach { strIndex ->
-            strIndex.toIntOrNull()?.let {
-                list.add(generalCities[it])
-            }
-        }
-        return list
     }
 
     private fun getIndexSetOf(list: List<String>): Set<String> {

@@ -18,6 +18,15 @@ class PreferenceManager(
     fun getSetByKey(key: String): Set<String> =
         preferences.getStringSet(key, setOf()) ?: setOf()
 
+    fun putIntByKey(key: String, value: Int) {
+        preferences.edit()
+            .putInt(key, value)
+            .apply()
+    }
+
+    fun getIntByKey(key: String): Int =
+        preferences.getInt(key, 0)
+
     companion object {
         private const val STR_NAME_PREFERENCE = "SharedPreference"
     }

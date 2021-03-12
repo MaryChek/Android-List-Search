@@ -12,31 +12,34 @@ class PagerPresenterTest {
     private val presenter: PagerPresenter = PagerPresenter(model, view)
 
     @Test
-    fun `onViewCreated when view created then verify showPagerWithFragments invoked`() {
+    fun `onViewCreated when view created then verify selectItemOnPager invoked`() {
+        whenever(model.positionOfTheCurrentPage)
+            .thenReturn(SIMPLE_POSITION)
+
         presenter.onViewCreated()
 
         verify(view, times(1))
-            .showPagerWithFragments()
+            .selectItemOnPager(SIMPLE_POSITION)
     }
 
     @Test
-    fun `onFragmentsShown when fragments are show then verify setFavoriteFragmentAsCurrent invoked`() {
-        presenter.onFragmentsShown()
-
-        verify(view, times(1))
-            .setCurrentFragmentByPosition(any())
-    }
-
-    @Test
-    fun `onFragmentsShown when fragments are show then verify setTitlesInTabLayout with map of titles`() {
-        presenter.onFragmentsShown()
+    fun `onViewCreated when view created then verify setTitlesInTabLayout invoked`() {
+        presenter.onViewCreated()
 
         verify(view, times(1))
             .setTitlesInTabLayout(LiST_OF_TITLE_RES_IDS)
     }
 
+    @Test
+    fun `onPageSelected when page selected then verify positionOfTheCurrentPage in model`() {
+        presenter.onPageSelected(SIMPLE_POSITION)
+
+        verify(model, times(1))
+            .positionOfTheCurrentPage = SIMPLE_POSITION
+    }
+
     companion object {
-        private const val COUNT_FRAGMENTS = 2
+        private const val SIMPLE_POSITION = 1
         private val LiST_OF_TITLE_RES_IDS = listOf(
             R.string.name_fragment_general,
             R.string.name_fragment_favorite

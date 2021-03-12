@@ -1,46 +1,43 @@
 package com.example.favorite_cities.presenter
 
-import com.example.favorite_cities.DialogCreator
 import com.example.favorite_cities.R
-import com.example.favorite_cities.contract.GeneralCitiesContract
+import com.example.favorite_cities.contract.CitiesContract
 import com.example.favorite_cities.model.CitiesModel
+import com.example.favorite_cities.model.CityIcon
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Test
-import org.mockito.ArgumentMatchers
 
 class GeneralPresenterTest {
 
-    private var view: GeneralCitiesContract.View = mock()
+    private var view: CitiesContract.View = mock()
     private var model: CitiesModel = mock()
-    private val dialogCreator: DialogCreator = mock()
-    private var presenter: GeneralPresenter = GeneralPresenter(view, model, dialogCreator)
+    private var presenter: GeneralPresenter = GeneralPresenter(view, model)
 
     private fun stubWhenGeneralCitiesFilteredIsEmpty(value: Boolean) {
-        whenever(model.isGeneralCitiesFilteredEmpty())
-            .thenReturn(value)
+        val list: List<CityIcon> =
+            if (value) {
+                emptyList()
+            } else {
+                SIMPLE_LIST_OF_CITY_ICON
+            }
+
+        whenever(model.getGeneralCitiesIconFiltered())
+            .thenReturn(list)
     }
 
-    private fun verifyShowSearchErrorWithNothingFound() {
+    private fun verifyShowEmptyListHintWithNothingFound() {
         verify(view, times(1))
-            .showSearchError(R.string.nothing_found)
+            .showEmptyListHint(R.string.nothing_found)
     }
 
-    private fun verifyHideSearchError() {
+    private fun verifyHideEmptyListHint() {
         verify(view, times(1))
-            .hideSearchError()
+            .hideEmptyListHint()
     }
 
     @Test
-    fun `onViewCreated when view created then verify getGeneralEnteredText invoked`() {
-        presenter.onViewCreated()
-
-        verify(model, times(1))
-            .getGeneralEnteredText()
-    }
-
-    @Test
-    fun `onViewCreated when getGeneralEnteredText returned not null then verify setEnteredText invoked`() {
-        whenever(model.getGeneralEnteredText())
+    fun `onViewCreated when generalEnteredText isn't null then verify setEnteredText invoked`() {
+        whenever(model.generalEnteredText)
             .thenReturn(SIMPLE_ENTERED_TEXT)
 
         presenter.onViewCreated()
@@ -50,8 +47,8 @@ class GeneralPresenterTest {
     }
 
     @Test
-    fun `onViewCreated when getGeneralEnteredText returned null then verify setEnteredText not invoked`() {
-        whenever(model.getGeneralEnteredText())
+    fun `onViewCreated when generalEnteredText is null then verify setEnteredText not invoked`() {
+        whenever(model.generalEnteredText)
             .thenReturn(null)
 
         presenter.onViewCreated()
@@ -61,73 +58,89 @@ class GeneralPresenterTest {
     }
 
     @Test
-    fun `onViewCreated when view created then verify showCitiesList invoked`() {
+    fun `onViewCreated when view created then verify updateCitiesList invoked`() {
+        whenever(model.getGeneralCitiesIconFiltered())
+            .thenReturn(SIMPLE_LIST_OF_CITY_ICON)
+
         presenter.onViewCreated()
 
         verify(view, times(1))
-            .showCitiesList(ArgumentMatchers.anyList())
+            .updateCitiesList(SIMPLE_LIST_OF_CITY_ICON)
     }
 
     @Test
-    fun `onViewCreated when view created then verify getGeneralCitiesFiltered invoked`() {
-        presenter.onViewCreated()
+    fun `onTabVisible when tab is visible then verify updateCitiesList invoked`() {
+        whenever(model.getGeneralCitiesIconFiltered())
+            .thenReturn(SIMPLE_LIST_OF_CITY_ICON)
 
-        verify(model, times(1))
-            .getGeneralCitiesFiltered()
+        presenter.onTabVisible()
+
+        verify(view, times(1))
+            .updateCitiesList(SIMPLE_LIST_OF_CITY_ICON)
     }
 
     @Test
-    fun `onFragmentVisible when fragment visible then verify setPositionOfTheCurrentFragment with position general fragment invoked`() {
-        presenter.onFragmentVisible()
-
-        verify(model, times(1))
-            .setPositionOfTheCurrentFragment(POSITION_OF_FRAGMENT)
-    }
-
-    @Test
-    fun `searchTextChanged when search text changed to some text then verify filterGeneralList invoked with this`() {
-        presenter.searchTextChanged(SIMPLE_ENTERED_TEXT)
+    fun `onSearchTextChanged when search text is change then verify filterGeneralList invoked`() {
+        presenter.onSearchTextChanged(SIMPLE_ENTERED_TEXT)
 
         verify(model, times(1))
             .filterGeneralList(SIMPLE_ENTERED_TEXT)
     }
 
     @Test
-    fun `searchTextChanged when general cities filtered is empty then verify showSearchError with text "nothing found" invoked`() {
+    fun `onSearchTextChanged when general filtered list is empty then verify showEmptyListHint with text "nothing found" invoked`() {
         stubWhenGeneralCitiesFilteredIsEmpty(true)
 
-        presenter.searchTextChanged(any())
+        presenter.onSearchTextChanged(any())
 
-        verifyShowSearchErrorWithNothingFound()
+        verifyShowEmptyListHintWithNothingFound()
     }
 
     @Test
-    fun `searchTextChanged when general cities filtered isn't empty then verify hideSearchError invoked`() {
+    fun `onSearchTextChanged when general filtered list isn't empty then verify hideEmptyListHint invoked`() {
         stubWhenGeneralCitiesFilteredIsEmpty(false)
 
-        presenter.searchTextChanged(any())
+        presenter.onSearchTextChanged(any())
 
-        verifyHideSearchError()
+        verifyHideEmptyListHint()
     }
 
     @Test
-    fun `searchTextChanged when search text changed to some text then verify updateCitiesList invoked`() {
-        presenter.searchTextChanged(any())
+    fun `onSearchTextChanged when search text is change then verify updateCitiesList invoked`() {
+        whenever(model.getGeneralCitiesIconFiltered())
+            .thenReturn(SIMPLE_LIST_OF_CITY_ICON)
+
+        presenter.onSearchTextChanged(any())
 
         verify(view, times(1))
-            .updateCitiesList(any())
+            .updateCitiesList(SIMPLE_LIST_OF_CITY_ICON)
     }
 
     @Test
-    fun `searchTextChanged when search text changed to some text then verify getGeneralCitiesFiltered invoked`() {
-        presenter.searchTextChanged(any())
+    fun `onAddToFavoriteClick when click to add favorite city then verify updateCitiesList invoked`() {
+        whenever(model.getGeneralCitiesIconFiltered())
+            .thenReturn(SIMPLE_LIST_OF_CITY_ICON)
 
-        verify(model, times(1))
-            .getGeneralCitiesFiltered()
+        presenter.onAddToFavoriteClick(SIMPLE_CITY)
+
+        verify(view, times(1))
+            .updateCitiesList(SIMPLE_LIST_OF_CITY_ICON)
+    }
+
+    @Test
+    fun `onRemoveFromFavoriteClick when click to remove favorite city then verify updateCitiesList invoked`() {
+        whenever(model.getGeneralCitiesIconFiltered())
+            .thenReturn(SIMPLE_LIST_OF_CITY_ICON)
+
+        presenter.onRemoveFromFavoriteClick(SIMPLE_CITY)
+
+        verify(view, times(1))
+            .updateCitiesList(SIMPLE_LIST_OF_CITY_ICON)
     }
 
     companion object {
+        private val SIMPLE_LIST_OF_CITY_ICON = listOf(CityIcon("Moscow", 0))
         private const val SIMPLE_ENTERED_TEXT = "o"
-        private const val POSITION_OF_FRAGMENT = 0
+        private const val SIMPLE_CITY = "Orel"
     }
 }

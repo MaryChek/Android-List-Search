@@ -54,8 +54,8 @@ open class BaseCitiesPresenter<V : CitiesContract.View>(
 
     private fun getFilteredList(): List<CityIcon> =
         when (getCitiesCollection()) {
-            CitiesKey.FAVORITE -> model.getFavoriteCitiesFiltered()
-            CitiesKey.GENERAL -> model.getGeneralCitiesFiltered()
+            CitiesKey.FAVORITE -> model.getFavoriteCitiesIconFiltered()
+            CitiesKey.GENERAL -> model.getGeneralCitiesIconFiltered()
         }
 
     override fun onAddToFavoriteClick(nameCity: String) {
@@ -65,7 +65,9 @@ open class BaseCitiesPresenter<V : CitiesContract.View>(
 
     private fun addFavoriteCity(nameCity: String) {
         model.addFavoriteCity(nameCity)
-        showOrHideEmptyListHint()
+        if (isCollectionFavorite()) {
+            showOrHideEmptyListHint()
+        }
         view.updateCitiesList(getFilteredList())
     }
 
@@ -76,7 +78,9 @@ open class BaseCitiesPresenter<V : CitiesContract.View>(
 
     private fun removeFavoriteCity(nameCity: String) {
         model.removeFavoriteCity(nameCity)
-        showOrHideEmptyListHint()
+        if (isCollectionFavorite()) {
+            showOrHideEmptyListHint()
+        }
         view.updateCitiesList(getFilteredList())
     }
 
@@ -93,7 +97,7 @@ open class BaseCitiesPresenter<V : CitiesContract.View>(
         getCitiesCollection() == CitiesKey.FAVORITE
 
     override fun onViewPause() {
-        model.saveCitiesLists()
+        model.saveFavoriteList()
     }
 
     protected enum class CitiesKey {

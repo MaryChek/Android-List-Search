@@ -1,4 +1,4 @@
-package com.example.favorite_cities
+package com.example.favorite_cities.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.example.favorite_cities.App
+import com.example.favorite_cities.OnBackPressed
 import com.example.favorite_cities.adapter.PagerAdapter
 import com.example.favorite_cities.contract.PagerContract
 import com.example.favorite_cities.databinding.PagerFragmentBinding
@@ -14,7 +16,8 @@ import com.example.favorite_cities.presenter.PagerPresenter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
-class PagerFragment : Fragment(), PagerContract.View, OnBackPressed {
+class PagerFragment : Fragment(), PagerContract.View,
+    OnBackPressed {
     private var binding: PagerFragmentBinding? = null
     private var presenter: PagerPresenter? = null
     private var adapter: PagerAdapter? = null
@@ -28,7 +31,7 @@ class PagerFragment : Fragment(), PagerContract.View, OnBackPressed {
 
     private fun init(savedInstanceState: Bundle?) {
         val app: App = requireActivity().applicationContext as App
-        val model: CitiesModel = app.model
+        val model: CitiesModel = app.citiesModel
         if (savedInstanceState != null) {
             model.updateCitiesLists()
         }

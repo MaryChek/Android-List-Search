@@ -1,23 +1,16 @@
 package com.example.favorite_cities
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.view.MenuItemCompat
+import com.example.favorite_cities.contract.ActivityContract
 import com.example.favorite_cities.databinding.IconForActionBarBinding
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.icon_for_action_bar.*
+import com.example.favorite_cities.fragments.PagerFragment
 
-
-class MainActivity : AppCompatActivity() {
-
+class MainActivity : AppCompatActivity(), ActivityContract.View {
+    private var presenter: ActivityPresenter? = null
     private lateinit var pagerFragment: PagerFragment
     private var binding: IconForActionBarBinding? = null
 
@@ -25,30 +18,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         createFragmentPager()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        val item: MenuItem = menu.findItem(R.id.icon)
-        binding = IconForActionBarBinding.bind(item.actionView)
-        val moonButton: FloatingActionButton? = binding?.iconForActionBar
-        moonButton?.setOnClickListener {
-           changeLocalTheme()
-        }
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    private fun changeLocalTheme() {
-        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_NO -> {
-                AppCompatDelegate.setDefaultNightMode (
-                    AppCompatDelegate.MODE_NIGHT_YES)
-            }
-            Configuration.UI_MODE_NIGHT_YES -> {
-                AppCompatDelegate.setDefaultNightMode (
-                    AppCompatDelegate.MODE_NIGHT_NO)
-            }
-        }
+        val model = (this.applicationContext as App).themeModel
+        presenter = ActivityPresenter(model, this)
+        presenter?.onViewCreated()
     }
 
     private fun createFragmentPager() {
@@ -57,9 +29,30 @@ class MainActivity : AppCompatActivity() {
         transaction.replace(R.id.activityMain, pagerFragment).commit()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        val item: MenuItem = menu.findItem(R.id.icon)
+        binding = IconForActionBarBinding.bind(item.actionView)
+        binding?.iconForActionBar?.setOnClickListener {
+            presenter?.onActionBarIconClick()
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun changeThemeToDark() =
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
+    override fun changeThemeToLight() =
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
     override fun onBackPressed() {
         if (pagerFragment.onBackPressed()) {
             super.onBackPressed()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 }
