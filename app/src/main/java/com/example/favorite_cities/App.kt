@@ -15,8 +15,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         citiesModel = CitiesModel(this)
-        themeModel = ThemeModel(
-            PreferenceManager(this)
-        )
+        themeModel = ThemeModel(PreferenceManager(this))
     }
 }

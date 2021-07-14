@@ -8,6 +8,12 @@ class FavoritePresenter(
     citiesModel: CitiesModel
 ) : BaseCitiesPresenter<CitiesContract.View>(citiesView, citiesModel) {
 
-    override fun getCitiesCollection(): CitiesKey =
-        CitiesKey.FAVORITE
+    override fun getCitiesCollection(): CitiesKey {
+        test()
+        return CitiesKey.FAVORITE
+    }
+
+    fun test() {
+        model.favoriteEnteredText =  ""
+    }
 }

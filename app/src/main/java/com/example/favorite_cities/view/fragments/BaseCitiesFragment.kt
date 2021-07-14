@@ -89,6 +89,7 @@ abstract class BaseCitiesFragment<T : CitiesContract.Presenter<CitiesContract.Vi
 
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     hideKeyboard()
+                    println(query)
                     return true
                 }
             })
@@ -167,11 +168,6 @@ abstract class BaseCitiesFragment<T : CitiesContract.Presenter<CitiesContract.Vi
     override fun hideEmptyListHint() {
         tvEmptyListHint.visibility = View.GONE
     }
-
-    override fun showUserMessage(@StringRes stringId: Int, nameCity: String) =
-        Toast.makeText(
-            requireActivity(), resources.getString(stringId, nameCity), Toast.LENGTH_LONG
-        ).show()
 
     override fun onPause() {
         super.onPause()

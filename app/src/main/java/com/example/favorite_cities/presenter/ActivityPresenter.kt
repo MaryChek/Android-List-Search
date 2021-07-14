@@ -9,30 +9,24 @@ class ActivityPresenter(
     view: ActivityContract.View
 ) : BasePresenter<ActivityContract.View>(view), ActivityContract.Presenter {
 
-    override fun onViewCreated() {
-        setTheme(model.theme)
-    }
+    override fun onViewCreated() =
+        setTheme()
 
     override fun onActionBarIconClick() {
-        changeTheme(model.theme)
+        changeThemeInModel()
+        setTheme()
     }
 
-    private fun setTheme(theme: Theme) =
-        when (theme) {
+    private fun setTheme() =
+        when (model.theme) {
             Theme.LIGHT -> view.changeThemeToLight()
             Theme.DARK -> view.changeThemeToDark()
         }
 
-    private fun changeTheme(theme: Theme?) {
-        when (theme) {
-            Theme.LIGHT -> {
-                view.changeThemeToDark()
-                model.theme = Theme.DARK
-            }
-            Theme.DARK -> {
-                view.changeThemeToLight()
-                model.theme = Theme.LIGHT
-            }
+    private fun changeThemeInModel() {
+        when (model.theme) {
+            Theme.LIGHT -> model.theme = Theme.DARK
+            Theme.DARK -> model.theme = Theme.LIGHT
         }
         model.saveTheme()
     }

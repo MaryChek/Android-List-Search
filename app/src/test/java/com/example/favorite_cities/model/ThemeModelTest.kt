@@ -13,9 +13,7 @@ class ThemeModelTest {
     private fun initModel(stabValueForPreference: Int): ThemeModel {
         whenever(preferenceManager.getIntByKey(KEY_FOR_THEME))
             .thenReturn(stabValueForPreference)
-        return ThemeModel(
-            preferenceManager
-        )
+        return ThemeModel(preferenceManager)
     }
 
     @Test

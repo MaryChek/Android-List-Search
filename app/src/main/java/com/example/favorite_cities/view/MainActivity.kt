@@ -9,17 +9,20 @@ import com.example.favorite_cities.presenter.ActivityPresenter
 import com.example.favorite_cities.App
 import com.example.favorite_cities.R
 import com.example.favorite_cities.contract.ActivityContract
+import com.example.favorite_cities.databinding.ActivityMainBinding
 import com.example.favorite_cities.databinding.IconForActionBarBinding
 import com.example.favorite_cities.view.fragments.PagerFragment
 
 class MainActivity : AppCompatActivity(), ActivityContract.View {
     private var presenter: ActivityPresenter? = null
     private lateinit var pagerFragment: PagerFragment
-    private var binding: IconForActionBarBinding? = null
+    private var bindingIcon: IconForActionBarBinding? = null
+    private var binding: ActivityMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
         createFragmentPager()
         val model = (this.applicationContext as App).themeModel
         presenter = ActivityPresenter(model, this)
@@ -35,18 +38,21 @@ class MainActivity : AppCompatActivity(), ActivityContract.View {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         val item: MenuItem = menu.findItem(R.id.icon)
-        binding = IconForActionBarBinding.bind(item.actionView)
-        binding?.iconForActionBar?.setOnClickListener {
+        bindingIcon = IconForActionBarBinding.bind(item.actionView)
+        bindingIcon?.iconForActionBar?.setOnClickListener {
             presenter?.onActionBarIconClick()
         }
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun changeThemeToDark() =
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        setDefaultTheme(AppCompatDelegate.MODE_NIGHT_YES)
 
     override fun changeThemeToLight() =
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        setDefaultTheme(AppCompatDelegate.MODE_NIGHT_NO)
+
+    private fun setDefaultTheme(mode: Int) =
+        AppCompatDelegate.setDefaultNightMode(mode)
 
     override fun onBackPressed() {
         if (pagerFragment.onBackPressed()) {
@@ -56,6 +62,6 @@ class MainActivity : AppCompatActivity(), ActivityContract.View {
 
     override fun onDestroy() {
         super.onDestroy()
-        binding = null
+        bindingIcon = null
     }
 }

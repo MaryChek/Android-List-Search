@@ -15,8 +15,6 @@ interface CitiesContract {
 
         fun hideEmptyListHint()
 
-        fun showUserMessage(@StringRes stringId: Int, nameCity: String)
-
         fun setEnteredText(text: CharSequence)
     }
 

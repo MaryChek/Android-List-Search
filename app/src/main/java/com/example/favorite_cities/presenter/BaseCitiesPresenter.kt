@@ -58,10 +58,8 @@ open class BaseCitiesPresenter<V : CitiesContract.View>(
             CitiesKey.GENERAL -> model.getGeneralCitiesIconFiltered()
         }
 
-    override fun onAddToFavoriteClick(nameCity: String) {
+    override fun onAddToFavoriteClick(nameCity: String) =
         addFavoriteCity(nameCity)
-        view.showUserMessage(R.string.message_after_adding, nameCity)
-    }
 
     private fun addFavoriteCity(nameCity: String) {
         model.addFavoriteCity(nameCity)
@@ -71,10 +69,8 @@ open class BaseCitiesPresenter<V : CitiesContract.View>(
         view.updateCitiesList(getFilteredList())
     }
 
-    override fun onRemoveFromFavoriteClick(nameCity: String) {
+    override fun onRemoveFromFavoriteClick(nameCity: String) =
         removeFavoriteCity(nameCity)
-        view.showUserMessage(R.string.message_after_removal, nameCity)
-    }
 
     private fun removeFavoriteCity(nameCity: String) {
         model.removeFavoriteCity(nameCity)
