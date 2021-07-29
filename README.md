@@ -1,3 +1,3 @@
 # Android-List-Search
 
-![alt text](main_screen.png) ![alt text](favorite_screen.png)
+![alt text](screenshots/main_screen.png) ![alt text](screenshots/favorite_screen.png)
